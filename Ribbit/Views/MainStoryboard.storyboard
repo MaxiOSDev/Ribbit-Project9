@@ -27,7 +27,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uTa-e3-PLb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="364.5" y="226.5"/>
+            <point key="canvasLocation" x="294" y="227"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="jhv-qo-Efw">
@@ -100,6 +100,7 @@
                                 </state>
                                 <connections>
                                     <action selector="login:" destination="BA1-Cp-RJu" eventType="touchUpInside" id="LcU-TO-5pp"/>
+                                    <segue destination="hdx-au-269" kind="modal" id="Rzs-4p-fue"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -130,7 +131,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oiH-2J-Xls" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-754.5" y="226.5"/>
+            <point key="canvasLocation" x="-983" y="227"/>
         </scene>
         <!--Friends-->
         <scene sceneID="5f2-hU-ic2">
@@ -418,7 +419,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lzd-E8-FIY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-261.5" y="226.5"/>
+            <point key="canvasLocation" x="-366" y="227"/>
         </scene>
         <!--Inbox-->
         <scene sceneID="BPR-J4-yCL">
@@ -490,7 +491,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZW1-zV-Jeu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1288" y="227"/>
+            <point key="canvasLocation" x="-1516" y="227"/>
         </scene>
     </scenes>
     <resources>

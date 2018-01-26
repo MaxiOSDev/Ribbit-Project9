@@ -29,7 +29,8 @@
         NSLog(@"Current user: %@", currentUser.username);
     }
     else {
-        [self performSegueWithIdentifier:@"showLogin" sender:self];
+      //  [self performSegueWithIdentifier:@"showLogin" sender:self];
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
@@ -97,7 +98,10 @@
 
 - (IBAction)logout:(id)sender {
 //    [User logOut];
-    [self performSegueWithIdentifier:@"showLogin" sender:self];
+    
+  //  [self performSegueWithIdentifier:@"showLogin" sender:self];
+    [self dismissViewControllerAnimated:YES completion:nil]; // This isn't sufficient because in instagram it modally presents the login screen yet again with the credentials from before... It does not dismiss the modally presented view controller, an idea that I am having is to programmatically create a segue and then present it modally. But I get that crash when I try to segue to the sign up VC.. and thats a problem. Can't have that..
+    
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
