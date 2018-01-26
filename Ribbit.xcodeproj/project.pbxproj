@@ -78,7 +78,7 @@
 		8DCDADBD17A6B3CC008AAA28 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		8DCDADBF17A6B3CC008AAA28 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		8DCDADC117A6B3CC008AAA28 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		8DCDADC817A6BA34008AAA28 /* MainStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = MainStoryboard.storyboard; path = ../MainStoryboard.storyboard; sourceTree = "<group>"; };
+		8DCDADC817A6BA34008AAA28 /* MainStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainStoryboard.storyboard; sourceTree = "<group>"; };
 		8DCDADDC17A82CE5008AAA28 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		8DCDADDD17A82CE5008AAA28 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		8DCDADDE17A82CE5008AAA28 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -176,15 +176,12 @@
 		8DCDADB117A6B3CC008AAA28 /* Ribbit */ = {
 			isa = PBXGroup;
 			children = (
-				8DCDADC817A6BA34008AAA28 /* MainStoryboard.storyboard */,
-				8DCDADBA17A6B3CC008AAA28 /* AppDelegate.h */,
-				8DCDADBB17A6B3CC008AAA28 /* AppDelegate.m */,
-				8DCDADD617A6BC26008AAA28 /* Images */,
-				B3EB1F091D6DB6DF00B5FDAD /* Model */,
+				FB417E8B201B9530006A5472 /* Other */,
 				FB417E87201B85D2006A5472 /* Controllers */,
+				FB417E8A201B94F4006A5472 /* Views */,
+				B3EB1F091D6DB6DF00B5FDAD /* Model */,
+				8DCDADD617A6BC26008AAA28 /* Images */,
 				8DCDADB217A6B3CC008AAA28 /* Supporting Files */,
-				B3EB1F131D6F06A400B5FDAD /* Constants.h */,
-				FB417E88201B9311006A5472 /* Launch Screen.storyboard */,
 			);
 			path = Ribbit;
 			sourceTree = "<group>";
@@ -255,6 +252,25 @@
 				8D5ED98217B052200079548F /* ImageViewController.m */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		FB417E8A201B94F4006A5472 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				8DCDADC817A6BA34008AAA28 /* MainStoryboard.storyboard */,
+				FB417E88201B9311006A5472 /* Launch Screen.storyboard */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		FB417E8B201B9530006A5472 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				8DCDADBA17A6B3CC008AAA28 /* AppDelegate.h */,
+				8DCDADBB17A6B3CC008AAA28 /* AppDelegate.m */,
+				B3EB1F131D6F06A400B5FDAD /* Constants.h */,
+			);
+			path = Other;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
