@@ -48,6 +48,7 @@
 		B3EB1F0C1D6DBA1B00B5FDAD /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = B3EB1F0B1D6DBA1B00B5FDAD /* User.m */; };
 		B3EB1F0F1D6F034A00B5FDAD /* File.m in Sources */ = {isa = PBXBuildFile; fileRef = B3EB1F0E1D6F034A00B5FDAD /* File.m */; };
 		B3EB1F121D6F035800B5FDAD /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = B3EB1F111D6F035800B5FDAD /* Message.m */; };
+		FB417E89201B9311006A5472 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB417E88201B9311006A5472 /* Launch Screen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -108,6 +109,7 @@
 		B3EB1F101D6F035800B5FDAD /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
 		B3EB1F111D6F035800B5FDAD /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
 		B3EB1F131D6F06A400B5FDAD /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		FB417E88201B9311006A5472 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,6 +184,7 @@
 				FB417E87201B85D2006A5472 /* Controllers */,
 				8DCDADB217A6B3CC008AAA28 /* Supporting Files */,
 				B3EB1F131D6F06A400B5FDAD /* Constants.h */,
+				FB417E88201B9311006A5472 /* Launch Screen.storyboard */,
 			);
 			path = Ribbit;
 			sourceTree = "<group>";
@@ -320,6 +323,7 @@
 				8DCDADFF17A83870008AAA28 /* friends.png in Resources */,
 				8DCDAE0017A83870008AAA28 /* friends@2x.png in Resources */,
 				8DCDAE0117A83870008AAA28 /* inbox.png in Resources */,
+				FB417E89201B9311006A5472 /* Launch Screen.storyboard in Resources */,
 				8DCDAE0217A83870008AAA28 /* inbox@2x.png in Resources */,
 				8D5ED97D17B052130079548F /* icon_image.png in Resources */,
 				8D5ED97E17B052130079548F /* icon_image@2x.png in Resources */,
