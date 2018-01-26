@@ -49,9 +49,6 @@
     
 }
 
-- (IBAction)showSignUpVC:(id)sender {
-    
-}
 
 - (void)setupNavBar {
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];

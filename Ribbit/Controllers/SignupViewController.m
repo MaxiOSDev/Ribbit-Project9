@@ -20,6 +20,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.navigationItem.hidesBackButton = YES;
+    [self setupNavBar];
 }
 
 - (IBAction)signup:(id)sender {
@@ -51,6 +52,12 @@
 //            }
 //        }];
     }
+}
+
+- (void)setupNavBar {
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+    [self.navigationController.navigationBar setTranslucent:YES];
 }
 
 @end
