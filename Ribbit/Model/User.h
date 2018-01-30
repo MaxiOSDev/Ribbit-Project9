@@ -7,9 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "App.h"
+#import "UserDelegate.h"
 
 @interface User : NSObject
+{
+    id<UserDelegate> delegate;
+}
 
+@property (nonatomic, retain) id<UserDelegate> delegate;
 @property (strong,nonatomic) NSString *objectId;
 @property (copy,nonatomic) NSString *username;
 @property (copy,nonatomic) NSString *password;

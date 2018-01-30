@@ -15,14 +15,14 @@ static NSInteger identifier = 1;
 @end
 
 @implementation User
-
+@synthesize delegate;
 + (instancetype) currentUser {
   static User *sharedUser = nil;
   
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     sharedUser = [[self alloc] init];
-    sharedUser.username = @"Current user";
+    sharedUser.username = @"Current User";
     sharedUser.objectId = @"100";
     sharedUser.friendsMutable = [NSMutableArray array];
   });

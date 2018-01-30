@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		22CB9F22888BC4979235EE80 /* libPods-Ribbit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DCDD430420AF17717CF3ECE /* libPods-Ribbit.a */; };
 		8D2A01AC17AB0EEE00A43140 /* EditFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D2A01A917AB0EEE00A43140 /* EditFriendsViewController.m */; };
 		8D2A01AD17AB0EEE00A43140 /* FriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D2A01AB17AB0EEE00A43140 /* FriendsViewController.m */; };
 		8D5ED96317AFFE300079548F /* CameraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5ED96217AFFE300079548F /* CameraViewController.m */; };
@@ -43,9 +44,11 @@
 		FBC7D96C201FD1EE0016C61B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC7D96B201FD1EE0016C61B /* AVFoundation.framework */; };
 		FBC7D96E201FD1F70016C61B /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC7D96D201FD1F70016C61B /* AVKit.framework */; };
 		FBC7D970201FD2320016C61B /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC7D96F201FD2320016C61B /* CoreMedia.framework */; };
+		FBC7D9752020FFF90016C61B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FBC7D9742020FFF90016C61B /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		17F2C1D2C3C9CF5B403C46F8 /* Pods-Ribbit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ribbit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Ribbit/Pods-Ribbit.debug.xcconfig"; sourceTree = "<group>"; };
 		8D2A01A817AB0EEE00A43140 /* EditFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditFriendsViewController.h; sourceTree = "<group>"; };
 		8D2A01A917AB0EEE00A43140 /* EditFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditFriendsViewController.m; sourceTree = "<group>"; };
 		8D2A01AA17AB0EEE00A43140 /* FriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsViewController.h; sourceTree = "<group>"; };
@@ -84,6 +87,8 @@
 		8DCDADF217A82EEB008AAA28 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		8DCDADF417A83852008AAA28 /* InboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxViewController.h; sourceTree = "<group>"; };
 		8DCDADF517A83852008AAA28 /* InboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxViewController.m; sourceTree = "<group>"; };
+		94A3D1C36081974EB0234539 /* Pods-Ribbit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ribbit.release.xcconfig"; path = "Pods/Target Support Files/Pods-Ribbit/Pods-Ribbit.release.xcconfig"; sourceTree = "<group>"; };
+		9DCDD430420AF17717CF3ECE /* libPods-Ribbit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Ribbit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B35A3F461D7EE8050082EF0C /* App.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = App.h; sourceTree = "<group>"; };
 		B35A3F471D7EE8050082EF0C /* App.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = App.m; sourceTree = "<group>"; };
 		B3EB1F0A1D6DBA1B00B5FDAD /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
@@ -99,6 +104,8 @@
 		FBC7D96B201FD1EE0016C61B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		FBC7D96D201FD1F70016C61B /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		FBC7D96F201FD2320016C61B /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		FBC7D9732020F0F80016C61B /* UserDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserDelegate.h; sourceTree = "<group>"; };
+		FBC7D9742020FFF90016C61B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,18 +129,29 @@
 				8DCDADB017A6B3CC008AAA28 /* CoreGraphics.framework in Frameworks */,
 				8DCDADAC17A6B3CC008AAA28 /* UIKit.framework in Frameworks */,
 				8DCDADAE17A6B3CC008AAA28 /* Foundation.framework in Frameworks */,
+				22CB9F22888BC4979235EE80 /* libPods-Ribbit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0780D3C4F2D2136B1DE31645 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				17F2C1D2C3C9CF5B403C46F8 /* Pods-Ribbit.debug.xcconfig */,
+				94A3D1C36081974EB0234539 /* Pods-Ribbit.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		8DCDAD9F17A6B3CB008AAA28 = {
 			isa = PBXGroup;
 			children = (
 				8DCDADB117A6B3CC008AAA28 /* Ribbit */,
 				8DCDADAA17A6B3CC008AAA28 /* Frameworks */,
 				8DCDADA917A6B3CC008AAA28 /* Products */,
+				0780D3C4F2D2136B1DE31645 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -164,6 +182,7 @@
 				8DCDADE317A82CE5008AAA28 /* StoreKit.framework */,
 				8DCDADE417A82CE5008AAA28 /* SystemConfiguration.framework */,
 				8DCDADAB17A6B3CC008AAA28 /* UIKit.framework */,
+				9DCDD430420AF17717CF3ECE /* libPods-Ribbit.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -185,6 +204,7 @@
 			isa = PBXGroup;
 			children = (
 				8DCDADB317A6B3CC008AAA28 /* Ribbit-Info.plist */,
+				FBC7D9742020FFF90016C61B /* GoogleService-Info.plist */,
 				8DCDADB417A6B3CC008AAA28 /* InfoPlist.strings */,
 				8DCDADB717A6B3CC008AAA28 /* main.m */,
 				8DCDADB917A6B3CC008AAA28 /* Ribbit-Prefix.pch */,
@@ -207,6 +227,7 @@
 				B35A3F461D7EE8050082EF0C /* App.h */,
 				B35A3F471D7EE8050082EF0C /* App.m */,
 				FBC7D969201F69FF0016C61B /* FriendDelegate.h */,
+				FBC7D9732020F0F80016C61B /* UserDelegate.h */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -258,9 +279,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8DCDADC517A6B3CC008AAA28 /* Build configuration list for PBXNativeTarget "Ribbit" */;
 			buildPhases = (
+				16A76773F5430A7AA9B054E7 /* [CP] Check Pods Manifest.lock */,
 				8DCDADA417A6B3CC008AAA28 /* Sources */,
 				8DCDADA517A6B3CC008AAA28 /* Frameworks */,
 				8DCDADA617A6B3CC008AAA28 /* Resources */,
+				2ECCB64F4BBFE346433D8BF3 /* [CP] Embed Pods Frameworks */,
+				B1DFBA54BB9BB8E903B47FC4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -308,6 +332,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DCDADB617A6B3CC008AAA28 /* InfoPlist.strings in Resources */,
+				FBC7D9752020FFF90016C61B /* GoogleService-Info.plist in Resources */,
 				8DCDADBE17A6B3CC008AAA28 /* Default.png in Resources */,
 				8DCDADC017A6B3CC008AAA28 /* Default@2x.png in Resources */,
 				8DCDADC217A6B3CC008AAA28 /* Default-568h@2x.png in Resources */,
@@ -318,6 +343,57 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		16A76773F5430A7AA9B054E7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Ribbit-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2ECCB64F4BBFE346433D8BF3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Ribbit/Pods-Ribbit-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B1DFBA54BB9BB8E903B47FC4 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Ribbit/Pods-Ribbit-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8DCDADA417A6B3CC008AAA28 /* Sources */ = {
@@ -444,6 +520,7 @@
 		};
 		8DCDADC617A6B3CC008AAA28 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 17F2C1D2C3C9CF5B403C46F8 /* Pods-Ribbit.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -455,7 +532,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Ribbit/Ribbit-Prefix.pch";
 				INFOPLIST_FILE = "Ribbit/Ribbit-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.teamtreehouse.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ramirezmax.Ribbit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -464,6 +541,7 @@
 		};
 		8DCDADC717A6B3CC008AAA28 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 94A3D1C36081974EB0234539 /* Pods-Ribbit.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -475,7 +553,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Ribbit/Ribbit-Prefix.pch";
 				INFOPLIST_FILE = "Ribbit/Ribbit-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.teamtreehouse.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ramirezmax.Ribbit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;

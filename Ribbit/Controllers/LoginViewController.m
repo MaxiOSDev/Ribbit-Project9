@@ -53,6 +53,11 @@
     
 }
 
+-(void)didLoginWithUser:(App *)user; {
+    NSString *username = [self.usernameField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *password = [self.passwordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
 
 
 - (void)setupNavBar {
