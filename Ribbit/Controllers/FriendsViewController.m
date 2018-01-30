@@ -11,7 +11,7 @@
 #import "User.h"
 
 @interface FriendsViewController ()
-
+@property (strong, nonatomic) NSMutableArray *friendsMutable;
 @end
 
 @implementation FriendsViewController
@@ -19,14 +19,19 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     self.friends = [[User currentUser] friends];
+   // self.friends = [[App currentApp] allUsers];
     [self.tableView reloadData];
+}
 
+- (NSArray *)allUsers {
+    return [[App currentApp] allUsers];
 }
 
 #pragma mark - Table view data source
@@ -54,4 +59,33 @@
     return cell;
 }
 
+
+- (void) didMarkAsFriendDelegate:(User *)user {
+    NSMutableArray *mutableArray2 = [[NSMutableArray alloc] init];
+    
+    NSLog(@"Friend here: %@", user);
+    
+    [mutableArray2 addObject:user];
+    self.friendsMutable = mutableArray2;
+    
+    [self.tableView reloadData];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([[segue identifier] isEqualToString:@"showEditFriends"]) {
+        EditFriendsViewController *editFriendsVC = [segue destinationViewController];
+        editFriendsVC.currentUser = [self currentUser];
+        editFriendsVC.friends = [self friends];
+        editFriendsVC.mutableFriendsArray = [self friendsMutable];
+        editFriendsVC.delegate = self;
+    }
+}
+
 @end
+
+
+
+
+
+
+

@@ -27,10 +27,14 @@
     NSString *password = [self.passwordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     if ([username length] == 0 || [password length] == 0) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Oops!"
-                                                            message:@"Make sure you enter a username and password!"
-                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
+//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Oops!"
+//                                                            message:@"Make sure you enter a username and password!"
+//                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Oops!" message:@"Make sure you enter a username and password" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okayButton = [UIAlertAction actionWithTitle:@"Understood" style:UIAlertActionStyleDefault handler:nil];
+        [alert addAction:okayButton];
+        
+        [self presentViewController:alert animated:YES completion:nil];
     }
     else {
         

@@ -14,14 +14,19 @@
 @end
 
 @implementation EditFriendsViewController
+@synthesize delegate;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
   
   [self.tableView reloadData];
-  
-  self.currentUser = [User currentUser];
+
+    self.currentUser = [User currentUser];
+    NSLog(@"%@", self.currentUser.friends);
+ //   NSLog(@"Friends Mutable: %@", _friends);
+ //   self.friends = [[User currentUser] friends];
+    self.friends = [[User userWithUsername:_currentUser.username] friends];
 }
 
 - (NSArray *)allUsers {
@@ -49,12 +54,15 @@
     
     User *user = [self.allUsers objectAtIndex:indexPath.row];
     cell.textLabel.text = user.username;
+ //   NSLog(@"User ID and Name in cellForRow: %@%@", user.objectId, user.username);
     
     if ([self isFriend:user]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        NSLog(@"Yes friend: %@", user.username);
     }
     else {
         cell.accessoryType = UITableViewCellAccessoryNone;
+        NSLog(@"No friend: %@", user.username);
     }
     
     return cell;
@@ -69,13 +77,14 @@
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
   
     User *user = [self.allUsers objectAtIndex:indexPath.row];
-    
+ //   NSLog(@"User ID and name within didSelect: %@%@", user.objectId, user.username);
     if ([self isFriend:user]) {
         cell.accessoryType = UITableViewCellAccessoryNone;
         [self.currentUser removeFriend:user];
     }
     else {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        [self.delegate didMarkAsFriendDelegate:user];
         [self.currentUser addFriend:user];
     }    
 }
@@ -83,7 +92,13 @@
 #pragma mark - Helper methods
 
 - (BOOL)isFriend:(User *)user {
-  return [self.currentUser.friends containsObject:user];
+    Boolean isAdded = false;
+    for (User *tempUser in self.currentUser.friends) {
+        if (tempUser.username == user.username) {
+            isAdded = true;
+        }
+    }
+    return isAdded;
 }
 
 @end

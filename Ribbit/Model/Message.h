@@ -16,7 +16,7 @@
 @property (strong, nonatomic) File *file;
 @property (strong, nonatomic) NSArray *recipients;
 
-@property (copy, nonatomic) NSString *fileType;
+@property (weak, nonatomic) NSString *fileType; // Solbed Bug Issue #5
 @property (copy, nonatomic) NSString *senderId;
 @property (copy, nonatomic) NSString *senderName;
 

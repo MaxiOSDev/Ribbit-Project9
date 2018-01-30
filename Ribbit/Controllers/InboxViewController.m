@@ -22,8 +22,8 @@
 {
     [super viewDidLoad];
 
-    self.moviePlayer = [[MPMoviePlayerController alloc] init];
-    
+   // self.moviePlayer = [[MPMoviePlayerController alloc] init];
+    self.moviePlayer = [[AVPlayerViewController alloc] init];
     User *currentUser = [User currentUser];
     if (currentUser) {
         NSLog(@"Current user: %@", currentUser.username);
@@ -83,17 +83,46 @@
     else {
         // File type is video
         File *videoFile = self.selectedMessage.file;
-        self.moviePlayer.contentURL = videoFile.fileURL;
-        [self.moviePlayer prepareToPlay];
-        [self.moviePlayer thumbnailImageAtTime:0 timeOption:MPMovieTimeOptionNearestKeyFrame];
-        
+        self.moviePlayer.player = [AVPlayer playerWithURL:videoFile.fileURL];
+     //   self.moviePlayer.contentURL = videoFile.fileURL;
+      //  [self.moviePlayer prepareToPlay];
+        [self.moviePlayer.player play];
+      //  [self.moviePlayer thumbnailImageAtTime:0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+        AVURLAsset *asset1 = [[AVURLAsset alloc] initWithURL:videoFile.fileURL options:nil];
+        AVAssetImageGenerator *generate1 = [[AVAssetImageGenerator alloc] initWithAsset:asset1];
+        generate1.appliesPreferredTrackTransform = YES;
+        NSError *err = NULL;
+        CMTime time = CMTimeMake(1, 2);
+        CGImageRef oneRef = [generate1 copyCGImageAtTime:time actualTime:NULL error:&err];
+        UIImage *one = [[UIImage alloc] initWithCGImage:oneRef];
+        _thumbnail = one;
         // Add it to the view controller so we can see it
         [self.view addSubview:self.moviePlayer.view];
-        [self.moviePlayer setFullscreen:YES animated:YES];
+        
+    //    [self.moviePlayer setFullscreen:YES animated:YES];
+        [self goFullScreen];
     }
     
     // Delete it!
     [[App currentApp] deleteMessage:self.selectedMessage];
+}
+
+- (void)goFullScreen {
+    NSString *selectorForFullscreen = @"_transitionToFullScreenViewControllerAnimated:completionHandler:";
+    if (@available(iOS 11.0, *)) {
+        selectorForFullscreen = @"_transitionToFullScreenAnimated:completionHandler:";
+    }
+    SEL fsSelector = NSSelectorFromString(selectorForFullscreen);
+    if ([self respondsToSelector:fsSelector]) {
+        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:fsSelector]];
+        [inv setSelector:fsSelector];
+        [inv setTarget:self];
+        BOOL animated = YES;
+        id completionBlock = nil;
+        [inv setArgument:&(animated) atIndex:2]; //arguments 0 and 1 are self and _cmd respectively, automatically set by NSInvocation
+        [inv setArgument:&(completionBlock) atIndex:3];
+        [inv invoke];
+    }
 }
 
 - (IBAction)logout:(id)sender {
