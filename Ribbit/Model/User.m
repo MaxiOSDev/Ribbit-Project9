@@ -7,6 +7,7 @@
 //
 
 #import "User.h"
+#import <Firebase.h>
 
 static NSInteger identifier = 1;
 
@@ -18,7 +19,7 @@ static NSInteger identifier = 1;
 @synthesize delegate;
 + (instancetype) currentUser {
   static User *sharedUser = nil;
-  
+
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     sharedUser = [[self alloc] init];

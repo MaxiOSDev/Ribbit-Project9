@@ -20,4 +20,5 @@
 @property (nonatomic, strong) AVPlayerViewController *moviePlayer;
 - (IBAction)logout:(id)sender;
 - (void)goFullScreen;
+
 @end

@@ -25,8 +25,10 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    self.friends = [[User currentUser] friends];
+  //  self.friends = [[User currentUser] friends];
    // self.friends = [[App currentApp] allUsers];
+    self.friends = [[RibbitUser currentRibitUser] friends];
+    
     [self.tableView reloadData];
 }
 
@@ -53,14 +55,16 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    User *user = [self.friends objectAtIndex:indexPath.row];
-    cell.textLabel.text = user.username;
+  //  User *user = [self.friends objectAtIndex:indexPath.row];
+    RibbitUser *user = [self.friends objectAtIndex:indexPath.row];
+    
+    cell.textLabel.text = user.name;
     
     return cell;
 }
 
 
-- (void) didMarkAsFriendDelegate:(User *)user {
+- (void) didMarkAsFriendDelegate:(RibbitUser *)user {
     NSMutableArray *mutableArray2 = [[NSMutableArray alloc] init];
     
     NSLog(@"Friend here: %@", user);
@@ -74,7 +78,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"showEditFriends"]) {
         EditFriendsViewController *editFriendsVC = [segue destinationViewController];
-        editFriendsVC.currentUser = [self currentUser];
+        editFriendsVC.currentRibbitUser = [self currentUser];
         editFriendsVC.friends = [self friends];
         editFriendsVC.mutableFriendsArray = [self friendsMutable];
         editFriendsVC.delegate = self;

@@ -100,7 +100,6 @@
                                 </state>
                                 <connections>
                                     <action selector="login:" destination="BA1-Cp-RJu" eventType="touchUpInside" id="LcU-TO-5pp"/>
-                                    <segue destination="hdx-au-269" kind="modal" id="Rzs-4p-fue"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -127,6 +126,7 @@
                     <connections>
                         <outlet property="passwordField" destination="LtO-lO-faO" id="rSb-1I-Y0G"/>
                         <outlet property="usernameField" destination="NRF-Ak-4Dc" id="y7s-w5-eCh"/>
+                        <segue destination="hdx-au-269" kind="modal" identifier="showInbox" id="P66-W8-ylo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oiH-2J-Xls" userLabel="First Responder" sceneMemberID="firstResponder"/>

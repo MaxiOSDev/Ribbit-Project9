@@ -41,6 +41,7 @@
 		B3EB1F121D6F035800B5FDAD /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = B3EB1F111D6F035800B5FDAD /* Message.m */; };
 		FB417E89201B9311006A5472 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB417E88201B9311006A5472 /* Launch Screen.storyboard */; };
 		FB417E8D201B9D8E006A5472 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB417E8C201B9D8E006A5472 /* Assets.xcassets */; };
+		FB5F4A752023552E00AB5B79 /* RibbitUser.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5F4A742023552E00AB5B79 /* RibbitUser.m */; };
 		FBC7D96C201FD1EE0016C61B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC7D96B201FD1EE0016C61B /* AVFoundation.framework */; };
 		FBC7D96E201FD1F70016C61B /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC7D96D201FD1F70016C61B /* AVKit.framework */; };
 		FBC7D970201FD2320016C61B /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC7D96F201FD2320016C61B /* CoreMedia.framework */; };
@@ -100,6 +101,8 @@
 		B3EB1F131D6F06A400B5FDAD /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		FB417E88201B9311006A5472 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		FB417E8C201B9D8E006A5472 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FB5F4A732023552E00AB5B79 /* RibbitUser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RibbitUser.h; sourceTree = "<group>"; };
+		FB5F4A742023552E00AB5B79 /* RibbitUser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RibbitUser.m; sourceTree = "<group>"; };
 		FBC7D969201F69FF0016C61B /* FriendDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FriendDelegate.h; sourceTree = "<group>"; };
 		FBC7D96B201FD1EE0016C61B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		FBC7D96D201FD1F70016C61B /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
@@ -228,6 +231,8 @@
 				B35A3F471D7EE8050082EF0C /* App.m */,
 				FBC7D969201F69FF0016C61B /* FriendDelegate.h */,
 				FBC7D9732020F0F80016C61B /* UserDelegate.h */,
+				FB5F4A732023552E00AB5B79 /* RibbitUser.h */,
+				FB5F4A742023552E00AB5B79 /* RibbitUser.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -404,6 +409,7 @@
 				B3EB1F121D6F035800B5FDAD /* Message.m in Sources */,
 				8DCDADB817A6B3CC008AAA28 /* main.m in Sources */,
 				8DCDADBC17A6B3CC008AAA28 /* AppDelegate.m in Sources */,
+				FB5F4A752023552E00AB5B79 /* RibbitUser.m in Sources */,
 				8DCDADF017A82EC7008AAA28 /* SignupViewController.m in Sources */,
 				8DCDADF317A82EEB008AAA28 /* LoginViewController.m in Sources */,
 				8DCDADF617A83853008AAA28 /* InboxViewController.m in Sources */,
@@ -522,6 +528,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 17F2C1D2C3C9CF5B403C46F8 /* Pods-Ribbit.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = KEAH2TY547;
@@ -543,6 +550,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 94A3D1C36081974EB0234539 /* Pods-Ribbit.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = KEAH2TY547;

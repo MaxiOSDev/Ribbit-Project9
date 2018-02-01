@@ -8,10 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-@class User;
+@class RibbitUser;
 @protocol FriendDelegate <NSObject>
 @optional
--(void)didMarkAsFriendDelegate:(User *)user;
+-(void)didMarkAsFriendDelegate:(RibbitUser *)user;
 @end
 
 

@@ -11,6 +11,8 @@
 #import "User.h"
 #import "App.h"
 #import "File.h"
+#import "RibbitUser.h"
+@import Firebase;
 
 @interface InboxViewController ()
 
@@ -21,17 +23,22 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
    // self.moviePlayer = [[MPMoviePlayerController alloc] init];
+    
     self.moviePlayer = [[AVPlayerViewController alloc] init];
-    User *currentUser = [User currentUser];
+    RibbitUser *currentUser = [RibbitUser currentRibitUser];
+    
     if (currentUser) {
-        NSLog(@"Current user: %@", currentUser.username);
+        NSLog(@"Current user: %@", currentUser.name);
     }
     else {
       //  [self performSegueWithIdentifier:@"showLogin" sender:self];
+        NSLog(@"Testing: %@", currentUser.name);
         [self.navigationController popViewControllerAnimated:YES];
     }
+    
+    [self checkIfUserIsLoggedIn];
 }
 
 - (NSArray *)messages {
@@ -128,9 +135,40 @@
 - (IBAction)logout:(id)sender {
 //    [User logOut];
     
+    NSError *signOutError;
+    BOOL status = [[FIRAuth auth] signOut:&signOutError];
+    if (!status) {
+        NSLog(@"Error signing out: %@", signOutError);
+    } else {
+        NSLog(@"Successful Signout");
+    }
+    
   //  [self performSegueWithIdentifier:@"showLogin" sender:self];
     [self dismissViewControllerAnimated:YES completion:nil]; // This isn't sufficient because in instagram it modally presents the login screen yet again with the credentials from before... It does not dismiss the modally presented view controller, an idea that I am having is to programmatically create a segue and then present it modally. But I get that crash when I try to segue to the sign up VC.. and thats a problem. Can't have that..
-    
+}
+
+- (void)checkIfUserIsLoggedIn {
+    if ([[FIRAuth.auth currentUser] uid] == nil) {
+        [self performSelector:@selector(handleLogout) withObject:nil afterDelay:0];
+    } else {
+        NSString *uid = [[FIRAuth.auth currentUser] uid];
+        [[[[FIRDatabase.database reference] child:@"users"] child:uid] observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+            
+            NSDictionary *postDict = snapshot.value;
+            self.navigationItem.title = [postDict objectForKey:@"name"];
+            
+        } withCancelBlock:nil];
+    }
+}
+
+- (void)handleLogout {
+    NSError *signoutError;
+    BOOL status = [[FIRAuth auth] signOut:&signoutError];
+    if (!status) {
+        NSLog(@"Error signing out: %@", signoutError);
+    } else {
+        NSLog(@"Successful Signout");
+    }
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

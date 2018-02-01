@@ -7,6 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import "FriendDelegate.h"
+#import "RibbitUser.h"
 @class User;
 
 @interface EditFriendsViewController : UITableViewController
@@ -18,8 +19,9 @@
 @property (nonatomic, strong) User *currentUser;
 @property (strong,nonatomic) NSArray *friends;
 @property (strong, nonatomic) NSMutableArray *mutableFriendsArray;
+@property (nonatomic,strong) RibbitUser *currentRibbitUser;
 
-- (BOOL)isFriend:(User *)user;
+- (BOOL)isFriend:(RibbitUser *)user;
 
 @end
 

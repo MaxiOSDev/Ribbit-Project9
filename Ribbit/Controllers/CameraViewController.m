@@ -8,6 +8,7 @@
 #import "CameraViewController.h"
 #import <MobileCoreServices/UTCoreTypes.h>
 #import "User.h"
+#import "RibbitUser.h"
 #import "File.h"
 #import "Message.h"
 
@@ -154,6 +155,7 @@
         [self presentViewController:self.imagePicker animated:NO completion:nil];
     }
     else {
+        
         [self uploadMessage];
         [self.tabBarController setSelectedIndex:0];
     }

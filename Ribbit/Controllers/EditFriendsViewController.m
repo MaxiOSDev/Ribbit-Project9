@@ -8,9 +8,10 @@
 #import "EditFriendsViewController.h"
 #import "User.h"
 #import "App.h"
+@import Firebase;
 
 @interface EditFriendsViewController ()
-
+@property (strong, nonatomic) NSMutableArray *users;
 @end
 
 @implementation EditFriendsViewController
@@ -19,14 +20,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-  
-  [self.tableView reloadData];
-
-    self.currentUser = [User currentUser];
-    NSLog(@"%@", self.currentUser.friends);
- //   NSLog(@"Friends Mutable: %@", _friends);
- //   self.friends = [[User currentUser] friends];
-    self.friends = [[User userWithUsername:_currentUser.username] friends];
+    [self fetchUser];
+//    self.currentUser = [User currentUser];
+//    self.friends = [[User userWithUsername:_currentUser.username] friends];
+    self.currentRibbitUser = [RibbitUser currentRibitUser];
+    self.friends = [[RibbitUser userWithUsername:_currentRibbitUser.name] friends];
 }
 
 - (NSArray *)allUsers {
@@ -44,7 +42,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [self.allUsers count];
+    return [self.users count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -52,17 +50,16 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    User *user = [self.allUsers objectAtIndex:indexPath.row];
-    cell.textLabel.text = user.username;
- //   NSLog(@"User ID and Name in cellForRow: %@%@", user.objectId, user.username);
+//    User *user = [self.allUsers objectAtIndex:indexPath.row];
+//    cell.textLabel.text = user.username;
+    RibbitUser *user = [self.users objectAtIndex:indexPath.row];
+    cell.textLabel.text = user.name;
     
     if ([self isFriend:user]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
-        NSLog(@"Yes friend: %@", user.username);
     }
     else {
         cell.accessoryType = UITableViewCellAccessoryNone;
-        NSLog(@"No friend: %@", user.username);
     }
     
     return cell;
@@ -76,29 +73,60 @@
     
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
   
-    User *user = [self.allUsers objectAtIndex:indexPath.row];
- //   NSLog(@"User ID and name within didSelect: %@%@", user.objectId, user.username);
+    RibbitUser *user = [self.users objectAtIndex:indexPath.row];
+
     if ([self isFriend:user]) {
         cell.accessoryType = UITableViewCellAccessoryNone;
-        [self.currentUser removeFriend:user];
+        [self.currentRibbitUser removeFriend:user];
     }
     else {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
         [self.delegate didMarkAsFriendDelegate:user];
-        [self.currentUser addFriend:user];
+        [self.currentRibbitUser addFriend:user];
     }    
 }
 
 #pragma mark - Helper methods
 
-- (BOOL)isFriend:(User *)user {
+- (BOOL)isFriend:(RibbitUser *)user {
     Boolean isAdded = false;
-    for (User *tempUser in self.currentUser.friends) {
-        if (tempUser.username == user.username) {
+    for (RibbitUser *tempUser in self.currentRibbitUser.friends) {
+        if (tempUser.name == user.name) {
             isAdded = true;
         }
     }
     return isAdded;
 }
 
+
+
+- (void)fetchUser {
+    
+    self.users = [NSMutableArray array];
+
+    [[[FIRDatabase.database reference] child:@"users"] observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+        
+        NSDictionary *dict = snapshot.value;
+        RibbitUser *user = [[RibbitUser alloc] init];
+        [user setValuesForKeysWithDictionary:dict];
+        
+        [self.users addObject:user];
+        
+        NSLog(@"%@", user.name);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+        
+    } withCancelBlock:nil];
+}
+
 @end
+
+
+
+
+
+
+
+
+

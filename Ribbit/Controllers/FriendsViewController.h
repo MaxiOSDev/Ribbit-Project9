@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "FriendDelegate.h"
 
-@class User;
+@class RibbitUser;
 
 @interface FriendsViewController : UITableViewController <FriendDelegate>
 
 @property (nonatomic, strong) NSArray *friends;
 
-@property (nonatomic, strong) User *currentUser;
+@property (nonatomic, strong) RibbitUser *currentUser;
 @end
