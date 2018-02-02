@@ -18,7 +18,6 @@
 //limitations under the License.
 
 #import "SignupViewController.h"
-#import "User.h"
 #import "RibbitUser.h"
 
 @import Firebase;
@@ -44,9 +43,7 @@
     NSString *email = [self.emailField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     if ([username length] == 0 || [password length] == 0 || [email length] == 0) {
-//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Oops!"
-//                                                            message:@"Make sure you enter a username, password, and email address!"
-//                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Oops!" message:@"Make sure you enter a username, password, and email address!" preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction *action = [UIAlertAction actionWithTitle:@"Understood" style:UIAlertActionStyleDefault handler:nil];
@@ -55,23 +52,9 @@
         [self presentViewController:alert animated:YES completion:nil];
     }
     else {
-        User *newUser = [User currentUser];
-        newUser.username = username;
-        newUser.password = password;
-        newUser.email = email;
         
         [self handleRegister];
-//        [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-//            if (error) {
-//                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Sorry!"
-//                                                                    message:[error.userInfo objectForKey:@"error"]
-//                                                                   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//                [alertView show];
-//            }
-//            else {
-                [self.navigationController popToRootViewControllerAnimated:YES];
-//            }
-//        }];
+        [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
 

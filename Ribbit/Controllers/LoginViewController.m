@@ -31,8 +31,6 @@
 {
     [super viewDidLoad];
 
-    
-    
     self.navigationItem.hidesBackButton = YES;
     [self setupNavBar];
 }
@@ -50,9 +48,6 @@
         [self presentViewController:alert animated:YES completion:nil];
     }
     else {
-        
-//        NSString *fcmToken = [FIRMessaging messaging].FCMToken;
-//        NSLog(@"FCM registration token: %@", fcmToken);
         
         [self handleLogin];
         [self.navigationController popToRootViewControllerAnimated:YES];

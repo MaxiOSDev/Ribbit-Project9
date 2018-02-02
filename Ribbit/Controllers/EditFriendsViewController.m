@@ -6,8 +6,8 @@
 //
 
 #import "EditFriendsViewController.h"
-#import "User.h"
 #import "App.h"
+
 @import Firebase;
 
 @interface EditFriendsViewController ()
@@ -24,10 +24,6 @@
 
     self.currentRibbitUser = [RibbitUser currentRibitUser];
     self.friends = [[RibbitUser userWithUsername:_currentRibbitUser.name] friends];
-}
-
-- (NSArray *)allUsers {
-  return [[App currentApp] allUsers];
 }
 
 #pragma mark - Table view data source
@@ -95,22 +91,23 @@
     return isAdded;
 }
 
-
-
 - (void)fetchUser {
     
     self.users = [NSMutableArray array];
 
     [[[FIRDatabase.database reference] child:@"users"] observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
-        
         NSDictionary *dict = snapshot.value;
+        RibbitUser *user = [RibbitUser initWithDict:dict];
+        user.id = snapshot.key;
         
-        RibbitUser *user = [[RibbitUser alloc] init];
-        [user setValuesForKeysWithDictionary:dict];
+     //   [user setValuesForKeysWithDictionary:dict];
         
         [self.users addObject:user];
         
         NSLog(@"%@", user.name);
+        NSLog(@"%@", user.email);
+        NSLog(@"%@", user.id);
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });

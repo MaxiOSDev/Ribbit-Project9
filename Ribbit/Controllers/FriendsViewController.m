@@ -8,7 +8,6 @@
 #import "FriendsViewController.h"
 #import "EditFriendsViewController.h"
 #import "App.h"
-#import "User.h"
 
 @interface FriendsViewController ()
 @property (strong, nonatomic) NSMutableArray *friendsMutable;
@@ -25,15 +24,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-  //  self.friends = [[User currentUser] friends];
-   // self.friends = [[App currentApp] allUsers];
     self.friends = [[RibbitUser currentRibitUser] friends];
     
     [self.tableView reloadData];
-}
-
-- (NSArray *)allUsers {
-    return [[App currentApp] allUsers];
 }
 
 #pragma mark - Table view data source
@@ -54,15 +47,13 @@
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-  //  User *user = [self.friends objectAtIndex:indexPath.row];
+
     RibbitUser *user = [self.friends objectAtIndex:indexPath.row];
     
     cell.textLabel.text = user.name;
     
     return cell;
 }
-
 
 - (void) didMarkAsFriendDelegate:(RibbitUser *)user {
     NSMutableArray *mutableArray2 = [[NSMutableArray alloc] init];

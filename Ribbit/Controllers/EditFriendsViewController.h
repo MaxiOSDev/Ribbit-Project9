@@ -16,7 +16,6 @@
 }
 
 @property (nonatomic, retain) id<FriendDelegate> delegate;
-@property (nonatomic, strong) User *currentUser;
 @property (strong,nonatomic) NSArray *friends;
 @property (strong, nonatomic) NSMutableArray *mutableFriendsArray;
 @property (nonatomic,strong) RibbitUser *currentRibbitUser;

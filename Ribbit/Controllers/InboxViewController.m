@@ -8,7 +8,6 @@
 #import "InboxViewController.h"
 #import "ImageViewController.h"
 #import "Message.h"
-#import "User.h"
 #import "App.h"
 #import "File.h"
 #import "RibbitUser.h"
@@ -37,7 +36,7 @@
         NSLog(@"Current user: %@", currentUser.name);
     }
     else {
-        //  [self performSegueWithIdentifier:@"showLogin" sender:self];
+
         NSLog(@"Testing: %@", currentUser.name);
         [self.navigationController popViewControllerAnimated:YES];
     }
@@ -53,8 +52,8 @@
     FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"user-messages"] child:uid];
     [ref observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
         
-        NSString *messagesId = snapshot.key;
-        FIRDatabaseReference *messagesRef = [[[FIRDatabase.database reference] child:@"messages"] child:messagesId];
+        NSString *userId = snapshot.key;
+        FIRDatabaseReference *messagesRef = [[[FIRDatabase.database reference] child:@"messages"] child:userId];
         
         [messagesRef observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
             
@@ -62,7 +61,6 @@
             Message *message = [[Message alloc] init];
             [message setValuesForKeysWithDictionary:dict];
             NSString *toId = message.toId;
-            
             
             
         } withCancelBlock:nil];
@@ -85,10 +83,6 @@
     } withCancelBlock:nil];
 }
 
-//- (NSArray *)messages {
-//  return [[App currentApp] messages];
-//}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -100,7 +94,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [[self messages] count];
+    return [self.messages count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -108,7 +102,7 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    Message *message = [[self messages] objectAtIndex:indexPath.row];
+    Message *message = [self.messages objectAtIndex:indexPath.row];
     
     FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"users"] child:message.toId];
     [ref observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
@@ -117,7 +111,6 @@
         cell.textLabel.text = [dict objectForKey:@"name"];
         
     } withCancelBlock:nil];
-    
     
     NSString *fileType = message.fileType;
     if ([fileType isEqualToString:@"image"]) {
@@ -134,7 +127,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.selectedMessage = [[self messages] objectAtIndex:indexPath.row];
+    self.selectedMessage = [self.messages objectAtIndex:indexPath.row];
     NSString *fileType = self.selectedMessage.fileType;
     if ([fileType isEqualToString:@"image"]) {
         [self performSegueWithIdentifier:@"showImage" sender:self];
@@ -185,18 +178,9 @@
 }
 
 - (IBAction)logout:(id)sender {
-//    [User logOut];
     
-    NSError *signOutError;
-    BOOL status = [[FIRAuth auth] signOut:&signOutError];
-    if (!status) {
-        NSLog(@"Error signing out: %@", signOutError);
-    } else {
-        NSLog(@"Successful Signout");
-    }
-    
-  //  [self performSegueWithIdentifier:@"showLogin" sender:self];
-    [self dismissViewControllerAnimated:YES completion:nil]; // This isn't sufficient because in instagram it modally presents the login screen yet again with the credentials from before... It does not dismiss the modally presented view controller, an idea that I am having is to programmatically create a segue and then present it modally. But I get that crash when I try to segue to the sign up VC.. and thats a problem. Can't have that..
+    [self handleLogout];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)checkIfUserIsLoggedIn {

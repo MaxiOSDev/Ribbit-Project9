@@ -7,13 +7,14 @@
 
 #import "CameraViewController.h"
 #import <MobileCoreServices/UTCoreTypes.h>
-#import "User.h"
+
 #import "RibbitUser.h"
 #import "File.h"
 #import "Message.h"
 
 @interface CameraViewController ()
 @property (strong, nonatomic) RibbitUser *user;
+@property (strong, nonatomic) NSString *uid;
 @end
 
 @implementation CameraViewController
@@ -21,13 +22,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.recipients = [[NSMutableArray alloc] init];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
- //   self.friends = [[User currentUser] friends];
     self.friends = [[RibbitUser currentRibitUser] friends];
     [self.tableView reloadData];
   
@@ -74,13 +73,6 @@
     
     cell.textLabel.text = user.name;
     
-    if ([self.recipients containsObject:user.objectId]) {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    }
-    else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-    }
-    
     return cell;
 }
 
@@ -89,21 +81,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-    
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
- //   User *user = [self.friends objectAtIndex:indexPath.row];
-    RibbitUser *user = [self.friends objectAtIndex:indexPath.row];
-    
-    if (cell.accessoryType == UITableViewCellAccessoryNone) {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-        [self.recipients addObject:user.objectId];
-    }
-    else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        [self.recipients removeObject:user.objectId];
-    }
-
-    NSLog(@"%@", self.recipients);
+  //  UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    RibbitUser *friendUser = [self.friends objectAtIndex:indexPath.row];
+    self.uid = friendUser.id;
 }
 
 #pragma mark - Image Picker Controller delegate
@@ -156,8 +136,6 @@
         [self presentViewController:self.imagePicker animated:NO completion:nil];
     }
     else {
-        
-        
         [self uploadMessage];
         [self.tabBarController setSelectedIndex:0];
     }
@@ -166,7 +144,7 @@
 - (void)handleSend {
     FIRDatabaseReference *ref = [[FIRDatabase.database reference] child:@"messages"];
     FIRDatabaseReference *childRef = [ref childByAutoId];
-    NSString *toId = self.user.id;
+    NSString *toId = self.uid;
     NSString *fromId = [[FIRAuth.auth currentUser] uid];
     NSDictionary *dict = @{ @"toId" : toId, @"fromId" : fromId};
     
@@ -189,6 +167,7 @@
 #pragma mark - Helper methods
 
 - (void)uploadMessage {
+    
     NSData *fileData;
     NSString *fileName;
     NSString *fileType;
@@ -234,10 +213,7 @@
             Message *message = [[Message alloc] init];
             message.file = file;
             message.fileType = fileType;
-            message.recipients = self.recipients;
-         //   message.senderId = [[User currentUser] objectId];
-            message.senderId = [[RibbitUser currentRibitUser] objectId];
-         //   message.senderName = [[User currentUser] username];
+            message.fromId = [[RibbitUser currentRibitUser] id];
             message.senderName = [[RibbitUser currentRibitUser] name];
             
             [message saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
@@ -261,7 +237,7 @@
     FIRDatabaseReference *ref = [[FIRDatabase.database reference] child:@"messages"];
     FIRDatabaseReference *childRef = ref.childByAutoId;
     
-    NSString *toId = self.user.id;
+    NSString *toId = self.uid;
     NSString *fromId = [[FIRAuth.auth currentUser] uid];
     
     NSDictionary *values = @{ @"imageUrl": imageUrl, @"toId": toId, @"fromId": fromId }; //to id is nil. Because never selected a recipient anyway
@@ -284,7 +260,6 @@
 - (void)reset {
     self.image = nil;
     self.videoFilePath = nil;
-    [self.recipients removeAllObjects];
 }
 
 - (UIImage *)resizeImage:(UIImage *)image toWidth:(float)width andHeight:(float)height {

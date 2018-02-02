@@ -8,7 +8,7 @@
 
 #import "Message.h"
 #import "App.h"
-
+@import Firebase;
 
 @implementation Message
 
@@ -16,6 +16,10 @@
   
   [[App currentApp] addMessage:self];
   block(YES,nil);
+}
+
+- (NSString *)chatPartnerId {
+    return self.fromId == [[FIRAuth.auth currentUser] uid] ? self.toId : self.fromId;
 }
 
 @end

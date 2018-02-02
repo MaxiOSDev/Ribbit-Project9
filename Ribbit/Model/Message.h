@@ -17,7 +17,7 @@
 @property (strong, nonatomic) NSArray *recipients;
 
 @property (weak, nonatomic) NSString *fileType; // Solbed Bug Issue #5
-@property (copy, nonatomic) NSString *senderId;
+
 @property (copy, nonatomic) NSString *senderName;
 
 // New Messages Properties
@@ -27,5 +27,5 @@
 @property (strong, nonatomic) NSString *imageUrl;
 
 - (void)saveInBackgroundWithBlock:(BooleanResultBlock)block;
-
+- (NSString *)chatPartnerId;
 @end

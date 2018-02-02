@@ -10,7 +10,6 @@
 // Copyright 2011 Parse, Inc. All rights reserved.
 
 #import <Foundation/Foundation.h>
-#import "User.h"
 
 extern NSString *const kPFDeviceType;
 
@@ -141,7 +140,6 @@ typedef void (^IntegerResultBlock)(int number, NSError *error);
 typedef void (^ArrayResultBlock)(NSArray *objects, NSError *error);
 typedef void (^ObjectResultBlock)(NSObject *object, NSError *error);
 typedef void (^SetResultBlock)(NSSet *channels, NSError *error);
-typedef void (^UserResultBlock)(User *user, NSError *error);
 typedef void (^DataResultBlock)(NSData *data, NSError *error);
 typedef void (^DataStreamResultBlock)(NSInputStream *stream, NSError *error);
 typedef void (^StringResultBlock)(NSString *string, NSError *error);
