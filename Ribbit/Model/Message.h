@@ -20,6 +20,12 @@
 @property (copy, nonatomic) NSString *senderId;
 @property (copy, nonatomic) NSString *senderName;
 
+// New Messages Properties
+@property (strong, nonatomic) NSString *fromId;
+@property (strong, nonatomic) NSNumber *timeStamp;
+@property (strong, nonatomic) NSString *toId;
+@property (strong, nonatomic) NSString *imageUrl;
+
 - (void)saveInBackgroundWithBlock:(BooleanResultBlock)block;
 
 @end

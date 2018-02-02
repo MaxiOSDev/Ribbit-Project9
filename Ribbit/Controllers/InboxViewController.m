@@ -15,7 +15,7 @@
 @import Firebase;
 
 @interface InboxViewController ()
-
+@property (strong, nonatomic) NSMutableArray *messages;
 @end
 
 @implementation InboxViewController
@@ -27,23 +27,67 @@
    // self.moviePlayer = [[MPMoviePlayerController alloc] init];
     
     self.moviePlayer = [[AVPlayerViewController alloc] init];
+    [self setupNavBar];
+}
+
+-(void)setupNavBar {
     RibbitUser *currentUser = [RibbitUser currentRibitUser];
     
     if (currentUser) {
         NSLog(@"Current user: %@", currentUser.name);
     }
     else {
-      //  [self performSegueWithIdentifier:@"showLogin" sender:self];
+        //  [self performSegueWithIdentifier:@"showLogin" sender:self];
         NSLog(@"Testing: %@", currentUser.name);
         [self.navigationController popViewControllerAnimated:YES];
     }
     
     [self checkIfUserIsLoggedIn];
+    [self observeUserMessages];
 }
 
-- (NSArray *)messages {
-  return [[App currentApp] messages];
+- (void)observeUserMessages {
+    
+    NSString *uid = [[FIRAuth.auth currentUser] uid];
+    
+    FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"user-messages"] child:uid];
+    [ref observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+        
+        NSString *messagesId = snapshot.key;
+        FIRDatabaseReference *messagesRef = [[[FIRDatabase.database reference] child:@"messages"] child:messagesId];
+        
+        [messagesRef observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+            
+            NSDictionary *dict = snapshot.value;
+            Message *message = [[Message alloc] init];
+            [message setValuesForKeysWithDictionary:dict];
+            NSString *toId = message.toId;
+            
+            
+            
+        } withCancelBlock:nil];
+        
+    } withCancelBlock:nil];
 }
+
+- (void)observeMessages {
+    FIRDatabaseReference *ref = [[FIRDatabase.database reference] child:@"messages"];
+    [ref observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+        NSDictionary *dict = snapshot.value;
+        Message *message = [[Message alloc] init];
+        [message setValuesForKeysWithDictionary:dict];
+        [self.messages addObject:message];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+        
+    } withCancelBlock:nil];
+}
+
+//- (NSArray *)messages {
+//  return [[App currentApp] messages];
+//}
 
 #pragma mark - Table view data source
 
@@ -65,7 +109,15 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     Message *message = [[self messages] objectAtIndex:indexPath.row];
-    cell.textLabel.text = message.senderName;
+    
+    FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"users"] child:message.toId];
+    [ref observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+       
+        NSDictionary *dict = snapshot.value;
+        cell.textLabel.text = [dict objectForKey:@"name"];
+        
+    } withCancelBlock:nil];
+    
     
     NSString *fileType = message.fileType;
     if ([fileType isEqualToString:@"image"]) {

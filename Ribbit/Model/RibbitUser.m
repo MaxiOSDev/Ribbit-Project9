@@ -55,6 +55,15 @@ static NSInteger identifier = 1;
     return self.friendsMutable;
 }
 
++ (instancetype)initWithDict:(NSDictionary *)dict {
+    RibbitUser *user = [[self alloc] init];
+    
+    user.id = [dict objectForKey:@"id"];
+    user.name = [dict  objectForKey:@"name"];
+    user.email = [dict objectForKey:@"email"];
+    
+    return user;
+}
 
 @end
 

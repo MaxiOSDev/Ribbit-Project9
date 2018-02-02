@@ -20,11 +20,13 @@
 @property (copy, nonatomic) NSString *name;
 @property (copy, nonatomic) NSString *email;
 @property (strong, nonatomic) NSString *objectId;
+@property (strong, nonatomic) NSString *id;
 
 + (instancetype)currentRibitUser;
 + (instancetype)userWithUsername:(NSString*)username;
 
 - (void)addFriend:(RibbitUser *)friend;
 - (void)removeFriend:(RibbitUser *)friend;
++ (instancetype)initWithDict:(NSDictionary *)dict;
 - (NSArray*) friends;
 @end

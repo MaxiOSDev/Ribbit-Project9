@@ -36,5 +36,13 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Used to send pictures</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Use your photo mate</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>let us use your libraby mate</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Add picture mate</string>
 </dict>
 </plist>

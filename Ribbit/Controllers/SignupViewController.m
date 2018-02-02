@@ -19,6 +19,8 @@
 
 #import "SignupViewController.h"
 #import "User.h"
+#import "RibbitUser.h"
+
 @import Firebase;
 
 
@@ -98,10 +100,26 @@
                 NSLog(@"%@", err);
             }
             
+            [self registerUserIntoDatabaseWithUID:uid :dict];
             NSLog(@"Saved user successfully into Firebase Database");
         }];
     }];
 
+}
+
+-(void)registerUserIntoDatabaseWithUID:(NSString *)uid :(NSDictionary *)dict {
+    FIRDatabaseReference *ref = [FIRDatabase.database reference];
+    FIRDatabaseReference *usersReference = [[ref child:@"users"] child:uid];
+    [usersReference updateChildValues:dict withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
+        if (error != nil) {
+            NSLog(@"%@", error);
+        }
+        
+    //    RibbitUser *user = [RibbitUser initWithDict:dict];
+        
+        
+        
+    }];
 }
 
 - (void)setupNavBar {

@@ -21,8 +21,7 @@
 {
     [super viewDidLoad];
     [self fetchUser];
-//    self.currentUser = [User currentUser];
-//    self.friends = [[User userWithUsername:_currentUser.username] friends];
+
     self.currentRibbitUser = [RibbitUser currentRibitUser];
     self.friends = [[RibbitUser userWithUsername:_currentRibbitUser.name] friends];
 }
@@ -50,8 +49,6 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-//    User *user = [self.allUsers objectAtIndex:indexPath.row];
-//    cell.textLabel.text = user.username;
     RibbitUser *user = [self.users objectAtIndex:indexPath.row];
     cell.textLabel.text = user.name;
     
@@ -107,6 +104,7 @@
     [[[FIRDatabase.database reference] child:@"users"] observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
         
         NSDictionary *dict = snapshot.value;
+        
         RibbitUser *user = [[RibbitUser alloc] init];
         [user setValuesForKeysWithDictionary:dict];
         
