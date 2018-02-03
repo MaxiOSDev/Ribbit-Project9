@@ -28,4 +28,6 @@
 
 - (void)saveInBackgroundWithBlock:(BooleanResultBlock)block;
 - (NSString *)chatPartnerId;
++ (instancetype)initWithDict:(NSDictionary *)dict;
+- (id)initWithDictionary:(NSDictionary *)dict;
 @end

@@ -72,7 +72,7 @@
         if (error != nil) {
             NSLog(@"%@", error);
         }
-        self.ref = [[FIRDatabase database] referenceFromURL:@"https://ribbit-c31a4.firebaseio.com/"];
+        self.ref = [[FIRDatabase database] reference];
         NSDictionary *dict = @{ @"name" : username, @"email" : email};
         NSString *uid = user.uid;
         

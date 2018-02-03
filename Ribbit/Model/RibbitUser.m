@@ -65,6 +65,17 @@ static NSInteger identifier = 1;
     return user;
 }
 
+- (id)initWithDictionary:(NSDictionary *)dict {
+    
+    if ((self = [super init])) {
+        self.id = [dict objectForKey:@"id"];
+        self.name = [dict objectForKey:@"name"];
+        self.email = [dict objectForKey:@"email"];
+    }
+    
+    return self;
+}
+
 @end
 
 

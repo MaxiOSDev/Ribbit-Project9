@@ -41,6 +41,7 @@
 		FB417E89201B9311006A5472 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB417E88201B9311006A5472 /* Launch Screen.storyboard */; };
 		FB417E8D201B9D8E006A5472 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB417E8C201B9D8E006A5472 /* Assets.xcassets */; };
 		FB5F4A752023552E00AB5B79 /* RibbitUser.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5F4A742023552E00AB5B79 /* RibbitUser.m */; };
+		FB5F4A782024FD8D00AB5B79 /* UserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5F4A772024FD8D00AB5B79 /* UserCell.m */; };
 		FBC7D96C201FD1EE0016C61B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC7D96B201FD1EE0016C61B /* AVFoundation.framework */; };
 		FBC7D96E201FD1F70016C61B /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC7D96D201FD1F70016C61B /* AVKit.framework */; };
 		FBC7D970201FD2320016C61B /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC7D96F201FD2320016C61B /* CoreMedia.framework */; };
@@ -100,6 +101,8 @@
 		FB417E8C201B9D8E006A5472 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FB5F4A732023552E00AB5B79 /* RibbitUser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RibbitUser.h; sourceTree = "<group>"; };
 		FB5F4A742023552E00AB5B79 /* RibbitUser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RibbitUser.m; sourceTree = "<group>"; };
+		FB5F4A762024FD8D00AB5B79 /* UserCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserCell.h; sourceTree = "<group>"; };
+		FB5F4A772024FD8D00AB5B79 /* UserCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserCell.m; sourceTree = "<group>"; };
 		FBC7D969201F69FF0016C61B /* FriendDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FriendDelegate.h; sourceTree = "<group>"; };
 		FBC7D96B201FD1EE0016C61B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		FBC7D96D201FD1F70016C61B /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
@@ -258,6 +261,8 @@
 			children = (
 				8DCDADC817A6BA34008AAA28 /* MainStoryboard.storyboard */,
 				FB417E88201B9311006A5472 /* Launch Screen.storyboard */,
+				FB5F4A762024FD8D00AB5B79 /* UserCell.h */,
+				FB5F4A772024FD8D00AB5B79 /* UserCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -412,6 +417,7 @@
 				8D2A01AD17AB0EEE00A43140 /* FriendsViewController.m in Sources */,
 				8D5ED96317AFFE300079548F /* CameraViewController.m in Sources */,
 				B3EB1F0F1D6F034A00B5FDAD /* File.m in Sources */,
+				FB5F4A782024FD8D00AB5B79 /* UserCell.m in Sources */,
 				8D5ED98317B052200079548F /* ImageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -11,13 +11,20 @@
 #import "App.h"
 #import "File.h"
 #import "RibbitUser.h"
+#import "UserCell.h"
+
 @import Firebase;
 
 @interface InboxViewController ()
+
 @property (strong, nonatomic) NSMutableArray *messages;
+@property (strong, nonatomic) NSMutableDictionary *messagesDictionary;
+
 @end
 
 @implementation InboxViewController
+
+static NSString * const resuseIdentifier = @"UserCell";
 
 - (void)viewDidLoad
 {
@@ -28,7 +35,7 @@
     self.moviePlayer = [[AVPlayerViewController alloc] init];
     [self setupNavBar];
 }
-
+ 
 -(void)setupNavBar {
     RibbitUser *currentUser = [RibbitUser currentRibitUser];
     
@@ -36,8 +43,6 @@
         NSLog(@"Current user: %@", currentUser.name);
     }
     else {
-
-        NSLog(@"Testing: %@", currentUser.name);
         [self.navigationController popViewControllerAnimated:YES];
     }
     
@@ -47,41 +52,46 @@
 
 - (void)observeUserMessages {
     
+
+    
     NSString *uid = [[FIRAuth.auth currentUser] uid];
     
     FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"user-messages"] child:uid];
     [ref observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
         
         NSString *userId = snapshot.key;
-        FIRDatabaseReference *messagesRef = [[[FIRDatabase.database reference] child:@"messages"] child:userId];
-        
-        [messagesRef observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
-            
-            NSDictionary *dict = snapshot.value;
-            Message *message = [[Message alloc] init];
-            [message setValuesForKeysWithDictionary:dict];
-            NSString *toId = message.toId;
-            
-            
+        [[[[[FIRDatabase.database reference] child:@"user-messages"] child:uid] child:userId] observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+            NSString *messageId = snapshot.key;
+            [self fetchMessageWithMessageId:messageId];
         } withCancelBlock:nil];
-        
+   
     } withCancelBlock:nil];
 }
 
-- (void)observeMessages {
-    FIRDatabaseReference *ref = [[FIRDatabase.database reference] child:@"messages"];
-    [ref observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
-        NSDictionary *dict = snapshot.value;
-        Message *message = [[Message alloc] init];
-        [message setValuesForKeysWithDictionary:dict];
-        [self.messages addObject:message];
+- (void)fetchMessageWithMessageId:(NSString *)messageId {
+    
+    self.messages = [NSMutableArray array];
+    
+    FIRDatabaseReference *messagesReference = [[[FIRDatabase.database reference] child:@"messages"] child:messageId];
+    [messagesReference observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
         
+        NSDictionary *dict = snapshot.value;
+     //   Message *message = [Message initWithDict:dict];
+        
+        Message *message = [[Message alloc] initWithDictionary:dict];
+        
+        NSString *chatPartnerId = message.chatPartnerId;
+        
+        self.messagesDictionary[chatPartnerId] = message;
+        
+        [self.messages addObject:message];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
         
     } withCancelBlock:nil];
 }
+
 
 #pragma mark - Table view data source
 
@@ -94,34 +104,33 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
+ //   return [self.messages count];
+    NSLog(@"AMOUNT IN MESSAGES %lu", (unsigned long)self.messages.count);
     return [self.messages count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+
+    UserCell *cell = [tableView dequeueReusableCellWithIdentifier:resuseIdentifier forIndexPath:indexPath];
     
     Message *message = [self.messages objectAtIndex:indexPath.row];
+    cell.message = message;
+    [cell setMessage:message];
     
-    FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"users"] child:message.toId];
-    [ref observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
-       
-        NSDictionary *dict = snapshot.value;
-        cell.textLabel.text = [dict objectForKey:@"name"];
-        
-    } withCancelBlock:nil];
-    
-    NSString *fileType = message.fileType;
-    if ([fileType isEqualToString:@"image"]) {
-        cell.imageView.image = [UIImage imageNamed:@"icon_image"];
-    }
-    else {
-        cell.imageView.image = [UIImage imageNamed:@"icon_video"];
-    }
+    //    NSString *fileType = message.fileType;
+    //    if ([fileType isEqualToString:@"image"]) {
+    //        cell.imageView.image = [UIImage imageNamed:@"icon_image"];
+    //    }
+    //    else {
+    //        cell.imageView.image = [UIImage imageNamed:@"icon_video"];
+    //    }
     
     return cell;
 }
+
+
+
 
 #pragma mark - Table view delegate
 
@@ -129,6 +138,20 @@
 {
     self.selectedMessage = [self.messages objectAtIndex:indexPath.row];
     NSString *fileType = self.selectedMessage.fileType;
+    Message *message = [self.messages objectAtIndex:indexPath.row];
+    
+    NSString *chatPartnerId = message.chatPartnerId;
+    
+    FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"users"] child:chatPartnerId];
+    [ref observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+        NSDictionary *dict = snapshot.value;
+        RibbitUser *user = [[RibbitUser alloc] initWithDictionary:dict];
+        user.id = chatPartnerId;
+        NSLog(@"%@", message.imageUrl);
+        NSLog(@"%@%@%@", user.id, user.name, user.email);
+    } withCancelBlock:nil];
+    
+    
     if ([fileType isEqualToString:@"image"]) {
         [self performSegueWithIdentifier:@"showImage" sender:self];
     }

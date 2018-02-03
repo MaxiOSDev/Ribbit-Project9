@@ -28,5 +28,6 @@
 - (void)addFriend:(RibbitUser *)friend;
 - (void)removeFriend:(RibbitUser *)friend;
 + (instancetype)initWithDict:(NSDictionary *)dict;
+- (id)initWithDictionary:(NSDictionary *)dict;
 - (NSArray*) friends;
 @end

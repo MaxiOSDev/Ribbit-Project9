@@ -12,6 +12,7 @@
 
 @class Message;
 
+
 @interface InboxViewController : UITableViewController
 
 @property (nonatomic, strong) Message *selectedMessage;
@@ -19,6 +20,9 @@
 @property (nonatomic, strong) UIImage *thumbnail;
 @property (nonatomic, strong) AVPlayerViewController *moviePlayer;
 - (IBAction)logout:(id)sender;
+
+
+
 - (void)goFullScreen;
 - (void)observeUserMessages;
 
