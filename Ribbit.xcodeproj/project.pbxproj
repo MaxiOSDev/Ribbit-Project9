@@ -42,6 +42,7 @@
 		FB417E8D201B9D8E006A5472 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB417E8C201B9D8E006A5472 /* Assets.xcassets */; };
 		FB5F4A752023552E00AB5B79 /* RibbitUser.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5F4A742023552E00AB5B79 /* RibbitUser.m */; };
 		FB5F4A782024FD8D00AB5B79 /* UserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5F4A772024FD8D00AB5B79 /* UserCell.m */; };
+		FB5F4A7F20254B5B00AB5B79 /* UIImageView+CacheExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5F4A7E20254B5B00AB5B79 /* UIImageView+CacheExtension.m */; };
 		FBC7D96C201FD1EE0016C61B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC7D96B201FD1EE0016C61B /* AVFoundation.framework */; };
 		FBC7D96E201FD1F70016C61B /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC7D96D201FD1F70016C61B /* AVKit.framework */; };
 		FBC7D970201FD2320016C61B /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC7D96F201FD2320016C61B /* CoreMedia.framework */; };
@@ -103,6 +104,8 @@
 		FB5F4A742023552E00AB5B79 /* RibbitUser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RibbitUser.m; sourceTree = "<group>"; };
 		FB5F4A762024FD8D00AB5B79 /* UserCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserCell.h; sourceTree = "<group>"; };
 		FB5F4A772024FD8D00AB5B79 /* UserCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserCell.m; sourceTree = "<group>"; };
+		FB5F4A7D20254B5B00AB5B79 /* UIImageView+CacheExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImageView+CacheExtension.h"; sourceTree = "<group>"; };
+		FB5F4A7E20254B5B00AB5B79 /* UIImageView+CacheExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+CacheExtension.m"; sourceTree = "<group>"; };
 		FBC7D969201F69FF0016C61B /* FriendDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FriendDelegate.h; sourceTree = "<group>"; };
 		FBC7D96B201FD1EE0016C61B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		FBC7D96D201FD1F70016C61B /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
@@ -273,6 +276,8 @@
 				8DCDADBA17A6B3CC008AAA28 /* AppDelegate.h */,
 				8DCDADBB17A6B3CC008AAA28 /* AppDelegate.m */,
 				B3EB1F131D6F06A400B5FDAD /* Constants.h */,
+				FB5F4A7D20254B5B00AB5B79 /* UIImageView+CacheExtension.h */,
+				FB5F4A7E20254B5B00AB5B79 /* UIImageView+CacheExtension.m */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -405,6 +410,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB5F4A7F20254B5B00AB5B79 /* UIImageView+CacheExtension.m in Sources */,
 				B3EB1F121D6F035800B5FDAD /* Message.m in Sources */,
 				8DCDADB817A6B3CC008AAA28 /* main.m in Sources */,
 				8DCDADBC17A6B3CC008AAA28 /* AppDelegate.m in Sources */,

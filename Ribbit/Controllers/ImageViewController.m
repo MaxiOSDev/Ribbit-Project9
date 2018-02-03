@@ -8,6 +8,7 @@
 #import "ImageViewController.h"
 #import "Message.h"
 #import "File.h"
+#import "UIImageView+CacheExtension.h"
 
 @interface ImageViewController ()
 
@@ -24,7 +25,7 @@
 //    self.imageView.image = [UIImage imageWithData:imageData];
 //
     
-    
+    [self.imageView loadImageUsingCacheWithUrlString:self.message.imageUrl];
     
     NSString *senderName = self.message.senderName;
     NSString *title = [NSString stringWithFormat:@"Sent from %@", senderName];

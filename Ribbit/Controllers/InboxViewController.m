@@ -149,6 +149,7 @@ static NSString * const resuseIdentifier = @"UserCell";
         user.id = chatPartnerId;
         NSLog(@"%@", message.imageUrl);
         NSLog(@"%@%@%@", user.id, user.name, user.email);
+        [self performSegueWithIdentifier:@"showImage" sender:self];
     } withCancelBlock:nil];
     
     
