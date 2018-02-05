@@ -142,13 +142,30 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="8aF-wi-Lc0">
+                            <tableViewCell contentMode="scaleToFill" restorationIdentifier="FriendCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FriendCell" id="8aF-wi-Lc0" customClass="FriendCell">
                                 <rect key="frame" x="0.0" y="22" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8aF-wi-Lc0" id="Wns-ts-KsR">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dlS-Pw-07G">
+                                            <rect key="frame" x="16" y="11" width="343" height="22"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="dlS-Pw-07G" firstAttribute="bottom" secondItem="Wns-ts-KsR" secondAttribute="bottomMargin" id="aBQ-IS-60F"/>
+                                        <constraint firstItem="dlS-Pw-07G" firstAttribute="top" secondItem="Wns-ts-KsR" secondAttribute="topMargin" id="lVO-At-7Oa"/>
+                                        <constraint firstItem="dlS-Pw-07G" firstAttribute="leading" secondItem="Wns-ts-KsR" secondAttribute="leadingMargin" id="ouj-8r-euI"/>
+                                        <constraint firstItem="dlS-Pw-07G" firstAttribute="trailing" secondItem="Wns-ts-KsR" secondAttribute="trailingMargin" id="xgP-Vc-8Yh"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="nameLabel" destination="dlS-Pw-07G" id="i9f-rD-Rqw"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -166,7 +183,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="myl-p2-jzN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1315" y="227"/>
+            <point key="canvasLocation" x="1314.5" y="226.5"/>
         </scene>
         <!--Edit Friends-->
         <scene sceneID="BzM-b3-WGu">

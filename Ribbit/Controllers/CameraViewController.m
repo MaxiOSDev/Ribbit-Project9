@@ -156,11 +156,11 @@
     
     FIRDatabaseReference *userMessagesRef = [[[FIRDatabase.database reference] child:@"user-messages"] child:fromId];
     NSString *messageId = childRef.key;
+    
     [userMessagesRef updateChildValues: @{ messageId : @1 } ];
     
     FIRDatabaseReference *recipientUserMessageRef = [[[FIRDatabase.database reference] child:@"user-messages"] child:toId];
     [recipientUserMessageRef updateChildValues:@{ messageId: @1 }];
-    
     
 }
 

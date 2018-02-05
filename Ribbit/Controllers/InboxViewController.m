@@ -52,8 +52,6 @@ static NSString * const resuseIdentifier = @"UserCell";
 
 - (void)observeUserMessages {
     
-
-    
     NSString *uid = [[FIRAuth.auth currentUser] uid];
     
     FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"user-messages"] child:uid];
@@ -76,7 +74,6 @@ static NSString * const resuseIdentifier = @"UserCell";
     [messagesReference observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
         
         NSDictionary *dict = snapshot.value;
-     //   Message *message = [Message initWithDict:dict];
         
         Message *message = [[Message alloc] initWithDictionary:dict];
         
@@ -91,7 +88,6 @@ static NSString * const resuseIdentifier = @"UserCell";
         
     } withCancelBlock:nil];
 }
-
 
 #pragma mark - Table view data source
 

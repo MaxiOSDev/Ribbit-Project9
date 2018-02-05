@@ -12,6 +12,7 @@
 
 @interface EditFriendsViewController ()
 @property (strong, nonatomic) NSMutableArray *users;
+@property (strong, nonatomic) NSString *uid;
 @end
 
 @implementation EditFriendsViewController
@@ -67,7 +68,28 @@
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
   
     RibbitUser *user = [self.users objectAtIndex:indexPath.row];
-
+    
+    FIRDatabaseReference *ref = [[FIRDatabase.database reference] child:@"friends"];
+    FIRDatabaseReference *childRef = [ref childByAutoId];
+    
+    NSString *friendId = user.id;
+    NSString *userId = [[FIRAuth.auth currentUser] uid];
+    NSDictionary *dict = @{ @"userId" : userId, @"friendId": friendId};
+    
+    [childRef updateChildValues:dict withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
+        if (error != nil) {
+            NSLog(@"%@", error);
+        }
+    }];
+    
+    FIRDatabaseReference *userFriendRef = [[[FIRDatabase.database reference] child:@"user-friends"] child:userId];
+    NSString *friendDatabaseId = childRef.key;
+    
+    [userFriendRef updateChildValues:@{ friendDatabaseId: @1}];
+    
+    FIRDatabaseReference *friendUserRef = [[[FIRDatabase.database reference] child:@"user-friends"] child:friendId];
+    [friendUserRef updateChildValues:@{ friendDatabaseId: @1}];
+    
     if ([self isFriend:user]) {
         cell.accessoryType = UITableViewCellAccessoryNone;
         [self.currentRibbitUser removeFriend:user];
@@ -97,17 +119,13 @@
 
     [[[FIRDatabase.database reference] child:@"users"] observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
         NSDictionary *dict = snapshot.value;
-        RibbitUser *user = [RibbitUser initWithDict:dict];
+        RibbitUser *user = [[RibbitUser alloc] initWithDictionary:dict];
         user.id = snapshot.key;
         
      //   [user setValuesForKeysWithDictionary:dict];
         
         [self.users addObject:user];
-        
-        NSLog(@"%@", user.name);
-        NSLog(@"%@", user.email);
-        NSLog(@"%@", user.id);
-        
+
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });

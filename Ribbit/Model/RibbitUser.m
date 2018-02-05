@@ -55,16 +55,6 @@ static NSInteger identifier = 1;
     return self.friendsMutable;
 }
 
-+ (instancetype)initWithDict:(NSDictionary *)dict {
-    RibbitUser *user = [[self alloc] init];
-    
-    user.id = [dict objectForKey:@"id"];
-    user.name = [dict  objectForKey:@"name"];
-    user.email = [dict objectForKey:@"email"];
-    
-    return user;
-}
-
 - (id)initWithDictionary:(NSDictionary *)dict {
     
     if ((self = [super init])) {
@@ -76,6 +66,35 @@ static NSInteger identifier = 1;
     return self;
 }
 
+- (id)initWithFriendDictionary:(NSDictionary *)dict {
+    
+    if ((self = [super init])) {
+        self.friendId = [dict objectForKey:@"friendId"];
+        self.userId = [dict objectForKey:@"userId"];
+    }
+    
+    return self;
+}
+
+- (NSString *)ribbitFriendId {
+    NSString *ribbitFriend;
+    
+    if ((self.userId) == [FIRAuth auth].currentUser.uid) {
+        ribbitFriend = self.userId;
+    } else {
+        ribbitFriend = self.friendId;
+    }
+    
+    return ribbitFriend;
+}
+
 @end
+
+
+
+
+
+
+
 
 

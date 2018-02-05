@@ -19,17 +19,15 @@
 }
 
 - (NSString *)chatPartnerId {
-    return self.fromId == [[FIRAuth.auth currentUser] uid] ? self.toId : self.fromId;
-}
-
-+ (instancetype)initWithDict:(NSDictionary *)dict {
-    Message *message = [[self alloc] init];
+    NSString *chatPartner;
     
-    message.fromId = [dict objectForKey:@"id"];
-    message.toId = [dict objectForKey:@"toId"];
-    message.imageUrl = [dict objectForKey:@"imageUrl"];
+    if (self.fromId == [FIRAuth auth].currentUser.uid) {
+        chatPartner = self.toId;
+    } else {
+        chatPartner = self.fromId;
+    }
     
-    return message;
+    return chatPartner;
 }
 
 - (id)initWithDictionary:(NSDictionary *)dict {

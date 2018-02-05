@@ -17,11 +17,13 @@
     _message = message;
     
     NSString *id = self.message.chatPartnerId;
-    FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"users"] child:id];
-    [ref observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
-        NSDictionary *dict = snapshot.value;
-        self.nameLabel.text= dict[@"name"];
-    } withCancelBlock:nil];
+    NSLog(@"Chat Partner ID here: %@", id);
+    
+        FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"users"] child:id];
+        [ref observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+                NSDictionary *dict = snapshot.value;
+                self.nameLabel.text= dict[@"name"];
+        } withCancelBlock:nil];
 }
 
 @end
