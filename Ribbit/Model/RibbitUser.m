@@ -69,23 +69,10 @@ static NSInteger identifier = 1;
 - (id)initWithFriendDictionary:(NSDictionary *)dict {
     
     if ((self = [super init])) {
-        self.friendId = [dict objectForKey:@"friendId"];
-        self.userId = [dict objectForKey:@"userId"];
+        self.friendName = [dict objectForKey:@"friendName"];
     }
     
     return self;
-}
-
-- (NSString *)ribbitFriendId {
-    NSString *ribbitFriend;
-    
-    if ((self.userId) == [FIRAuth auth].currentUser.uid) {
-        ribbitFriend = self.userId;
-    } else {
-        ribbitFriend = self.friendId;
-    }
-    
-    return ribbitFriend;
 }
 
 @end

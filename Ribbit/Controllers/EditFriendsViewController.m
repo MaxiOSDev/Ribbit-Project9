@@ -64,41 +64,14 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-    
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-  
     RibbitUser *user = [self.users objectAtIndex:indexPath.row];
-    
-    FIRDatabaseReference *ref = [[FIRDatabase.database reference] child:@"friends"];
-    FIRDatabaseReference *childRef = [ref childByAutoId];
-    
+    NSString *currentUser = [[FIRAuth.auth currentUser] uid];
     NSString *friendId = user.id;
-    NSString *userId = [[FIRAuth.auth currentUser] uid];
-    NSDictionary *dict = @{ @"userId" : userId, @"friendId": friendId};
+    NSString *friendName = user.name;
     
-    [childRef updateChildValues:dict withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
-        if (error != nil) {
-            NSLog(@"%@", error);
-        }
-    }];
+    FIRDatabaseReference *userRef = [[[[[FIRDatabase.database reference] child:@"users"] child:currentUser] child:@"friends"] child:friendId];
     
-    FIRDatabaseReference *userFriendRef = [[[FIRDatabase.database reference] child:@"user-friends"] child:userId];
-    NSString *friendDatabaseId = childRef.key;
-    
-    [userFriendRef updateChildValues:@{ friendDatabaseId: @1}];
-    
-    FIRDatabaseReference *friendUserRef = [[[FIRDatabase.database reference] child:@"user-friends"] child:friendId];
-    [friendUserRef updateChildValues:@{ friendDatabaseId: @1}];
-    
-    if ([self isFriend:user]) {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        [self.currentRibbitUser removeFriend:user];
-    }
-    else {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-        [self.delegate didMarkAsFriendDelegate:user];
-        [self.currentRibbitUser addFriend:user];
-    }    
+    [userRef updateChildValues:@{ @"friendName": friendName}];
 }
 
 #pragma mark - Helper methods

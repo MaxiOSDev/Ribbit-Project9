@@ -21,8 +21,8 @@
 @property (copy, nonatomic) NSString *email;
 @property (strong, nonatomic) NSString *objectId;
 @property (strong, nonatomic) NSString *id;
-@property (strong, nonatomic) NSString *friendId;
-@property (strong, nonatomic) NSString *userId;
+
+@property (strong, nonatomic) NSString *friendName;
 
 
 + (instancetype)currentRibitUser;

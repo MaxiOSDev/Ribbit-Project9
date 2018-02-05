@@ -23,14 +23,14 @@ static NSString * const resuseIdentifier = @"FriendCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
     NSLog(@"Amount in friendsMutable: %lu", (unsigned long)self.friendsMutable.count);
-    [self observeUserFriends];
     [self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+    [self observeUserFriends];
     self.friends = [[RibbitUser currentRibitUser] friends];
 
     [self.tableView reloadData];
@@ -54,54 +54,32 @@ static NSString * const resuseIdentifier = @"FriendCell";
 {
 
     FriendCell *cell = [tableView dequeueReusableCellWithIdentifier:resuseIdentifier forIndexPath:indexPath];
-
     RibbitUser *friend = [self.friendsMutable objectAtIndex:indexPath.row];
-    cell.friend = friend;
-    [cell setFriend:friend];
+    cell.nameLabel.text = friend.friendName;
     
     return cell;
 }
 
-- (void) didMarkAsFriendDelegate:(RibbitUser *)user {
-    NSMutableArray *mutableArray2 = [[NSMutableArray alloc] init];
-    
-    NSLog(@"Friend here: %@", user);
-    
-    [mutableArray2 addObject:user];
-    self.friendsMutable = mutableArray2;
-    
-    [self.tableView reloadData];
-}
 
 - (void)observeUserFriends {
-    NSString *uid = [[FIRAuth.auth currentUser] uid];
     
-    FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"user-friends"] child:uid];
-    [ref observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
-        NSString *userId = snapshot.key;
-        NSLog(@"UserID: %@", userId);
-        [self fetchFriendWithFriendId:userId];
-    } withCancelBlock:nil];
-}
-
-- (void)fetchFriendWithFriendId:(NSString *)friendId {
     self.friendsMutable = [NSMutableArray array];
+    NSString *currentUser = [FIRAuth.auth currentUser].uid;
+    FIRDatabaseReference *usersRef = [[[[FIRDatabase.database reference] child:@"users"] child:currentUser] child:@"friends"];
+
     
-    FIRDatabaseReference *friendsReference = [[[FIRDatabase.database reference] child:@"friends"] child:friendId];
-    [friendsReference observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+    [usersRef observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
         NSDictionary *dict = snapshot.value;
-        
-        RibbitUser *friend = [[RibbitUser alloc] initWithFriendDictionary:dict];
-        
-        NSString *ribbitFriendId = friend.ribbitFriendId;
-        
-        self.friendsDictionary[ribbitFriendId] = friend;
-        
-        [self.friendsMutable addObject:friend];
+        NSLog(@"%@", dict);
+        RibbitUser *friendUser = [[RibbitUser alloc] initWithFriendDictionary:dict];
+        friendUser.id = snapshot.key;
+        friendUser.friendName = dict[@"friendName"];
+        [self.friendsMutable addObject:friendUser];
+        NSLog(@"%@", friendUser.id);
+        NSLog(@"%@", friendUser.friendName);
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
-        
     } withCancelBlock:nil];
 }
 
