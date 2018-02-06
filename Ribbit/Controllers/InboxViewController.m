@@ -48,7 +48,9 @@ static NSString * const resuseIdentifier = @"UserCell";
     
     [self checkIfUserIsLoggedIn];
     [self observeUserMessages];
+    [self.tableView reloadData];
 }
+
 
 
 

@@ -103,7 +103,6 @@
     RibbitUser *friendUser = [self.friendsMutable objectAtIndex:indexPath.row];
     self.uid = friendUser.id;
     NSLog(@"friend ID: %@", friendUser.id);
-    
 }
 
 #pragma mark - Image Picker Controller delegate
@@ -182,20 +181,19 @@
     FIRDatabaseReference *recipientUserMessageRef = [[[FIRDatabase.database reference] child:@"user-messages"] child:toId];
     [recipientUserMessageRef updateChildValues:@{ messageId: @1 }];
     
-    
-    
 }
 
 #pragma mark - Helper methods
 
 - (void)uploadMessage {
     
-    NSData *fileData;
-    NSString *fileName;
-    NSString *fileType;
+    NSData *fileData; //= [[NSData alloc] init];
+    NSString *fileName; //= [[NSString alloc] init];
+    NSString *fileType; //= [[NSString alloc] init];
     
     if (self.image != nil) {
-        UIImage *newImage = self.image;
+        UIImage *newImage = [[UIImage alloc] init];
+        newImage = self.image;
        // fileData = UIImagePNGRepresentation(newImage);
         fileData = UIImageJPEGRepresentation(newImage, 0.1);
         fileName = [NSString stringWithFormat:@"%f.jpg",[NSDate timeIntervalSinceReferenceDate]];
@@ -278,26 +276,6 @@
 
     }];
     
-//    NSString *currentUser = [FIRAuth.auth currentUser].uid;
-//
-//    FIRDatabaseReference *ref = [[FIRDatabase.database reference] child:@"users"];
-//
-//    [ref observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
-//        NSDictionary *dict = snapshot.value;
-//        RibbitUser *user = [[RibbitUser alloc] initWithDictionary:dict];
-//        FIRDatabaseReference *friendsReference = [[[[FIRDatabase.database reference] child:@"users"] child:currentUser] child:@"friends"];
-//        [friendsReference observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
-//            FIRDatabaseReference *childRef = ref.childByAutoId;
-//            NSString *messageId = childRef.key;
-//            FIRDatabaseReference *messagesRef = [[[[[[[FIRDatabase.database reference] child:@"users"] child:currentUser] child:@"friends"] child:self.uid] child:@"messages"] child:messageId];
-//
-//
-//            [messagesRef updateChildValues:@{ @"from":currentUser, @"to": self.uid, @"imageUrl": imageUrl}];
-//
-//        } withCancelBlock:nil];
-//
-//
-//    } withCancelBlock:nil];
     
 }
 

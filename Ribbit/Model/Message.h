@@ -13,10 +13,10 @@
 
 @interface Message : NSObject
 
-@property (strong, nonatomic) File *file;
+@property (weak, nonatomic) File *file;
 @property (strong, nonatomic) NSArray *recipients;
 
-@property (weak, nonatomic) NSString *fileType; // Solbed Bug Issue #5
+@property (weak, nonatomic) NSString *fileType; // Solved Bug Issue #5
 
 @property (copy, nonatomic) NSString *senderName;
 
@@ -30,6 +30,5 @@
 - (void)saveInBackgroundWithBlock:(BooleanResultBlock)block;
 - (NSString *)chatPartnerId;
 - (id)initWithDictionary:(NSDictionary *)dict;
-
 
 @end
