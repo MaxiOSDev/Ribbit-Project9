@@ -13,7 +13,6 @@
 
 @interface FriendsViewController ()
 @property (strong, nonatomic) NSMutableArray *friendsMutable;
-@property (strong, nonatomic) NSMutableDictionary *friendsDictionary;
 @end
 
 @implementation FriendsViewController

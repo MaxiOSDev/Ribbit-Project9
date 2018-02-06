@@ -26,7 +26,10 @@
 @property (strong, nonatomic) NSString *toId;
 @property (strong, nonatomic) NSString *imageUrl;
 
+
 - (void)saveInBackgroundWithBlock:(BooleanResultBlock)block;
 - (NSString *)chatPartnerId;
 - (id)initWithDictionary:(NSDictionary *)dict;
+
+
 @end

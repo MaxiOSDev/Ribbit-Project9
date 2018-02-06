@@ -24,7 +24,7 @@
 
 
 - (void)goFullScreen;
-- (void)observeUserMessages;
+//- (void)observeUserMessages;
 
 
 @end

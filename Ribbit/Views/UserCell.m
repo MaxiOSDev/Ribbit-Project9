@@ -15,15 +15,23 @@
 
 - (void)setMessage:(Message*)message {
     _message = message;
+    NSString *fromId = [FIRAuth.auth currentUser].uid;
+    NSString *messageFromId = message.fromId;
     
-    NSString *id = self.message.chatPartnerId;
-    NSLog(@"Chat Partner ID here: %@", id);
-    
-        FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"users"] child:id];
+    if ([fromId isEqualToString:messageFromId]) {
+        FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"users"] child:message.toId];
         [ref observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
-                NSDictionary *dict = snapshot.value;
-                self.nameLabel.text= dict[@"name"];
+            NSDictionary *dict = snapshot.value;
+            self.nameLabel.text= dict[@"name"];
         } withCancelBlock:nil];
+    } else {
+        FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"users"] child:message.fromId];
+        [ref observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+            NSDictionary *dict = snapshot.value;
+            self.nameLabel.text= dict[@"name"];
+        } withCancelBlock:nil];
+    }
+
 }
 
 @end

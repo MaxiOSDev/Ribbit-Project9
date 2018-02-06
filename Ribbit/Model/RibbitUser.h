@@ -28,9 +28,8 @@
 + (instancetype)currentRibitUser;
 + (instancetype)userWithUsername:(NSString*)username;
 
-- (void)addFriend:(RibbitUser *)friend;
-- (void)removeFriend:(RibbitUser *)friend;
-- (NSString *)ribbitFriendId;
+//- (void)addFriend:(RibbitUser *)friend;
+//- (void)removeFriend:(RibbitUser *)friend;
 - (id)initWithDictionary:(NSDictionary *)dict;
 - (id)initWithFriendDictionary:(NSDictionary *)dict;
 - (NSArray*) friends;

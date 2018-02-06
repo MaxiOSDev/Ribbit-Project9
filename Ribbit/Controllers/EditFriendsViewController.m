@@ -47,14 +47,10 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     RibbitUser *user = [self.users objectAtIndex:indexPath.row];
+    
     cell.textLabel.text = user.name;
     
-    if ([self isFriend:user]) {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    }
-    else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-    }
+    
     
     return cell;
 }
@@ -86,6 +82,8 @@
     return isAdded;
 }
 
+
+
 - (void)fetchUser {
     
     self.users = [NSMutableArray array];
@@ -94,8 +92,6 @@
         NSDictionary *dict = snapshot.value;
         RibbitUser *user = [[RibbitUser alloc] initWithDictionary:dict];
         user.id = snapshot.key;
-        
-     //   [user setValuesForKeysWithDictionary:dict];
         
         [self.users addObject:user];
 

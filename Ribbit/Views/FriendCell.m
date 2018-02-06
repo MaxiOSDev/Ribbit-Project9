@@ -11,16 +11,6 @@
 
 @implementation FriendCell
 
--(void)setFriend:(RibbitUser *)friend {
-    _friend = friend;
-    
-    FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"users"] child:friend.ribbitFriendId];
-    NSLog(@"The id: %@", friend.id);
-    [ref observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
-        NSDictionary *dict = snapshot.value;
-        self.nameLabel.text = dict[@"name"];
-    } withCancelBlock:nil];
-    
-}
+
 
 @end

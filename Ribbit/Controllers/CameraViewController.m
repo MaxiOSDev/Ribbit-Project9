@@ -15,6 +15,7 @@
 @interface CameraViewController ()
 @property (strong, nonatomic) RibbitUser *user;
 @property (strong, nonatomic) NSString *uid;
+@property (strong, nonatomic) NSMutableArray *friendsMutable;
 @end
 
 @implementation CameraViewController
@@ -28,6 +29,7 @@
     [super viewWillAppear:animated];
     
     self.friends = [[RibbitUser currentRibitUser] friends];
+    [self observeUserFriends];
     [self.tableView reloadData];
   
     if (self.image == nil && [self.videoFilePath length] == 0) {
@@ -60,7 +62,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [self.friends count];
+    return [self.friendsMutable count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -68,22 +70,40 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-  //  User *user = [self.friends objectAtIndex:indexPath.row];
-    RibbitUser *user = [self.friends objectAtIndex:indexPath.row];
-    
-    cell.textLabel.text = user.name;
+    RibbitUser *user = [self.friendsMutable objectAtIndex:indexPath.row];
+    cell.textLabel.text = user.friendName;
     
     return cell;
 }
 
-#pragma mark - Table view delegate
+- (void)observeUserFriends {
+    
+    self.friendsMutable = [NSMutableArray array];
+    NSString *currentUser = [FIRAuth.auth currentUser].uid;
+    FIRDatabaseReference *usersRef = [[[[FIRDatabase.database reference] child:@"users"] child:currentUser] child:@"friends"];
+    
+    [usersRef observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+        NSDictionary *dict = snapshot.value;
+        RibbitUser *friendUser = [[RibbitUser alloc] initWithFriendDictionary:dict];
+        friendUser.id = snapshot.key;
+        friendUser.friendName = dict[@"friendName"];
+        [self.friendsMutable addObject:friendUser];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+    } withCancelBlock:nil];
+}
 
+#pragma mark - Table view delegate
+    
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
   //  UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    RibbitUser *friendUser = [self.friends objectAtIndex:indexPath.row];
+    RibbitUser *friendUser = [self.friendsMutable objectAtIndex:indexPath.row];
     self.uid = friendUser.id;
+    NSLog(@"friend ID: %@", friendUser.id);
+    
 }
 
 #pragma mark - Image Picker Controller delegate
@@ -147,20 +167,22 @@
     NSString *toId = self.uid;
     NSString *fromId = [[FIRAuth.auth currentUser] uid];
     NSDictionary *dict = @{ @"toId" : toId, @"fromId" : fromId};
-    
+
     [childRef updateChildValues:dict withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
         if (error != nil) {
             NSLog(@"Error: %@", error);
         }
     }];
-    
+
     FIRDatabaseReference *userMessagesRef = [[[FIRDatabase.database reference] child:@"user-messages"] child:fromId];
     NSString *messageId = childRef.key;
-    
+
     [userMessagesRef updateChildValues: @{ messageId : @1 } ];
-    
+
     FIRDatabaseReference *recipientUserMessageRef = [[[FIRDatabase.database reference] child:@"user-messages"] child:toId];
     [recipientUserMessageRef updateChildValues:@{ messageId: @1 }];
+    
+    
     
 }
 
@@ -199,62 +221,84 @@
         
         NSLog(@"Metadata Here: %@", metadata);
     }];
-    
-    File *file = [File fileWithName:fileName data:fileData];
-    [file saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        if (error) {
-
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"An error occured!" message:@"Please try sending your message again" preferredStyle:UIAlertControllerStyleAlert];
-            
-            [self presentViewController:alert animated:YES completion:nil];
-        }
-        
-        else {
-            Message *message = [[Message alloc] init];
-            message.file = file;
-            message.fileType = fileType;
-            message.fromId = [[RibbitUser currentRibitUser] id];
-            message.senderName = [[RibbitUser currentRibitUser] name];
-            
-            [message saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                if (error) {
-
-                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"An error occured!" message:@"Please try sending your message again" preferredStyle:UIAlertControllerStyleAlert];
-                    
-                    [self presentViewController:alert animated:YES completion:nil];
-                }
-                else {
-                    // Everything was successful!
-                    [self reset];
-                }
-                
-            }];
-        }
-    }];
+//
+//    File *file = [File fileWithName:fileName data:fileData];
+//    [file saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+//        if (error) {
+//
+//            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"An error occured!" message:@"Please try sending your message again" preferredStyle:UIAlertControllerStyleAlert];
+//
+//            [self presentViewController:alert animated:YES completion:nil];
+//        }
+//
+//        else {
+//            Message *message = [[Message alloc] init];
+//            message.file = file;
+//            message.fileType = fileType;
+//            message.fromId = [[RibbitUser currentRibitUser] id];
+//            message.senderName = [[RibbitUser currentRibitUser] name];
+//
+//            [message saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+//                if (error) {
+//
+//                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"An error occured!" message:@"Please try sending your message again" preferredStyle:UIAlertControllerStyleAlert];
+//
+//                    [self presentViewController:alert animated:YES completion:nil];
+//                }
+//                else {
+//                    // Everything was successful!
+//                    [self reset];
+//                }
+//
+//            }];
+//        }
+//    }];
 }
 
 - (void)sendMessagwWithImageUrl:(NSString *)imageUrl {
     FIRDatabaseReference *ref = [[FIRDatabase.database reference] child:@"messages"];
     FIRDatabaseReference *childRef = ref.childByAutoId;
-    
+
     NSString *toId = self.uid;
     NSString *fromId = [[FIRAuth.auth currentUser] uid];
-    
+
     NSDictionary *values = @{ @"imageUrl": imageUrl, @"toId": toId, @"fromId": fromId }; //to id is nil. Because never selected a recipient anyway
-    
+
     [childRef updateChildValues:values withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
         if (error != nil) {
             NSLog(@"%@", error);
         }
-        
+
         FIRDatabaseReference *userMessageRef = [[[[FIRDatabase.database reference] child:@"user-messages"] child:fromId] child:toId];
-        
+
         NSString *messageId = childRef.key;
         [userMessageRef updateChildValues:@{ messageId: @1 }];
         FIRDatabaseReference *recipientUserMessagesRef = [[[[FIRDatabase.database reference] child:@"user-messages"] child:toId] child:fromId];
         [recipientUserMessagesRef updateChildValues:@{ messageId: @1 }];
-        
+
     }];
+    
+//    NSString *currentUser = [FIRAuth.auth currentUser].uid;
+//
+//    FIRDatabaseReference *ref = [[FIRDatabase.database reference] child:@"users"];
+//
+//    [ref observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+//        NSDictionary *dict = snapshot.value;
+//        RibbitUser *user = [[RibbitUser alloc] initWithDictionary:dict];
+//        FIRDatabaseReference *friendsReference = [[[[FIRDatabase.database reference] child:@"users"] child:currentUser] child:@"friends"];
+//        [friendsReference observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+//            FIRDatabaseReference *childRef = ref.childByAutoId;
+//            NSString *messageId = childRef.key;
+//            FIRDatabaseReference *messagesRef = [[[[[[[FIRDatabase.database reference] child:@"users"] child:currentUser] child:@"friends"] child:self.uid] child:@"messages"] child:messageId];
+//
+//
+//            [messagesRef updateChildValues:@{ @"from":currentUser, @"to": self.uid, @"imageUrl": imageUrl}];
+//
+//        } withCancelBlock:nil];
+//
+//
+//    } withCancelBlock:nil];
+    
 }
 
 - (void)reset {

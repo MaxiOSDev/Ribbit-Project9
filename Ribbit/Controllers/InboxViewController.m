@@ -50,19 +50,23 @@ static NSString * const resuseIdentifier = @"UserCell";
     [self observeUserMessages];
 }
 
+
+
 - (void)observeUserMessages {
-    
+
     NSString *uid = [[FIRAuth.auth currentUser] uid];
-    
+    NSLog(@"CurrentUser: %@", uid);
     FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"user-messages"] child:uid];
     [ref observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
-        
+
         NSString *userId = snapshot.key;
+        
+        NSLog(@"User ID: %@", userId);
         [[[[[FIRDatabase.database reference] child:@"user-messages"] child:uid] child:userId] observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
             NSString *messageId = snapshot.key;
             [self fetchMessageWithMessageId:messageId];
         } withCancelBlock:nil];
-   
+
     } withCancelBlock:nil];
 }
 
@@ -77,9 +81,9 @@ static NSString * const resuseIdentifier = @"UserCell";
         
         Message *message = [[Message alloc] initWithDictionary:dict];
         
-        NSString *chatPartnerId = message.chatPartnerId;
-        
-        self.messagesDictionary[chatPartnerId] = message;
+    //    NSString *chatPartnerId = message.toId;
+     //   NSLog(@"chatPartnerId: %@", chatPartnerId);
+    //    self.messagesDictionary[chatPartnerId] = message;
         
         [self.messages addObject:message];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -114,13 +118,13 @@ static NSString * const resuseIdentifier = @"UserCell";
     cell.message = message;
     [cell setMessage:message];
     
-    //    NSString *fileType = message.fileType;
-    //    if ([fileType isEqualToString:@"image"]) {
-    //        cell.imageView.image = [UIImage imageNamed:@"icon_image"];
-    //    }
-    //    else {
-    //        cell.imageView.image = [UIImage imageNamed:@"icon_video"];
-    //    }
+        NSString *fileType = message.fileType;
+        if ([fileType isEqualToString:@"image"]) {
+            cell.imageView.image = [UIImage imageNamed:@"icon_image"];
+        }
+        else {
+            cell.imageView.image = [UIImage imageNamed:@"icon_video"];
+        }
     
     return cell;
 }

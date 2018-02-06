@@ -41,15 +41,15 @@ static NSInteger identifier = 1;
     return user;
 }
 
-- (void)addFriend:(RibbitUser *)friend {
-    [self.friendsMutable addObject:friend];
-}
-
-- (void)removeFriend:(RibbitUser *)friend {
-    if ([self.friends containsObject:friend]) {
-        [self.friendsMutable removeObject:friend];
-    }
-}
+//- (void)addFriend:(RibbitUser *)friend {
+//    [self.friendsMutable addObject:friend];
+//}
+//
+//- (void)removeFriend:(RibbitUser *)friend {
+//    if ([self.friends containsObject:friend]) {
+//        [self.friendsMutable removeObject:friend];
+//    }
+//}
 
 - (NSArray*) friends {
     return self.friendsMutable;
@@ -74,6 +74,7 @@ static NSInteger identifier = 1;
     
     return self;
 }
+
 
 @end
 
