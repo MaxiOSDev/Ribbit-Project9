@@ -93,7 +93,12 @@
         RibbitUser *user = [[RibbitUser alloc] initWithDictionary:dict];
         user.id = snapshot.key;
         
-        [self.users addObject:user];
+        if (user.id != [FIRAuth.auth currentUser].uid) {
+            [self.users addObject:user];
+        } else {
+            NSLog(@"Got you: %@", user.id);
+        }
+
 
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
