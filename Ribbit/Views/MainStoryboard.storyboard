@@ -33,7 +33,7 @@
         <!--Login View Controller-->
         <scene sceneID="jhv-qo-Efw">
             <objects>
-                <viewController id="BA1-Cp-RJu" customClass="LoginViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BA1-Cp-RJu" customClass="LoginViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="wx7-SM-t0c"/>
                         <viewControllerLayoutGuide type="bottom" id="ISb-Ql-L1E"/>
@@ -344,12 +344,12 @@
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="logout:" destination="4uG-zQ-ztV" id="L7V-9m-1y3"/>
-                                <segue destination="BA1-Cp-RJu" kind="modal" identifier="showLogin" id="iCq-f9-3BM"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <segue destination="Pqw-Hd-fOp" kind="push" identifier="showImage" id="gnX-al-zpx"/>
+                        <segue destination="BA1-Cp-RJu" kind="modal" identifier="showLogin" id="jjP-mF-jNj"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Haq-D9-wB8" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -543,7 +543,7 @@
         <!--Navigation Controller-->
         <scene sceneID="KBB-ZE-azD">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="w55-7k-kXc" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="LoginNav" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="w55-7k-kXc" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="HkA-fv-G4r">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -566,7 +566,7 @@
         <image name="loginBackground" width="320" height="548"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="iCq-f9-3BM"/>
+        <segue reference="jjP-mF-jNj"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
 </document>

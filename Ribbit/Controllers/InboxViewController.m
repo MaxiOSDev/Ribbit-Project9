@@ -26,14 +26,15 @@
 
 static NSString * const resuseIdentifier = @"UserCell";
 
+- (void)viewWillAppear:(BOOL)animated {
+[self checkIfUserIsLoggedIn];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
    // self.moviePlayer = [[MPMoviePlayerController alloc] init];
-    
     self.moviePlayer = [[AVPlayerViewController alloc] init];
-    [self checkIfUserIsLoggedIn];
 }
 
 
@@ -201,14 +202,12 @@ static NSString * const resuseIdentifier = @"UserCell";
 - (IBAction)logout:(id)sender {
     
     [self handleLogout];
+
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)checkIfUserIsLoggedIn {
-    if ([[FIRAuth.auth currentUser] uid] == nil) {
-        NSLog(@"Not Logged In");
-        [self performSelector:@selector(handleLogout) withObject:nil afterDelay:0];
-    } else {
+    if ([[FIRAuth.auth currentUser] uid] != nil) {
         NSString *uid = [[FIRAuth.auth currentUser] uid];
         [[[[FIRDatabase.database reference] child:@"users"] child:uid] observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
             
@@ -218,20 +217,22 @@ static NSString * const resuseIdentifier = @"UserCell";
             self.navigationItem.title = [postDict objectForKey:@"name"];
             NSLog(@"logged in");
         } withCancelBlock:nil];
+    } else {
+        NSLog(@"Not Logged In");
+        [self performSelector:@selector(handleLogout) withObject:nil afterDelay:0];
     }
 }
 
 - (void)handleLogout {
-    NSError *signoutError;
-    BOOL status = [[FIRAuth auth] signOut:&signoutError];
-    if (!status) {
-        NSLog(@"Error signing out: %@", signoutError);
+
+    NSError *error;
+    if ([FIRAuth.auth currentUser] != nil) {
+        [FIRAuth.auth signOut:&error];
     } else {
         [self performSegueWithIdentifier:@"showLogin" sender:self];
-        NSLog(@"Successful Signout");
-        [self.mutableMessages removeAllObjects];
     }
 }
+
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"showLogin"]) {
