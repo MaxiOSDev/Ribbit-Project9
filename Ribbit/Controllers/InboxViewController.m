@@ -17,6 +17,7 @@
 
 @interface InboxViewController ()
 
+@property (strong, nonatomic) NSMutableArray *mutableMessages;
 @property (strong, nonatomic) NSMutableDictionary *messagesDictionary;
 
 @end
@@ -54,9 +55,9 @@ static NSString * const resuseIdentifier = @"UserCell";
 
 
 - (NSArray *)messages {
-    return [[Message currentApp] messages];
+    self.mutableMessages = [[Message currentApp] messages];
+    return self.mutableMessages;
 }
-
 
 - (void)observeUserMessages {
 
@@ -82,14 +83,16 @@ static NSString * const resuseIdentifier = @"UserCell";
     [messagesReference  observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
        
         NSDictionary *dict = snapshot.value;
-         NSLog(@"MutableArray amount2: %lu", (unsigned long)self.messages.count);
+        NSLog(@"%@", dict);
         
-        Message *message = [[Message alloc] initWithDictionary:dict];
-        
+        if ([dict[@"toId"] isEqualToString:FIRAuth.auth.currentUser.uid]) {
+            Message *message = [[Message alloc] initWithDictionary:dict];
+            [[Message currentApp] addMessage:message];
+        } else {
+            NSLog(@"Not a message to me: %@", dict[@"fromId"]);
+        }
+
         NSLog(@"MutableArray amount3: %lu", (unsigned long)self.messages.count);
-        
-        [[Message currentApp] addMessage:message];
-        
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
@@ -109,7 +112,7 @@ static NSString * const resuseIdentifier = @"UserCell";
 {
     // Return the number of rows in the section.
  //   return [self.messages count];
-    NSLog(@"AMOUNT IN MESSAGES %lu", (unsigned long)self.messages.count);
+
     return [self.messages count];
 }
 
@@ -128,13 +131,13 @@ static NSString * const resuseIdentifier = @"UserCell";
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
      NSLog(@"MutableArray amount4: %lu", (unsigned long)self.messages.count);
     
-//        NSString *fileType = message.fileType;
-//        if ([fileType isEqualToString:@"image"]) {
-//            cell.imageView.image = [UIImage imageNamed:@"icon_image"];
-//        }
-//        else {
-//            cell.imageView.image = [UIImage imageNamed:@"icon_video"];
-//        }
+        NSString *fileType = message.fileType;
+        if ([fileType isEqualToString:@"image"]) {
+            cell.imageView.image = [UIImage imageNamed:@"icon_image"];
+        }
+        else {
+            cell.imageView.image = [UIImage imageNamed:@"icon_video"];
+        }
     
     return cell;
 }
@@ -238,6 +241,7 @@ static NSString * const resuseIdentifier = @"UserCell";
         NSLog(@"Error signing out: %@", signoutError);
     } else {
         NSLog(@"Successful Signout");
+        [self.mutableMessages removeAllObjects];
     }
 }
 

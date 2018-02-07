@@ -16,12 +16,6 @@
 @end
 @implementation Message
 
-- (void)saveInBackgroundWithBlock:(BooleanResultBlock)block {
-  
-  [[App currentApp] addMessage:self];
-  block(YES,nil);
-}
-
 - (NSString *)chatPartnerId {
     NSString *chatPartner;
     

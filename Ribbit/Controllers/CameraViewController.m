@@ -223,38 +223,7 @@
         
         NSLog(@"Metadata Here: %@", metadata);
     }];
-//
-//    File *file = [File fileWithName:fileName data:fileData];
-//    [file saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-//        if (error) {
-//
-//            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"An error occured!" message:@"Please try sending your message again" preferredStyle:UIAlertControllerStyleAlert];
-//
-//            [self presentViewController:alert animated:YES completion:nil];
-//        }
-//
-//        else {
-//            Message *message = [[Message alloc] init];
-//            message.file = file;
-//            message.fileType = fileType;
-//            message.fromId = [[RibbitUser currentRibitUser] id];
-//            message.senderName = [[RibbitUser currentRibitUser] name];
-//
-//            [message saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-//                if (error) {
-//
-//                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"An error occured!" message:@"Please try sending your message again" preferredStyle:UIAlertControllerStyleAlert];
-//
-//                    [self presentViewController:alert animated:YES completion:nil];
-//                }
-//                else {
-//                    // Everything was successful!
-//                    [self reset];
-//                }
-//
-//            }];
-//        }
-//    }];
+
 }
 
 - (void)sendMessagwWithImageUrl:(NSString *)imageUrl {

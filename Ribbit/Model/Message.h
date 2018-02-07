@@ -32,7 +32,7 @@
 
 + (instancetype) currentApp;
 - (NSArray*)messages;
-- (void)saveInBackgroundWithBlock:(BooleanResultBlock)block;
+
 - (NSString *)chatPartnerId;
 - (id)initWithDictionary:(NSDictionary *)dict;
 
