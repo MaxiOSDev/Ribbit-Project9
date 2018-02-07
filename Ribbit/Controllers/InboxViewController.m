@@ -90,15 +90,12 @@ static NSString * const resuseIdentifier = @"UserCell";
         NSDictionary *dict = snapshot.value;
          NSLog(@"MutableArray amount2: %lu", (unsigned long)self.messages.count);
         
-
         Message *message = [[Message alloc] initWithDictionary:dict];
         
-    //    NSString *chatPartnerId = message.toId;
-     //   NSLog(@"chatPartnerId: %@", chatPartnerId);
-    //    self.messagesDictionary[chatPartnerId] = message;
+        self.inboxMessage.messages = [NSMutableArray array];
         
         NSLog(@"MutableArray amount3: %lu", (unsigned long)self.messages.count);
-        [self.messages addObject:message];
+        [message.messages addObject:message];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
@@ -138,9 +135,14 @@ static NSString * const resuseIdentifier = @"UserCell";
         cell.message = message;
         [cell setMessage:message];
     }
+    
+    cell.layer.borderWidth = 4.0f;
+    cell.layer.borderColor = [UIColor whiteColor].CGColor;
 
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
      NSLog(@"MutableArray amount4: %lu", (unsigned long)self.messages.count);
      NSLog(@"Aquu amount4: %lu", (unsigned long)self.messagesArray.count);
+    
 //        NSString *fileType = message.fileType;
 //        if ([fileType isEqualToString:@"image"]) {
 //            cell.imageView.image = [UIImage imageNamed:@"icon_image"];
@@ -159,7 +161,7 @@ static NSString * const resuseIdentifier = @"UserCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.selectedMessage = [self.messages objectAtIndex:indexPath.row];
+   self.selectedMessage = [self.messages objectAtIndex:indexPath.row];
     NSString *fileType = self.selectedMessage.fileType;
     Message *message = [self.messages objectAtIndex:indexPath.row];
     

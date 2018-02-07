@@ -9,6 +9,7 @@
 #import "FriendCell.h"
 #import "RibbitUser.h"
 
+
 @implementation FriendCell
 
 

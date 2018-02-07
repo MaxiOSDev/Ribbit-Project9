@@ -6,6 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 #import "FriendDelegate.h"
 #import "RibbitUser.h"
 @class User;

@@ -8,6 +8,7 @@
 #import "EditFriendsViewController.h"
 #import "App.h"
 
+
 @import Firebase;
 
 @interface EditFriendsViewController ()
@@ -49,7 +50,9 @@
     RibbitUser *user = [self.users objectAtIndex:indexPath.row];
     
     cell.textLabel.text = user.name;
-    
+    cell.textLabel.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:241.0/255.0 blue:251.0/255.0 alpha:1.0];
+    cell.layer.borderWidth = 4.0f;
+    cell.layer.borderColor = [UIColor whiteColor].CGColor;
     
     
     return cell;

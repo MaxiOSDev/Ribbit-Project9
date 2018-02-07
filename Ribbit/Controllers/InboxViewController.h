@@ -16,6 +16,7 @@
 @interface InboxViewController : UITableViewController
 
 @property (nonatomic, strong) Message *selectedMessage;
+@property (nonatomic, strong) Message *inboxMessage;
 //@property (nonatomic, strong) MPMoviePlayerController *moviePlayer;
 @property (nonatomic, strong) UIImage *thumbnail;
 @property (nonatomic, strong) AVPlayerViewController *moviePlayer;

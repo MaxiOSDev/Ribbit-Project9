@@ -72,6 +72,9 @@
     
     RibbitUser *user = [self.friendsMutable objectAtIndex:indexPath.row];
     cell.textLabel.text = user.friendName;
+    cell.textLabel.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:241.0/255.0 blue:251.0/255.0 alpha:1.0];
+    cell.layer.borderWidth = 4.0f;
+    cell.layer.borderColor = [UIColor whiteColor].CGColor;
     
     return cell;
 }

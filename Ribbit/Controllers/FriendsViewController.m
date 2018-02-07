@@ -55,6 +55,8 @@ static NSString * const resuseIdentifier = @"FriendCell";
     FriendCell *cell = [tableView dequeueReusableCellWithIdentifier:resuseIdentifier forIndexPath:indexPath];
     RibbitUser *friend = [self.friendsMutable objectAtIndex:indexPath.row];
     cell.nameLabel.text = friend.friendName;
+    cell.layer.borderWidth = 4.0f;
+    cell.layer.borderColor= [UIColor whiteColor].CGColor;
     
     return cell;
 }
