@@ -38,6 +38,7 @@
 		B35A3F481D7EE8050082EF0C /* App.m in Sources */ = {isa = PBXBuildFile; fileRef = B35A3F471D7EE8050082EF0C /* App.m */; };
 		B3EB1F0F1D6F034A00B5FDAD /* File.m in Sources */ = {isa = PBXBuildFile; fileRef = B3EB1F0E1D6F034A00B5FDAD /* File.m */; };
 		B3EB1F121D6F035800B5FDAD /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = B3EB1F111D6F035800B5FDAD /* Message.m */; };
+		FB2AA216202B43B900E68C2A /* RibbitTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB2AA215202B43B900E68C2A /* RibbitTabBarController.m */; };
 		FB417E89201B9311006A5472 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB417E88201B9311006A5472 /* Launch Screen.storyboard */; };
 		FB417E8D201B9D8E006A5472 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB417E8C201B9D8E006A5472 /* Assets.xcassets */; };
 		FB5F4A752023552E00AB5B79 /* RibbitUser.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5F4A742023552E00AB5B79 /* RibbitUser.m */; };
@@ -99,6 +100,8 @@
 		B3EB1F101D6F035800B5FDAD /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
 		B3EB1F111D6F035800B5FDAD /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
 		B3EB1F131D6F06A400B5FDAD /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		FB2AA214202B43B900E68C2A /* RibbitTabBarController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RibbitTabBarController.h; sourceTree = "<group>"; };
+		FB2AA215202B43B900E68C2A /* RibbitTabBarController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RibbitTabBarController.m; sourceTree = "<group>"; };
 		FB417E88201B9311006A5472 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		FB417E8C201B9D8E006A5472 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FB5F4A732023552E00AB5B79 /* RibbitUser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RibbitUser.h; sourceTree = "<group>"; };
@@ -271,6 +274,8 @@
 				FB5F4A772024FD8D00AB5B79 /* UserCell.m */,
 				FB79C49A2028C55C00AAFEE9 /* FriendCell.h */,
 				FB79C49B2028C55C00AAFEE9 /* FriendCell.m */,
+				FB2AA214202B43B900E68C2A /* RibbitTabBarController.h */,
+				FB2AA215202B43B900E68C2A /* RibbitTabBarController.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -424,6 +429,7 @@
 				8DCDADF317A82EEB008AAA28 /* LoginViewController.m in Sources */,
 				8DCDADF617A83853008AAA28 /* InboxViewController.m in Sources */,
 				8D2A01AC17AB0EEE00A43140 /* EditFriendsViewController.m in Sources */,
+				FB2AA216202B43B900E68C2A /* RibbitTabBarController.m in Sources */,
 				B35A3F481D7EE8050082EF0C /* App.m in Sources */,
 				8D2A01AD17AB0EEE00A43140 /* FriendsViewController.m in Sources */,
 				8D5ED96317AFFE300079548F /* CameraViewController.m in Sources */,

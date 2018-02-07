@@ -56,7 +56,9 @@ NSString *const kGCMessageIDKey = @"gcm.message_id";
         [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
         }];
 #endif
+    
 
+    
     
     [application registerForRemoteNotifications];
     

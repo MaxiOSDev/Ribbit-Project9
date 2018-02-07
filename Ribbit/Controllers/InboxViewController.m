@@ -42,16 +42,24 @@ static NSString * const resuseIdentifier = @"UserCell";
     if (currentUser) {
         NSLog(@"Current user: %@", currentUser.name);
     }
+    
     else {
         [self.navigationController popViewControllerAnimated:YES];
     }
     
     [self checkIfUserIsLoggedIn];
+
     [self observeUserMessages];
     [self.tableView reloadData];
 }
 
-
+- (void)viewWillAppear:(BOOL)animated {
+   
+}
+- (void)viewDidDisappear:(BOOL)animated {
+    self.messagesArray = self.messages;
+     NSLog(@"yoo amount: %lu", (unsigned long)self.messagesArray.count);
+}
 
 
 - (void)observeUserMessages {
@@ -77,16 +85,19 @@ static NSString * const resuseIdentifier = @"UserCell";
     self.messages = [NSMutableArray array];
     
     FIRDatabaseReference *messagesReference = [[[FIRDatabase.database reference] child:@"messages"] child:messageId];
-    [messagesReference observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
-        
+    [messagesReference  observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+       
         NSDictionary *dict = snapshot.value;
+         NSLog(@"MutableArray amount2: %lu", (unsigned long)self.messages.count);
         
+
         Message *message = [[Message alloc] initWithDictionary:dict];
         
     //    NSString *chatPartnerId = message.toId;
      //   NSLog(@"chatPartnerId: %@", chatPartnerId);
     //    self.messagesDictionary[chatPartnerId] = message;
         
+        NSLog(@"MutableArray amount3: %lu", (unsigned long)self.messages.count);
         [self.messages addObject:message];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
@@ -116,17 +127,27 @@ static NSString * const resuseIdentifier = @"UserCell";
 
     UserCell *cell = [tableView dequeueReusableCellWithIdentifier:resuseIdentifier forIndexPath:indexPath];
     
-    Message *message = [self.messages objectAtIndex:indexPath.row];
-    cell.message = message;
-    [cell setMessage:message];
-    
-        NSString *fileType = message.fileType;
-        if ([fileType isEqualToString:@"image"]) {
-            cell.imageView.image = [UIImage imageNamed:@"icon_image"];
-        }
-        else {
-            cell.imageView.image = [UIImage imageNamed:@"icon_video"];
-        }
+    if (self.messagesArray.count != 0) {
+        Message *message = [self.messagesArray objectAtIndex:indexPath.row];
+        cell.message = message;
+        [cell setMessage:message];
+
+    } else {
+        
+        Message *message = [self.messages objectAtIndex:indexPath.row];
+        cell.message = message;
+        [cell setMessage:message];
+    }
+
+     NSLog(@"MutableArray amount4: %lu", (unsigned long)self.messages.count);
+     NSLog(@"Aquu amount4: %lu", (unsigned long)self.messagesArray.count);
+//        NSString *fileType = message.fileType;
+//        if ([fileType isEqualToString:@"image"]) {
+//            cell.imageView.image = [UIImage imageNamed:@"icon_image"];
+//        }
+//        else {
+//            cell.imageView.image = [UIImage imageNamed:@"icon_video"];
+//        }
     
     return cell;
 }

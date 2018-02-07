@@ -108,7 +108,7 @@
 #pragma mark - Image Picker Controller delegate
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    [self dismissViewControllerAnimated:NO completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
     [self.tabBarController setSelectedIndex:0];
 }
 
@@ -205,7 +205,8 @@
         fileType = @"video";
     }
     
-    NSString *imageName = [NSUUID.UUID UUIDString];
+    NSString *imageName = [[NSString alloc] init]; //[[NSProcessInfo processInfo] globallyUniqueString];//[[NSUUID UUID] UUIDString];
+    imageName = [[NSProcessInfo processInfo] globallyUniqueString];
     NSString *childImageString = [NSString stringWithFormat:@"%@.jpg", imageName];
     FIRStorageReference *storageRef = [[[FIRStorage.storage reference] child:@"message_images"] child:childImageString];
     
