@@ -33,25 +33,9 @@ static NSString * const resuseIdentifier = @"UserCell";
    // self.moviePlayer = [[MPMoviePlayerController alloc] init];
     
     self.moviePlayer = [[AVPlayerViewController alloc] init];
-    [self setupNavBar];
-}
- 
--(void)setupNavBar {
-    RibbitUser *currentUser = [RibbitUser currentRibitUser];
-    
-    if (currentUser) {
-        NSLog(@"Current user: %@", currentUser.name);
-    }
-    
-    else {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    
     [self checkIfUserIsLoggedIn];
-
-    [self observeUserMessages];
-    [self.tableView reloadData];
 }
+
 
 
 - (NSArray *)messages {
@@ -222,14 +206,17 @@ static NSString * const resuseIdentifier = @"UserCell";
 
 - (void)checkIfUserIsLoggedIn {
     if ([[FIRAuth.auth currentUser] uid] == nil) {
+        NSLog(@"Not Logged In");
         [self performSelector:@selector(handleLogout) withObject:nil afterDelay:0];
     } else {
         NSString *uid = [[FIRAuth.auth currentUser] uid];
         [[[[FIRDatabase.database reference] child:@"users"] child:uid] observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
             
             NSDictionary *postDict = snapshot.value;
+            NSLog(@"postDict: %@", postDict);
+            [self observeUserMessages];
             self.navigationItem.title = [postDict objectForKey:@"name"];
-            
+            NSLog(@"logged in");
         } withCancelBlock:nil];
     }
 }
@@ -240,6 +227,7 @@ static NSString * const resuseIdentifier = @"UserCell";
     if (!status) {
         NSLog(@"Error signing out: %@", signoutError);
     } else {
+        [self performSegueWithIdentifier:@"showLogin" sender:self];
         NSLog(@"Successful Signout");
         [self.mutableMessages removeAllObjects];
     }

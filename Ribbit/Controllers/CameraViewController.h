@@ -16,6 +16,7 @@
 
 - (IBAction)cancel:(id)sender;
 - (IBAction)send:(id)sender;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *sendButton;
 
 - (void)uploadMessage;
 - (UIImage *)resizeImage:(UIImage *)image toWidth:(float)width andHeight:(float)height;

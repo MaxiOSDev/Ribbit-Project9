@@ -105,6 +105,7 @@
   //  UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     RibbitUser *friendUser = [self.friendsMutable objectAtIndex:indexPath.row];
     self.uid = friendUser.id;
+    self.sendButton.enabled = YES;
     NSLog(@"friend ID: %@", friendUser.id);
 }
 
@@ -145,7 +146,6 @@
 
 - (IBAction)cancel:(id)sender {
     [self reset];
-    
     [self.tabBarController setSelectedIndex:0];
 }
 
@@ -160,6 +160,7 @@
     else {
         [self uploadMessage];
         [self.tabBarController setSelectedIndex:0];
+        [self reset];
     }
 }
 
@@ -255,6 +256,7 @@
 - (void)reset {
     self.image = nil;
     self.videoFilePath = nil;
+    self.sendButton.enabled = NO;
 }
 
 - (UIImage *)resizeImage:(UIImage *)image toWidth:(float)width andHeight:(float)height {
