@@ -17,7 +17,6 @@
 
 @interface InboxViewController ()
 
-@property (strong, nonatomic) NSMutableArray *messages;
 @property (strong, nonatomic) NSMutableDictionary *messagesDictionary;
 
 @end
@@ -53,12 +52,9 @@ static NSString * const resuseIdentifier = @"UserCell";
     [self.tableView reloadData];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-   
-}
-- (void)viewDidDisappear:(BOOL)animated {
-    self.messagesArray = self.messages;
-     NSLog(@"yoo amount: %lu", (unsigned long)self.messagesArray.count);
+
+- (NSArray *)messages {
+    return [[Message currentApp] messages];
 }
 
 
@@ -82,8 +78,6 @@ static NSString * const resuseIdentifier = @"UserCell";
 
 - (void)fetchMessageWithMessageId:(NSString *)messageId {
     
-    self.messages = [NSMutableArray array];
-    
     FIRDatabaseReference *messagesReference = [[[FIRDatabase.database reference] child:@"messages"] child:messageId];
     [messagesReference  observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
        
@@ -92,10 +86,10 @@ static NSString * const resuseIdentifier = @"UserCell";
         
         Message *message = [[Message alloc] initWithDictionary:dict];
         
-        self.inboxMessage.messages = [NSMutableArray array];
-        
         NSLog(@"MutableArray amount3: %lu", (unsigned long)self.messages.count);
-        [message.messages addObject:message];
+        
+        [[Message currentApp] addMessage:message];
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
@@ -124,24 +118,15 @@ static NSString * const resuseIdentifier = @"UserCell";
 
     UserCell *cell = [tableView dequeueReusableCellWithIdentifier:resuseIdentifier forIndexPath:indexPath];
     
-    if (self.messagesArray.count != 0) {
-        Message *message = [self.messagesArray objectAtIndex:indexPath.row];
-        cell.message = message;
-        [cell setMessage:message];
-
-    } else {
-        
         Message *message = [self.messages objectAtIndex:indexPath.row];
         cell.message = message;
         [cell setMessage:message];
-    }
     
     cell.layer.borderWidth = 4.0f;
     cell.layer.borderColor = [UIColor whiteColor].CGColor;
 
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
      NSLog(@"MutableArray amount4: %lu", (unsigned long)self.messages.count);
-     NSLog(@"Aquu amount4: %lu", (unsigned long)self.messagesArray.count);
     
 //        NSString *fileType = message.fileType;
 //        if ([fileType isEqualToString:@"image"]) {

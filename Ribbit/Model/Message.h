@@ -25,8 +25,12 @@
 @property (strong, nonatomic) NSNumber *timeStamp;
 @property (strong, nonatomic) NSString *toId;
 @property (strong, nonatomic) NSString *imageUrl;
-
+// New way...
 @property (strong, nonatomic) NSArray *messages;
+- (void) deleteMessage:(Message*)message;
+- (void) addMessage:(Message*)message;
+
++ (instancetype) currentApp;
 - (NSArray*)messages;
 - (void)saveInBackgroundWithBlock:(BooleanResultBlock)block;
 - (NSString *)chatPartnerId;

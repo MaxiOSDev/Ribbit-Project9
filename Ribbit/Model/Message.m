@@ -10,6 +10,10 @@
 #import "App.h"
 @import Firebase;
 
+@interface Message()
+@property (strong, nonatomic) NSMutableArray *messagesMutable;
+
+@end
 @implementation Message
 
 - (void)saveInBackgroundWithBlock:(BooleanResultBlock)block {
@@ -40,6 +44,30 @@
     }
     
     return self;
+}
+
++ (instancetype) currentApp {
+    static Message *sharedApp = nil;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedApp = [[self alloc] init];
+        sharedApp.messagesMutable = [NSMutableArray array];
+    });
+    
+    return sharedApp;
+}
+
+- (void) addMessage:(Message*)message {
+    [self.messagesMutable addObject:message];
+}
+
+- (void) deleteMessage:(Message*)message {
+    [self.messagesMutable removeObject:message];
+}
+
+- (NSArray*)messages {
+    return self.messagesMutable;
 }
 
 

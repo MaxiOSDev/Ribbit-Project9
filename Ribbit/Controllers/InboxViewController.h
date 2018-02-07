@@ -22,8 +22,6 @@
 @property (nonatomic, strong) AVPlayerViewController *moviePlayer;
 - (IBAction)logout:(id)sender;
 
-@property (nonatomic, strong) NSMutableArray *messagesArray;
-
 - (void)goFullScreen;
 //- (void)observeUserMessages;
 
