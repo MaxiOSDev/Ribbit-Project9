@@ -118,7 +118,7 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
-    
+
     if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
         // A photo was taken/selected!
         self.image = [info objectForKey:UIImagePickerControllerOriginalImage];
@@ -128,11 +128,16 @@
         }
     }
     
-    else {
+    else if ([mediaType isEqualToString:(NSString *)kUTTypeMovie]) { // just inserted else if statment to include kUTTypeMovie, instead of leaving just the else clause.
         // A video was taken/selected!
+        
+        NSURL *videoUrl = info[UIImagePickerControllerMediaURL];
+        [self handleVideoSelectedForUrl:videoUrl];
+        
         self.videoFilePath = [[info objectForKey:UIImagePickerControllerMediaURL] path];
         if (self.imagePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
             // Save the video!
+            NSLog(@"Video URL: %@", self.videoFilePath);
             if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(self.videoFilePath)) {
                 UISaveVideoAtPathToSavedPhotosAlbum(self.videoFilePath, nil, nil, nil);
             }
@@ -164,28 +169,28 @@
     }
 }
 
-- (void)handleSend {
-    FIRDatabaseReference *ref = [[FIRDatabase.database reference] child:@"messages"];
-    FIRDatabaseReference *childRef = [ref childByAutoId];
-    NSString *toId = self.uid;
-    NSString *fromId = [[FIRAuth.auth currentUser] uid];
-    NSDictionary *dict = @{ @"toId" : toId, @"fromId" : fromId};
-
-    [childRef updateChildValues:dict withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
-        if (error != nil) {
-            NSLog(@"Error: %@", error);
-        }
-    }];
-
-    FIRDatabaseReference *userMessagesRef = [[[FIRDatabase.database reference] child:@"user-messages"] child:fromId];
-    NSString *messageId = childRef.key;
-
-    [userMessagesRef updateChildValues: @{ messageId : @1 } ];
-
-    FIRDatabaseReference *recipientUserMessageRef = [[[FIRDatabase.database reference] child:@"user-messages"] child:toId];
-    [recipientUserMessageRef updateChildValues:@{ messageId: @1 }];
-    
-}
+//- (void)handleSend {
+//    FIRDatabaseReference *ref = [[FIRDatabase.database reference] child:@"messages"];
+//    FIRDatabaseReference *childRef = [ref childByAutoId];
+//    NSString *toId = self.uid;
+//    NSString *fromId = [[FIRAuth.auth currentUser] uid];
+//    NSDictionary *dict = @{ @"toId" : toId, @"fromId" : fromId};
+//
+//    [childRef updateChildValues:dict withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
+//        if (error != nil) {
+//            NSLog(@"Error: %@", error);
+//        }
+//    }];
+//
+//    FIRDatabaseReference *userMessagesRef = [[[FIRDatabase.database reference] child:@"user-messages"] child:fromId];
+//    NSString *messageId = childRef.key;
+//
+//    [userMessagesRef updateChildValues: @{ messageId : @1 } ];
+//
+//    FIRDatabaseReference *recipientUserMessageRef = [[[FIRDatabase.database reference] child:@"user-messages"] child:toId];
+//    [recipientUserMessageRef updateChildValues:@{ messageId: @1 }];
+//
+//}
 
 #pragma mark - Helper methods
 
@@ -249,8 +254,51 @@
         [recipientUserMessagesRef updateChildValues:@{ messageId: @1 }];
 
     }];
+}
+
+- (void)sendMessageWithVideoUrl:(NSString *)videoUrl {
+    FIRDatabaseReference *ref = [[FIRDatabase.database reference] child:@"messages"];
+    FIRDatabaseReference *childRef = ref.childByAutoId;
     
+    NSString *toId = self.uid;
+    NSString *fromId = [[FIRAuth.auth currentUser] uid];
     
+    NSDictionary *values = @{ @"videoUrl": videoUrl, @"toId": toId, @"fromId": fromId };
+    
+    [childRef updateChildValues:values withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
+        if (error != nil)  {
+            NSLog(@"%@", error);
+        }
+        
+        FIRDatabaseReference *userMessageRef = [[[[FIRDatabase.database reference] child:@"user-messages"] child:fromId] child:toId];
+        
+        NSString *messageId = childRef.key;
+        [userMessageRef updateChildValues:@{ messageId: @1 }];
+        FIRDatabaseReference *recipientUserMessageRef = [[[[FIRDatabase.database reference] child:@"user-messages"] child:toId] child:fromId];
+        [recipientUserMessageRef updateChildValues:@{ messageId: @1}];
+    }];
+    
+}
+
+- (void)handleVideoSelectedForUrl:(NSURL *)url {
+    
+    NSString *fileName = [NSString stringWithFormat:@"%@.mov", NSUUID.UUID.UUIDString];
+  FIRStorageUploadTask *uploadTask = [[[[FIRStorage.storage reference] child:@"message_movies"] child:fileName] putFile:url metadata:nil completion:^(FIRStorageMetadata * _Nullable metadata, NSError * _Nullable error) {
+        if (error != nil) {
+            NSLog(@"Failed upload of video: %@", error);
+        }
+        
+        NSString *storageUrl = metadata.downloadURL.absoluteString;
+        NSLog(@"Storage Url: %@", storageUrl);
+    }];
+    
+    [uploadTask observeStatus:FIRStorageTaskStatusProgress handler:^(FIRStorageTaskSnapshot * _Nonnull snapshot) {
+        NSLog(@"Upload Progress: %lld", snapshot.progress.completedUnitCount);
+    }];
+    
+    [uploadTask observeStatus:FIRStorageTaskStatusSuccess handler:^(FIRStorageTaskSnapshot * _Nonnull snapshot) {
+        NSLog(@"Succesful Video Upload");
+    }];
 }
 
 - (void)reset {
