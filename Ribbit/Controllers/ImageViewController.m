@@ -27,8 +27,7 @@
     
     [self.imageView loadImageUsingCacheWithUrlString:self.message.imageUrl];
     
-    NSString *senderName = self.message.senderName;
-    NSString *title = [NSString stringWithFormat:@"Sent from %@", senderName];
+    NSString *title = [NSString stringWithFormat:@"Sent from %@", self.senderName];
     self.navigationItem.title = title;
 }
 

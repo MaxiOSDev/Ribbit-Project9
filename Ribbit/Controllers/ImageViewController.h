@@ -14,4 +14,6 @@
 @property (nonatomic, strong) Message *message;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
+@property (nonatomic, strong) NSString *senderName;
+
 @end

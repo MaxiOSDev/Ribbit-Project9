@@ -20,26 +20,24 @@
 @property (strong, nonatomic) NSMutableArray *mutableMessages;
 @property (strong, nonatomic) NSMutableDictionary *messagesDictionary;
 
+@property(strong, nonatomic) NSString *friendName;
+
 @end
 
 @implementation InboxViewController
 
 static NSString * const resuseIdentifier = @"UserCell";
 
-- (void)viewWillAppear:(BOOL)animated {
-[self checkIfUserIsLoggedIn];
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self checkIfUserIsLoggedIn]; // So it doubles the users if this method is moved to viewWillAppear.. That's not good at all. So until then leave this for last.
    // self.moviePlayer = [[MPMoviePlayerController alloc] init];
     self.moviePlayer = [[AVPlayerViewController alloc] init];
 }
 
-
-
-- (NSArray *)messages {
+- (NSMutableArray *)messages {
     self.mutableMessages = [[Message currentApp] messages];
     return self.mutableMessages;
 }
@@ -57,6 +55,7 @@ static NSString * const resuseIdentifier = @"UserCell";
         [[[[[FIRDatabase.database reference] child:@"user-messages"] child:uid] child:userId] observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
             NSString *messageId = snapshot.key;
             [self fetchMessageWithMessageId:messageId];
+            
         } withCancelBlock:nil];
 
     } withCancelBlock:nil];
@@ -127,9 +126,6 @@ static NSString * const resuseIdentifier = @"UserCell";
     return cell;
 }
 
-
-
-
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -145,6 +141,7 @@ static NSString * const resuseIdentifier = @"UserCell";
         NSDictionary *dict = snapshot.value;
         RibbitUser *user = [[RibbitUser alloc] initWithDictionary:dict];
         user.id = chatPartnerId;
+        self.friendName = user.name;
         NSLog(@"%@", message.imageUrl);
         NSLog(@"%@%@%@", user.id, user.name, user.email);
         [self performSegueWithIdentifier:@"showImage" sender:self];
@@ -202,7 +199,6 @@ static NSString * const resuseIdentifier = @"UserCell";
 - (IBAction)logout:(id)sender {
     
     [self handleLogout];
-
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -213,9 +209,11 @@ static NSString * const resuseIdentifier = @"UserCell";
             
             NSDictionary *postDict = snapshot.value;
             NSLog(@"postDict: %@", postDict);
-            [self observeUserMessages];
             self.navigationItem.title = [postDict objectForKey:@"name"];
             NSLog(@"logged in");
+            [self.messages removeAllObjects];
+            [self observeUserMessages];
+            
         } withCancelBlock:nil];
     } else {
         NSLog(@"Not Logged In");
@@ -229,7 +227,10 @@ static NSString * const resuseIdentifier = @"UserCell";
     if ([FIRAuth.auth currentUser] != nil) {
         [FIRAuth.auth signOut:&error];
     } else {
+        [self.messages removeAllObjects];
+        NSLog(@"MutableMEssages after Log Out: %lu", (unsigned long)self.mutableMessages.count);
         [self performSegueWithIdentifier:@"showLogin" sender:self];
+
     }
 }
 
@@ -242,6 +243,7 @@ static NSString * const resuseIdentifier = @"UserCell";
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
         ImageViewController *imageViewController = (ImageViewController *)segue.destinationViewController;
         imageViewController.message = self.selectedMessage;
+        imageViewController.senderName = self.friendName;
     }
 }
 

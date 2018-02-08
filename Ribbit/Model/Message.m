@@ -60,7 +60,7 @@
     [self.messagesMutable removeObject:message];
 }
 
-- (NSArray*)messages {
+- (NSMutableArray*)messages {
     return self.messagesMutable;
 }
 

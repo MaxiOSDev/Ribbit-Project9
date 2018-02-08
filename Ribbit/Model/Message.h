@@ -26,12 +26,12 @@
 @property (strong, nonatomic) NSString *toId;
 @property (strong, nonatomic) NSString *imageUrl;
 // New way...
-@property (strong, nonatomic) NSArray *messages;
+@property (strong, nonatomic) NSMutableArray *messages;
 - (void) deleteMessage:(Message*)message;
 - (void) addMessage:(Message*)message;
 
 + (instancetype) currentApp;
-- (NSArray*)messages;
+- (NSMutableArray*)messages;
 
 - (NSString *)chatPartnerId;
 - (id)initWithDictionary:(NSDictionary *)dict;
