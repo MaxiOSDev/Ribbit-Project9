@@ -28,7 +28,6 @@
 
 static NSString * const resuseIdentifier = @"UserCell";
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -70,7 +69,9 @@ static NSString * const resuseIdentifier = @"UserCell";
         NSLog(@"%@", dict);
         
         if ([dict[@"toId"] isEqualToString:FIRAuth.auth.currentUser.uid]) {
-            Message *message = [[Message alloc] initWithDictionary:dict];
+            
+            Message *message = [[[Message alloc] initWithDictionary:dict] initWithVideoMessageDictionary:dict];
+            
             [[Message currentApp] addMessage:message];
         } else {
             NSLog(@"Not a message to me: %@", dict[@"fromId"]);
@@ -115,10 +116,11 @@ static NSString * const resuseIdentifier = @"UserCell";
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
      NSLog(@"MutableArray amount4: %lu", (unsigned long)self.messages.count);
     
-        NSString *fileType = message.fileType;
-        if ([fileType isEqualToString:@"image"]) {
+        NSString *fileType = message.contentType;
+        if ([fileType isEqualToString:@"application/octet-stream"]) {
             cell.imageView.image = [UIImage imageNamed:@"icon_image"];
         }
+
         else {
             cell.imageView.image = [UIImage imageNamed:@"icon_video"];
         }
@@ -131,27 +133,43 @@ static NSString * const resuseIdentifier = @"UserCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
    self.selectedMessage = [self.messages objectAtIndex:indexPath.row];
-    NSString *fileType = self.selectedMessage.fileType;
+
     Message *message = [self.messages objectAtIndex:indexPath.row];
-    
+    NSString *fileType = message.contentType;
     NSString *chatPartnerId = message.chatPartnerId;
-    
     FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"users"] child:chatPartnerId];
-    [ref observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
-        NSDictionary *dict = snapshot.value;
-        RibbitUser *user = [[RibbitUser alloc] initWithDictionary:dict];
-        user.id = chatPartnerId;
-        self.friendName = user.name;
-        NSLog(@"%@", message.imageUrl);
-        NSLog(@"%@%@%@", user.id, user.name, user.email);
-        [self performSegueWithIdentifier:@"showImage" sender:self];
-    } withCancelBlock:nil];
     
+    NSLog(@"File Type: %@", fileType);
     
-    if ([fileType isEqualToString:@"image"]) {
+    if ([fileType isEqualToString:@"application/octet-stream"]) {
+
+        [ref observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+            NSDictionary *dict = snapshot.value;
+            RibbitUser *user = [[RibbitUser alloc] initWithDictionary:dict];
+            user.id = chatPartnerId;
+            self.friendName = user.name;
+            NSLog(@"%@", message.imageUrl);
+            NSLog(@"%@%@%@", user.id, user.name, user.email);
+        } withCancelBlock:nil];
         [self performSegueWithIdentifier:@"showImage" sender:self];
     }
     else {
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         // File type is video
         File *videoFile = self.selectedMessage.file;
         self.moviePlayer.player = [AVPlayer playerWithURL:videoFile.fileURL];

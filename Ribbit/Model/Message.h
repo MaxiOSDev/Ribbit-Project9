@@ -17,6 +17,7 @@
 @property (strong, nonatomic) NSArray *recipients;
 
 @property (weak, nonatomic) NSString *fileType; // Solved Bug Issue #5
+@property (nonatomic, copy) NSString *contentType;
 
 @property (copy, nonatomic) NSString *senderName;
 
@@ -25,6 +26,8 @@
 @property (strong, nonatomic) NSNumber *timeStamp;
 @property (strong, nonatomic) NSString *toId;
 @property (strong, nonatomic) NSString *imageUrl;
+@property (strong, nonatomic) NSString *videoUrl;
+
 // New way...
 @property (strong, nonatomic) NSMutableArray *messages;
 - (void) deleteMessage:(Message*)message;
@@ -35,5 +38,5 @@
 
 - (NSString *)chatPartnerId;
 - (id)initWithDictionary:(NSDictionary *)dict;
-
+- (id)initWithVideoMessageDictionary:(NSDictionary *)dict;
 @end

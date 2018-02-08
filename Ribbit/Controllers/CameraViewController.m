@@ -16,6 +16,7 @@
 @property (strong, nonatomic) RibbitUser *user;
 @property (strong, nonatomic) NSString *uid;
 @property (strong, nonatomic) NSMutableArray *friendsMutable;
+
 @end
 
 @implementation CameraViewController
@@ -132,9 +133,11 @@
         // A video was taken/selected!
         
         NSURL *videoUrl = info[UIImagePickerControllerMediaURL];
-        [self handleVideoSelectedForUrl:videoUrl];
+        self.movieUrl = videoUrl;
         
-        self.videoFilePath = [[info objectForKey:UIImagePickerControllerMediaURL] path];
+       // self.videoFilePath = [[info objectForKey:UIImagePickerControllerMediaURL] path];
+        self.videoFilePath = videoUrl.absoluteString;
+        
         if (self.imagePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
             // Save the video!
             NSLog(@"Video URL: %@", self.videoFilePath);
@@ -169,29 +172,6 @@
     }
 }
 
-//- (void)handleSend {
-//    FIRDatabaseReference *ref = [[FIRDatabase.database reference] child:@"messages"];
-//    FIRDatabaseReference *childRef = [ref childByAutoId];
-//    NSString *toId = self.uid;
-//    NSString *fromId = [[FIRAuth.auth currentUser] uid];
-//    NSDictionary *dict = @{ @"toId" : toId, @"fromId" : fromId};
-//
-//    [childRef updateChildValues:dict withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
-//        if (error != nil) {
-//            NSLog(@"Error: %@", error);
-//        }
-//    }];
-//
-//    FIRDatabaseReference *userMessagesRef = [[[FIRDatabase.database reference] child:@"user-messages"] child:fromId];
-//    NSString *messageId = childRef.key;
-//
-//    [userMessagesRef updateChildValues: @{ messageId : @1 } ];
-//
-//    FIRDatabaseReference *recipientUserMessageRef = [[[FIRDatabase.database reference] child:@"user-messages"] child:toId];
-//    [recipientUserMessageRef updateChildValues:@{ messageId: @1 }];
-//
-//}
-
 #pragma mark - Helper methods
 
 - (void)uploadMessage {
@@ -199,36 +179,43 @@
     NSData *fileData; //= [[NSData alloc] init];
     NSString *fileName; //= [[NSString alloc] init];
     NSString *fileType; //= [[NSString alloc] init];
-    
+    Message *message = [[Message alloc] init];
     if (self.image != nil) {
         UIImage *newImage = [[UIImage alloc] init];
         newImage = self.image;
        // fileData = UIImagePNGRepresentation(newImage);
         fileData = UIImageJPEGRepresentation(newImage, 0.1);
         fileName = [NSString stringWithFormat:@"%f.jpg",[NSDate timeIntervalSinceReferenceDate]];
-        fileType = @"image";
+
+        
+        NSString *imageName = [[NSString alloc] init]; //[[NSProcessInfo processInfo] globallyUniqueString];//[[NSUUID UUID] UUIDString];
+        imageName = [[NSProcessInfo processInfo] globallyUniqueString];
+        NSString *childImageString = [NSString stringWithFormat:@"%@.jpg", imageName];
+        FIRStorageReference *storageRef = [[[FIRStorage.storage reference] child:@"message_images"] child:childImageString];
+        
+        [storageRef putData:fileData metadata:nil completion:^(FIRStorageMetadata * _Nullable metadata, NSError * _Nullable error) {
+            if (error != nil) {
+                NSLog(@"Storage Error: %@", error);
+            }
+            
+            NSLog(@"Metadata type: %@", metadata.contentType); // application/octet-stream
+            NSString *imageUrl = metadata.downloadURL.absoluteString;
+
+            
+            Message *message = [[Message alloc] init];
+            
+            message.contentType = metadata.contentType;
+            NSLog(@"Message Content Type: %@", message.contentType);
+            NSLog(@"Metadata Here: %@", metadata);
+            [self sendMessagwWithImageUrl:imageUrl];
+        }];
     }
     else {
         fileData = [NSData dataWithContentsOfFile:self.videoFilePath];
         fileName = [NSString stringWithFormat:@"%f.mov",[NSDate timeIntervalSinceReferenceDate]];
-        fileType = @"video";
+        message.contentType = @"video/quicktime";
+        [self handleVideoSelectedForUrl:self.movieUrl];
     }
-    
-    NSString *imageName = [[NSString alloc] init]; //[[NSProcessInfo processInfo] globallyUniqueString];//[[NSUUID UUID] UUIDString];
-    imageName = [[NSProcessInfo processInfo] globallyUniqueString];
-    NSString *childImageString = [NSString stringWithFormat:@"%@.jpg", imageName];
-    FIRStorageReference *storageRef = [[[FIRStorage.storage reference] child:@"message_images"] child:childImageString];
-    
-    [storageRef putData:fileData metadata:nil completion:^(FIRStorageMetadata * _Nullable metadata, NSError * _Nullable error) {
-        if (error != nil) {
-            NSLog(@"Storage Error: %@", error);
-        }
-        
-        NSString *imageUrl = metadata.downloadURL.absoluteString;
-        [self sendMessagwWithImageUrl:imageUrl];
-        
-        NSLog(@"Metadata Here: %@", metadata);
-    }];
 
 }
 
@@ -238,8 +225,9 @@
 
     NSString *toId = self.uid;
     NSString *fromId = [[FIRAuth.auth currentUser] uid];
-
-    NSDictionary *values = @{ @"imageUrl": imageUrl, @"toId": toId, @"fromId": fromId }; //to id is nil. Because never selected a recipient anyway
+    Message *message = [[Message alloc] init];
+    NSLog(@"Inside SendMessage: %@", message.contentType);
+    NSDictionary *values = @{ @"imageUrl": imageUrl, @"toId": toId, @"fromId": fromId, @"contentType": @"application/octet-stream" }; //to id is nil. Because never selected a recipient anyway
 
     [childRef updateChildValues:values withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
         if (error != nil) {
@@ -262,8 +250,8 @@
     
     NSString *toId = self.uid;
     NSString *fromId = [[FIRAuth.auth currentUser] uid];
-    
-    NSDictionary *values = @{ @"videoUrl": videoUrl, @"toId": toId, @"fromId": fromId };
+    Message *message = [[Message alloc] init];
+    NSDictionary *values = @{ @"videoUrl": videoUrl, @"toId": toId, @"fromId": fromId, @"contentType": @"video/quicktime"};
     
     [childRef updateChildValues:values withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
         if (error != nil)  {
@@ -277,7 +265,6 @@
         FIRDatabaseReference *recipientUserMessageRef = [[[[FIRDatabase.database reference] child:@"user-messages"] child:toId] child:fromId];
         [recipientUserMessageRef updateChildValues:@{ messageId: @1}];
     }];
-    
 }
 
 - (void)handleVideoSelectedForUrl:(NSURL *)url {
@@ -287,9 +274,13 @@
         if (error != nil) {
             NSLog(@"Failed upload of video: %@", error);
         }
-        
+      
+      NSLog(@"Metadata type: %@", metadata.contentType); // video/quicktime
+
         NSString *storageUrl = metadata.downloadURL.absoluteString;
         NSLog(@"Storage Url: %@", storageUrl);
+      
+        [self sendMessageWithVideoUrl:storageUrl];
     }];
     
     [uploadTask observeStatus:FIRStorageTaskStatusProgress handler:^(FIRStorageTaskSnapshot * _Nonnull snapshot) {
@@ -299,6 +290,7 @@
     [uploadTask observeStatus:FIRStorageTaskStatusSuccess handler:^(FIRStorageTaskSnapshot * _Nonnull snapshot) {
         NSLog(@"Succesful Video Upload");
     }];
+    
 }
 
 - (void)reset {

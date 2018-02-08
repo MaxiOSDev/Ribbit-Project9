@@ -35,6 +35,18 @@
         self.fromId = [dict objectForKey:@"fromId"];
         self.toId = [dict objectForKey:@"toId"];
         self.imageUrl = [dict objectForKey:@"imageUrl"];
+        self.contentType = [dict objectForKey:@"contentType"];
+    }
+    
+    return self;
+}
+
+- (id)initWithVideoMessageDictionary:(NSDictionary *)dict {
+    if ((self = [super init])) {
+        self.fromId = [dict objectForKey:@"fromId"];
+        self.toId = [dict objectForKey:@"toId"];
+        self.videoUrl = [dict objectForKey:@"videoUrl"];
+        self.contentType = [dict objectForKey:@"contentType"];
     }
     
     return self;

@@ -16,6 +16,8 @@
 @property (nonatomic, strong) NSString *videoFilePath;
 @property (nonatomic, strong) NSArray *friends;
 
+@property (nonatomic, strong) NSURL *movieUrl;
+
 - (IBAction)cancel:(id)sender;
 - (IBAction)send:(id)sender;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *sendButton;
