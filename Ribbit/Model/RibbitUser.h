@@ -23,7 +23,7 @@
 @property (strong, nonatomic) NSString *id;
 
 @property (strong, nonatomic) NSString *friendName;
-
+@property (strong, nonatomic) NSString *friendId;
 
 + (instancetype)currentRibitUser;
 + (instancetype)userWithUsername:(NSString*)username;

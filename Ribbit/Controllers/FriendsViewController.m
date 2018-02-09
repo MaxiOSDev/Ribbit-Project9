@@ -75,6 +75,7 @@ static NSString * const resuseIdentifier = @"FriendCell";
         RibbitUser *friendUser = [[RibbitUser alloc] initWithFriendDictionary:dict];
         friendUser.id = snapshot.key;
         friendUser.friendName = dict[@"friendName"];
+        friendUser.friendId = dict[@"friendId"];
         [self.friendsMutable addObject:friendUser];
         NSLog(@"%@", friendUser.id);
         NSLog(@"%@", friendUser.friendName);

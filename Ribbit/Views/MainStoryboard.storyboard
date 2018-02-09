@@ -210,6 +210,8 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <color key="backgroundColor" red="0.95897561310000001" green="0.94589847329999999" blue="0.98624581099999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.95897561310000001" green="0.94589847329999999" blue="0.98624581099999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" red="0.61784464120000004" green="0.54156786199999996" blue="0.78161966800000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </tableViewCell>
                         </prototypes>
                         <connections>

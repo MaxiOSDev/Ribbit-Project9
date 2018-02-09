@@ -148,6 +148,7 @@ static NSString * const resuseIdentifier = @"UserCell";
             RibbitUser *user = [[RibbitUser alloc] initWithDictionary:dict];
             user.id = chatPartnerId;
             self.friendName = user.name;
+            
             NSLog(@"%@", message.imageUrl);
             NSLog(@"%@%@%@", user.id, user.name, user.email);
         } withCancelBlock:nil];

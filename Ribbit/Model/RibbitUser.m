@@ -70,6 +70,7 @@ static NSInteger identifier = 1;
     
     if ((self = [super init])) {
         self.friendName = [dict objectForKey:@"friendName"];
+        self.friendId = [dict objectForKey:@"friendId"];
     }
     
     return self;

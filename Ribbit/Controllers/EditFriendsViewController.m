@@ -49,28 +49,16 @@
     
     RibbitUser *user = [self.users objectAtIndex:indexPath.row];
 
-    
-    NSLog(@"User.Name: %@\n", user.name);
-    NSLog(@"User.FriendName: %@\n", user.friendName);
-    
-    for (RibbitUser *friendUser in self.friends ) {
-        NSLog(@"Amount of friends: %lu", (unsigned long) self.friends.count);
-        NSLog(@"Friend User With Friend Name: %@\n", user.friendName);
-        if ([user.name isEqualToString:friendUser.friendName]) {
-            cell.accessoryType = UITableViewCellAccessoryCheckmark;
-        } else {
-            cell.accessoryType = UITableViewCellAccessoryNone;
-        }
-    }
-    
-
-
     cell.textLabel.text = user.name;
     cell.textLabel.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:241.0/255.0 blue:251.0/255.0 alpha:1.0];
     cell.layer.borderWidth = 4.0f;
     cell.layer.borderColor = [UIColor whiteColor].CGColor;
     
-
+    if ( [self isFriend:user]) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
     
     return cell;
 }
@@ -89,7 +77,7 @@
         NSString *friendId = user.id;
         NSString *friendName = user.name;
         FIRDatabaseReference *userRef = [[[[[FIRDatabase.database reference] child:@"users"] child:currentUser] child:@"friends"] child:friendId];
-        [userRef updateChildValues:@{ @"friendName": friendName}];
+        [userRef updateChildValues:@{ @"friendName": friendName, @"friendId": friendId}];
     }
 
 }
@@ -98,13 +86,14 @@
 
 - (BOOL)isFriend:(RibbitUser *)user {
     Boolean isAdded = false;
-    for (RibbitUser *tempUser in self.currentRibbitUser.friends) {
-        if (tempUser.name == user.name) {
+    for (RibbitUser *tempUser in self.friends) {
+        if (tempUser.friendName == user.name) {
             isAdded = true;
         }
     }
     return isAdded;
 }
+
 
 
 
