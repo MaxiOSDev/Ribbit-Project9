@@ -19,7 +19,6 @@
 //limitations under the License.
 
 #import "AppDelegate.h"
-
 #import <Firebase.h>
 #import <UserNotifications/UserNotifications.h>
 
@@ -43,15 +42,7 @@ NSString *const kGCMessageIDKey = @"gcm.message_id";
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [FIRApp configure];
-    
-    [FIRAuth.auth addAuthStateDidChangeListener:^(FIRAuth * _Nonnull auth, FIRUser * _Nullable user) {
-        if ([FIRAuth.auth currentUser] != nil) {
-            
-        } else {
-            
-        }
-    }];
-    
+     
     [FIRMessaging messaging].delegate = self;
     
         // iOS 10 or later

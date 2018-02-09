@@ -44,5 +44,7 @@
 	<string>let us use your libraby mate</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Add picture mate</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Access Microphone</string>
 </dict>
 </plist>

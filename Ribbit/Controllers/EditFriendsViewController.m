@@ -25,7 +25,7 @@
     [self fetchUser];
 
     self.currentRibbitUser = [RibbitUser currentRibitUser];
-    self.friends = [[RibbitUser userWithUsername:_currentRibbitUser.name] friends];
+    NSLog(@"Friend: %@", self.friends);
 }
 
 #pragma mark - Table view data source
@@ -48,12 +48,29 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     RibbitUser *user = [self.users objectAtIndex:indexPath.row];
+
     
+    NSLog(@"User.Name: %@\n", user.name);
+    NSLog(@"User.FriendName: %@\n", user.friendName);
+    
+    for (RibbitUser *friendUser in self.friends ) {
+        NSLog(@"Amount of friends: %lu", (unsigned long) self.friends.count);
+        NSLog(@"Friend User With Friend Name: %@\n", user.friendName);
+        if ([user.name isEqualToString:friendUser.friendName]) {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        } else {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
+    }
+    
+
+
     cell.textLabel.text = user.name;
     cell.textLabel.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:241.0/255.0 blue:251.0/255.0 alpha:1.0];
     cell.layer.borderWidth = 4.0f;
     cell.layer.borderColor = [UIColor whiteColor].CGColor;
     
+
     
     return cell;
 }
@@ -63,14 +80,18 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     RibbitUser *user = [self.users objectAtIndex:indexPath.row];
     NSString *currentUser = [[FIRAuth.auth currentUser] uid];
-    NSString *friendId = user.id;
-    NSString *friendName = user.name;
-    
-    FIRDatabaseReference *userRef = [[[[[FIRDatabase.database reference] child:@"users"] child:currentUser] child:@"friends"] child:friendId];
-    
-    [userRef updateChildValues:@{ @"friendName": friendName}];
+    if ([self.friends containsObject:user.id]) {
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        NSString *friendId = user.id;
+        NSString *friendName = user.name;
+        FIRDatabaseReference *userRef = [[[[[FIRDatabase.database reference] child:@"users"] child:currentUser] child:@"friends"] child:friendId];
+        [userRef updateChildValues:@{ @"friendName": friendName}];
+    }
+
 }
 
 #pragma mark - Helper methods

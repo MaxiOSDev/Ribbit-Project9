@@ -88,7 +88,7 @@ static NSString * const resuseIdentifier = @"FriendCell";
     if ([[segue identifier] isEqualToString:@"showEditFriends"]) {
         EditFriendsViewController *editFriendsVC = [segue destinationViewController];
         editFriendsVC.currentRibbitUser = [self currentUser];
-        editFriendsVC.friends = [self friends];
+        editFriendsVC.friends = [self friendsMutable];
         editFriendsVC.mutableFriendsArray = [self friendsMutable];
         editFriendsVC.delegate = self;
     }

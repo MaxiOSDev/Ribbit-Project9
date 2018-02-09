@@ -164,8 +164,9 @@ static NSString * const resuseIdentifier = @"UserCell";
             NSLog(@"%@%@%@", user.id, user.name, user.email);
         } withCancelBlock:nil];
         
-        [self playVideo:message.videoUrl];
-
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self playVideo:message.videoUrl];
+        });
     }
 
 }
@@ -233,14 +234,18 @@ static NSString * const resuseIdentifier = @"UserCell";
     } else {
         [self.messages removeAllObjects];
         NSLog(@"MutableMEssages after Log Out: %lu", (unsigned long)self.mutableMessages.count);
-        [self performSegueWithIdentifier:@"showLogin" sender:self];
 
+        [[[FIRDatabase.database reference] child:@"users"] removeAllObservers];
+        [[[FIRDatabase.database reference] child:@"messages"] removeAllObservers];
+        [[[FIRDatabase.database reference] child:@"user-messages"] removeAllObservers];
+        [self performSegueWithIdentifier:@"showLogin" sender:self];
     }
 }
 
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"showLogin"]) {
+
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
     }
     else if ([segue.identifier isEqualToString:@"showImage"]) {
