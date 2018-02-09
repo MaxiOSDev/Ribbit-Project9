@@ -12,20 +12,29 @@
 @import Firebase;
 
 @interface EditFriendsViewController ()
-@property (strong, nonatomic) NSMutableArray *users;
+
 @property (strong, nonatomic) NSString *uid;
+@property (strong, nonatomic) NSMutableArray *usersArray;
 @end
 
 @implementation EditFriendsViewController
 @synthesize delegate;
 
+- (void)viewWillAppear:(BOOL)animated {
+    
+    self.usersArray = [NSMutableArray array];
+    
+    for (NSMutableArray *array in self.users) {
+        self.usersArray = array;
+        NSLog(@"Users inside numberOfRows: %@", self.usersArray);
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self fetchUser];
 
-    self.currentRibbitUser = [RibbitUser currentRibitUser];
-    NSLog(@"Friend: %@", self.friends);
+    [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
@@ -38,8 +47,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+
     // Return the number of rows in the section.
-    return [self.users count];
+    return self.usersArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -47,19 +57,29 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    RibbitUser *user = [self.users objectAtIndex:indexPath.row];
 
-    cell.textLabel.text = user.name;
+    NSLog(@"%@", self.users);
+    
+    for (NSMutableArray *array in self.users) {
+        NSLog(@"Array: %@", array);
+        RibbitUser *user = [array objectAtIndex:indexPath.row];
+        NSLog(@"User Name: %@", user.name);
+        cell.textLabel.text = user.name;
+        
+        if ( [self isFriend:user]) {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            
+        } else {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
+    }
+
     cell.textLabel.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:241.0/255.0 blue:251.0/255.0 alpha:1.0];
     cell.layer.borderWidth = 4.0f;
     cell.layer.borderColor = [UIColor whiteColor].CGColor;
     
-    if ( [self isFriend:user]) {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    } else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-    }
-    
+
+
     return cell;
 }
 
@@ -87,37 +107,11 @@
 - (BOOL)isFriend:(RibbitUser *)user {
     Boolean isAdded = false;
     for (RibbitUser *tempUser in self.friends) {
-        if (tempUser.friendName == user.name) {
+        if (tempUser.friendId == user.id) {
             isAdded = true;
         }
     }
     return isAdded;
-}
-
-
-
-
-- (void)fetchUser {
-    
-    self.users = [NSMutableArray array];
-
-    [[[FIRDatabase.database reference] child:@"users"] observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
-        NSDictionary *dict = snapshot.value;
-        RibbitUser *user = [[RibbitUser alloc] initWithDictionary:dict];
-        user.id = snapshot.key;
-        
-        if (user.id != [FIRAuth.auth currentUser].uid) {
-            [self.users addObject:user];
-        } else {
-            NSLog(@"Got you: %@", user.id);
-        }
-
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-        });
-        
-    } withCancelBlock:nil];
 }
 
 @end

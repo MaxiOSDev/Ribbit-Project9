@@ -7,6 +7,9 @@
 //
 
 #import "RibbitTabBarController.h"
+#import "FriendsViewController.h"
+#import "RibbitUser.h"
+@import Firebase;
 
 @interface RibbitTabBarController ()
 
@@ -30,12 +33,15 @@
     UIColor *color = [UIColor whiteColor];
     NSDictionary *dict = @{ NSForegroundColorAttributeName : color };
     [UITabBarItem.appearance setTitleTextAttributes:(dict) forState:UIControlStateNormal];
+    
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
 
 /*
 #pragma mark - Navigation

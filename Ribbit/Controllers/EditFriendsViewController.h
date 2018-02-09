@@ -20,7 +20,7 @@
 @property (strong,nonatomic) NSArray *friends;
 @property (strong, nonatomic) NSMutableArray *mutableFriendsArray;
 @property (nonatomic,strong) RibbitUser *currentRibbitUser;
-
+@property (strong, nonatomic) NSMutableArray *users;
 - (BOOL)isFriend:(RibbitUser *)user;
 
 @end

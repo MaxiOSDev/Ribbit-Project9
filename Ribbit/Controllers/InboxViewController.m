@@ -7,6 +7,8 @@
 
 #import "InboxViewController.h"
 #import "ImageViewController.h"
+#import "FriendsViewController.h"
+#import "EditFriendsViewController.h"
 #import "Message.h"
 #import "App.h"
 #import "File.h"
@@ -19,21 +21,35 @@
 
 @property (strong, nonatomic) NSMutableArray *mutableMessages;
 @property (strong, nonatomic) NSMutableDictionary *messagesDictionary;
-
-@property(strong, nonatomic) NSString *friendName;
-
+@property (strong, nonatomic) NSString *friendName;
+@property (strong, nonatomic) NSMutableArray *inboxUsers;
 @end
 
 @implementation InboxViewController
 
 static NSString * const resuseIdentifier = @"UserCell";
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self fetchUser];
     [self checkIfUserIsLoggedIn]; // So it doubles the users if this method is moved to viewWillAppear.. That's not good at all. So until then leave this for last.
    // self.moviePlayer = [[MPMoviePlayerController alloc] init];
     self.moviePlayer = [[AVPlayerViewController alloc] init];
+
+    self.tabBarController.delegate = self;
+    self.users = [[NSMutableArray alloc] initWithObjects:self.inboxUsers, nil];
+    
+}
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+    UIViewController *destView = [[self.tabBarController.viewControllers objectAtIndex:1] topViewController];
+    if ([destView isKindOfClass:[FriendsViewController class]]){
+        FriendsViewController *svc = (FriendsViewController *) destView;
+        svc.users = self.users;
+    }
+    return TRUE;
 }
 
 - (NSMutableArray *)messages {
@@ -243,6 +259,25 @@ static NSString * const resuseIdentifier = @"UserCell";
     }
 }
 
+- (void)fetchUser {
+    
+    self.inboxUsers = [NSMutableArray array];
+    
+    [[[FIRDatabase.database reference] child:@"users"] observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+        NSDictionary *dict = snapshot.value;
+        RibbitUser *user = [[RibbitUser alloc] initWithDictionary:dict];
+        user.id = snapshot.key;
+        
+        if (user.id != [FIRAuth.auth currentUser].uid) {
+            [self.inboxUsers addObject:user];
+            NSLog(@"Inbox users: %@", self.inboxUsers);
+        } else {
+            NSLog(@"Got you: %@", user.id);
+        }
+        
+    } withCancelBlock:nil];
+}
+
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"showLogin"]) {
@@ -257,5 +292,7 @@ static NSString * const resuseIdentifier = @"UserCell";
         imageViewController.imageUrlString = self.selectedMessage.imageUrl;
     }
 }
+
+
 
 @end

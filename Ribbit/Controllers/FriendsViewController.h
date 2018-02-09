@@ -14,6 +14,6 @@
 @interface FriendsViewController : UITableViewController <FriendDelegate>
 
 @property (nonatomic, strong) NSArray *friends;
-
+@property (strong, nonatomic) NSMutableArray *users;
 @property (nonatomic, strong) RibbitUser *currentUser;
 @end

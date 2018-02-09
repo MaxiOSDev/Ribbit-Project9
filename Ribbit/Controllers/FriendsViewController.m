@@ -13,6 +13,7 @@
 
 @interface FriendsViewController ()
 @property (strong, nonatomic) NSMutableArray *friendsMutable;
+
 @end
 
 @implementation FriendsViewController
@@ -24,6 +25,7 @@ static NSString * const resuseIdentifier = @"FriendCell";
     [super viewDidLoad];
 
     NSLog(@"Amount in friendsMutable: %lu", (unsigned long)self.friendsMutable.count);
+    NSLog(@"Here: ....%@", self.users);
     [self.tableView reloadData];
 }
 
@@ -85,6 +87,8 @@ static NSString * const resuseIdentifier = @"FriendCell";
     } withCancelBlock:nil];
 }
 
+
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"showEditFriends"]) {
         EditFriendsViewController *editFriendsVC = [segue destinationViewController];
@@ -92,6 +96,7 @@ static NSString * const resuseIdentifier = @"FriendCell";
         editFriendsVC.friends = [self friendsMutable];
         editFriendsVC.mutableFriendsArray = [self friendsMutable];
         editFriendsVC.delegate = self;
+        editFriendsVC.users = self.users;
     }
 }
 

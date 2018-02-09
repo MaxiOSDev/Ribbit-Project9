@@ -13,7 +13,7 @@
 @class Message;
 
 
-@interface InboxViewController : UITableViewController
+@interface InboxViewController : UITableViewController <UITabBarControllerDelegate>
 
 @property (nonatomic, strong) Message *selectedMessage;
 @property (nonatomic, strong) Message *inboxMessage;
@@ -25,5 +25,6 @@
 - (void)goFullScreen;
 //- (void)observeUserMessages;
 
+@property (strong, nonatomic) NSMutableArray *users;
 
 @end
