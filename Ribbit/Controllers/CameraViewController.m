@@ -7,7 +7,7 @@
 
 #import "CameraViewController.h"
 #import <MobileCoreServices/UTCoreTypes.h>
-
+#import <AVFoundation/AVFoundation.h>
 #import "RibbitUser.h"
 #import "File.h"
 #import "Message.h"
@@ -250,7 +250,7 @@
     
     NSString *toId = self.uid;
     NSString *fromId = [[FIRAuth.auth currentUser] uid];
-    Message *message = [[Message alloc] init];
+    
     NSDictionary *values = @{ @"videoUrl": videoUrl, @"toId": toId, @"fromId": fromId, @"contentType": @"video/quicktime"};
     
     [childRef updateChildValues:values withCompletionBlock:^(NSError * _Nullable error, FIRDatabaseReference * _Nonnull ref) {
@@ -292,6 +292,8 @@
     }];
     
 }
+
+
 
 - (void)reset {
     self.image = nil;

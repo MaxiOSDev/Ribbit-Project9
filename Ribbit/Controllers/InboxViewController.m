@@ -155,45 +155,31 @@ static NSString * const resuseIdentifier = @"UserCell";
     }
     else {
         
+        [ref observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+            NSDictionary *dict = snapshot.value;
+            RibbitUser *user = [[RibbitUser alloc] initWithDictionary:dict];
+            user.id = chatPartnerId;
+            self.friendName = user.name;
+            NSLog(@"%@", message.imageUrl);
+            NSLog(@"%@%@%@", user.id, user.name, user.email);
+        } withCancelBlock:nil];
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        // File type is video
-        File *videoFile = self.selectedMessage.file;
-        self.moviePlayer.player = [AVPlayer playerWithURL:videoFile.fileURL];
-     //   self.moviePlayer.contentURL = videoFile.fileURL;
-      //  [self.moviePlayer prepareToPlay];
-        [self.moviePlayer.player play];
-      //  [self.moviePlayer thumbnailImageAtTime:0 timeOption:MPMovieTimeOptionNearestKeyFrame];
-        AVURLAsset *asset1 = [[AVURLAsset alloc] initWithURL:videoFile.fileURL options:nil];
-        AVAssetImageGenerator *generate1 = [[AVAssetImageGenerator alloc] initWithAsset:asset1];
-        generate1.appliesPreferredTrackTransform = YES;
-        NSError *err = NULL;
-        CMTime time = CMTimeMake(1, 2);
-        CGImageRef oneRef = [generate1 copyCGImageAtTime:time actualTime:NULL error:&err];
-        UIImage *one = [[UIImage alloc] initWithCGImage:oneRef];
-        _thumbnail = one;
-        // Add it to the view controller so we can see it
-        [self.view addSubview:self.moviePlayer.view];
-        
-    //    [self.moviePlayer setFullscreen:YES animated:YES];
-        [self goFullScreen];
+        [self playVideo:message.videoUrl];
+
     }
-    
-    // Delete it!
-    [[App currentApp] deleteMessage:self.selectedMessage];
+
+}
+
+
+-(void)playVideo:(NSString *)videoUrl {
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+    NSURL *videoURL = [NSURL URLWithString:videoUrl];
+    AVPlayer *player = [AVPlayer playerWithURL:videoURL];
+    AVPlayerViewController *playerViewController = [AVPlayerViewController new];
+    playerViewController.player = player;
+    [self presentViewController:playerViewController animated:YES completion:^{
+        [player play];
+    }];
 }
 
 - (void)goFullScreen {
@@ -262,6 +248,7 @@ static NSString * const resuseIdentifier = @"UserCell";
         ImageViewController *imageViewController = (ImageViewController *)segue.destinationViewController;
         imageViewController.message = self.selectedMessage;
         imageViewController.senderName = self.friendName;
+        imageViewController.imageUrlString = self.selectedMessage.imageUrl;
     }
 }
 

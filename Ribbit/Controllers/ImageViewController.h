@@ -15,5 +15,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 @property (nonatomic, strong) NSString *senderName;
+@property (nonatomic, strong) NSString *imageUrlString;
 
 @end
