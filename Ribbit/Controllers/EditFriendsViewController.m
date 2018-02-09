@@ -78,8 +78,6 @@
     cell.layer.borderWidth = 4.0f;
     cell.layer.borderColor = [UIColor whiteColor].CGColor;
     
-
-
     return cell;
 }
 
@@ -89,11 +87,14 @@
 {
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    RibbitUser *user = [self.users objectAtIndex:indexPath.row];
+    RibbitUser *user = [self.usersArray objectAtIndex:indexPath.row];
     NSString *currentUser = [[FIRAuth.auth currentUser] uid];
-    if ([self.friends containsObject:user.id]) {
+    
+    if ([self isFriend:user]) {
+        NSLog(@"User is friend");
     } else {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        
         NSString *friendId = user.id;
         NSString *friendName = user.name;
         FIRDatabaseReference *userRef = [[[[[FIRDatabase.database reference] child:@"users"] child:currentUser] child:@"friends"] child:friendId];

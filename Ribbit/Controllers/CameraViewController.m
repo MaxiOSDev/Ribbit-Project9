@@ -178,7 +178,6 @@
     
     NSData *fileData; //= [[NSData alloc] init];
     NSString *fileName; //= [[NSString alloc] init];
-    NSString *fileType; //= [[NSString alloc] init];
     Message *message = [[Message alloc] init];
     if (self.image != nil) {
         UIImage *newImage = [[UIImage alloc] init];
@@ -285,6 +284,7 @@
     
     [uploadTask observeStatus:FIRStorageTaskStatusProgress handler:^(FIRStorageTaskSnapshot * _Nonnull snapshot) {
         NSLog(@"Upload Progress: %lld", snapshot.progress.completedUnitCount);
+        // Activity indicator is loading unil message sent. Once completed then it will allow me to log out? I feel like that is highly effective.
     }];
     
     [uploadTask observeStatus:FIRStorageTaskStatusSuccess handler:^(FIRStorageTaskSnapshot * _Nonnull snapshot) {
@@ -292,8 +292,6 @@
     }];
     
 }
-
-
 
 - (void)reset {
     self.image = nil;
