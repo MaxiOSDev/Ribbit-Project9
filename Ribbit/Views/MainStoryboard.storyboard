@@ -109,17 +109,31 @@
                                     <constraint firstAttribute="height" constant="101" id="7Ur-Ix-X1X"/>
                                 </constraints>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HV7-dn-fyu">
+                                <rect key="frame" x="82" y="467" width="210" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="jFc-IP-AwL"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <state key="normal" title="Forgot Password?"/>
+                                <connections>
+                                    <action selector="passwordRest:" destination="BA1-Cp-RJu" eventType="touchUpInside" id="Qwg-Of-LnM"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.62530690431594849" green="0.52228689193725586" blue="0.77449434995651245" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="ZQC-BI-gMf" secondAttribute="trailing" constant="34" id="0hB-oy-gmW"/>
+                            <constraint firstItem="HV7-dn-fyu" firstAttribute="leading" secondItem="TnU-aj-axw" secondAttribute="leadingMargin" constant="66" id="3fi-XM-RlU"/>
                             <constraint firstItem="ZQC-BI-gMf" firstAttribute="top" secondItem="H2y-4O-K6e" secondAttribute="bottom" id="9XY-gE-sBs"/>
                             <constraint firstItem="ISb-Ql-L1E" firstAttribute="top" secondItem="H2y-4O-K6e" secondAttribute="bottom" constant="250" id="A4D-Pv-7uN"/>
+                            <constraint firstItem="HV7-dn-fyu" firstAttribute="top" secondItem="ZQC-BI-gMf" secondAttribute="bottom" constant="2" id="LeY-jc-lu0"/>
                             <constraint firstAttribute="trailing" secondItem="8xg-HE-VZK" secondAttribute="trailing" id="Pba-03-4Gc"/>
                             <constraint firstItem="H2y-4O-K6e" firstAttribute="leading" secondItem="TnU-aj-axw" secondAttribute="leadingMargin" id="ScH-uK-7hK"/>
                             <constraint firstItem="ISb-Ql-L1E" firstAttribute="top" secondItem="8xg-HE-VZK" secondAttribute="bottom" id="TYE-U7-Rhk"/>
                             <constraint firstItem="ZQC-BI-gMf" firstAttribute="leading" secondItem="TnU-aj-axw" secondAttribute="leadingMargin" constant="34" id="Uia-Km-QQL"/>
                             <constraint firstItem="1BA-B9-pLg" firstAttribute="leading" secondItem="TnU-aj-axw" secondAttribute="leading" constant="50" id="Wg7-MO-kdh"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="HV7-dn-fyu" secondAttribute="trailing" constant="67" id="YBH-7D-qgS"/>
                             <constraint firstAttribute="trailing" secondItem="1BA-B9-pLg" secondAttribute="trailing" constant="50" id="cs8-TV-rqu"/>
                             <constraint firstItem="8xg-HE-VZK" firstAttribute="leading" secondItem="TnU-aj-axw" secondAttribute="leading" id="eaI-Nd-HTc"/>
                             <constraint firstItem="H2y-4O-K6e" firstAttribute="top" secondItem="wx7-SM-t0c" secondAttribute="bottom" constant="252" id="g01-Ku-p90"/>

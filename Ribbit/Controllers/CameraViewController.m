@@ -119,12 +119,18 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
-
+    
+//    UIImage *tempImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+//
+//    [self imageWithImage:tempImage convertToSize:CGSizeMake(200, 200)];
+    
     if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
         // A photo was taken/selected!
         self.image = [info objectForKey:UIImagePickerControllerOriginalImage];
+        [self resizeImage:self.image toWidth:200.00 andHeight:200.00];
         if (self.imagePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
             // Save the image!
+            
             UIImageWriteToSavedPhotosAlbum(self.image, nil, nil, nil);
         }
     }
@@ -167,7 +173,7 @@
     }
     else {
         [self uploadMessage];
-        [self.tabBarController setSelectedIndex:0];
+
         [self reset];
     }
 }
@@ -200,7 +206,6 @@
             NSLog(@"Metadata type: %@", metadata.contentType); // application/octet-stream
             NSString *imageUrl = metadata.downloadURL.absoluteString;
 
-            
             Message *message = [[Message alloc] init];
             
             message.contentType = metadata.contentType;
@@ -289,6 +294,7 @@
     
     [uploadTask observeStatus:FIRStorageTaskStatusSuccess handler:^(FIRStorageTaskSnapshot * _Nonnull snapshot) {
         NSLog(@"Succesful Video Upload");
+        [self.tabBarController setSelectedIndex:0];
     }];
     
 }
@@ -297,6 +303,16 @@
     self.image = nil;
     self.videoFilePath = nil;
     self.sendButton.enabled = NO;
+}
+
+
+- (UIImage *)imageWithImage:(UIImage *)image convertToSize:(CGSize)size {
+    
+    UIGraphicsBeginImageContext(size);
+    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *destImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return destImage;
 }
 
 - (UIImage *)resizeImage:(UIImage *)image toWidth:(float)width andHeight:(float)height {

@@ -22,7 +22,7 @@
 
 
 @interface LoginViewController ()
-
+@property (strong, nonatomic) NSString *email;
 @end
 
 @implementation LoginViewController
@@ -55,6 +55,33 @@
     
 }
 
+- (IBAction)passwordRest:(id)sender {
+    [self handlePasswordReset];
+}
+
+- (void)handlePasswordReset {
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Reset Password" message:@"Enter Email for password reset" preferredStyle:UIAlertControllerStyleAlert];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.keyboardType = UIKeyboardTypeEmailAddress;
+    }];
+    
+    UIAlertAction *done = [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSArray *textFields = alert.textFields;
+        UITextField *emailField = textFields[0];
+        [FIRAuth.auth sendPasswordResetWithEmail:emailField.text completion:^(NSError * _Nullable error) {
+            if (error != nil) {
+                NSLog(@"Password Reset Error: %@", error);
+            } else {
+                NSLog(@"Password Reset Email Sent");
+            }
+        }];
+    }];
+    [alert addAction:done];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
 - (void)handleLogin {
     NSString *username = [self.usernameField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *password = [self.passwordField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -72,7 +99,6 @@
         
     }];
 }
-
 
 - (void)setupNavBar {
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];

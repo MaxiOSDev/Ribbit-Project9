@@ -40,6 +40,7 @@ static NSString * const resuseIdentifier = @"UserCell";
 
     self.tabBarController.delegate = self;
     self.users = [[NSMutableArray alloc] initWithObjects:self.inboxUsers, nil];
+    self.tableView.allowsMultipleSelectionDuringEditing = NO;
     
 }
 
@@ -186,6 +187,48 @@ static NSString * const resuseIdentifier = @"UserCell";
         });
     }
 
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [self.mutableMessages removeObjectAtIndex:indexPath.row];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        
+        NSString *uid = [[FIRAuth.auth currentUser] uid];
+        NSLog(@"CurrentUser: %@", uid);
+        FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"user-messages"] child:uid];
+        [ref observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+            
+            NSString *userId = snapshot.key;
+            
+        FIRDatabaseReference *recipientRef = [[[[FIRDatabase.database reference] child:@"user-messages"] child:uid] child:userId];
+          [recipientRef observeSingleEventOfType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
+            NSString *messageId = snapshot.key;
+
+              [self deleteMessageWithMessageId:messageId];
+              [self deleteUserMessageWithCurrentId:uid withRecipientId:userId withMessageId:messageId];
+            } withCancelBlock:nil];
+            
+        } withCancelBlock:nil];
+        
+    }
+}
+
+- (void)deleteUserMessageWithCurrentId:(NSString *)uid withRecipientId:(NSString *)recipientId withMessageId:(NSString *)messageId {
+    
+    FIRDatabaseReference *ref = [[[[[FIRDatabase.database reference] child:@"user-messages"] child:uid] child:recipientId] child:messageId];
+    FIRDatabaseReference *recipientRef = [[[[[FIRDatabase.database reference] child:@"user-messages"] child:recipientId] child:uid] child:messageId];
+    [ref removeValue];
+    [recipientRef removeValue];
+}
+
+- (void)deleteMessageWithMessageId:(NSString *)messageId {
+    FIRDatabaseReference *userMessageRef = [[[FIRDatabase.database reference] child:@"messages"] child:messageId];
+    [userMessageRef removeValue];
 }
 
 
