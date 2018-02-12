@@ -24,5 +24,5 @@
 
 - (void)uploadMessage;
 - (UIImage *)resizeImage:(UIImage *)image toWidth:(float)width andHeight:(float)height;
-
+-(UIImage*) scaleImage: (UIImage*)image toSize:(CGSize)newSize;
 @end

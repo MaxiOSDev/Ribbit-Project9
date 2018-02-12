@@ -15,6 +15,7 @@
 
 @property (strong, nonatomic) NSString *uid;
 @property (strong, nonatomic) NSMutableArray *usersArray;
+@property (strong, nonatomic) NSArray *images;
 @end
 
 @implementation EditFriendsViewController
@@ -33,6 +34,23 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.images = [NSArray arrayWithObjects:
+                   [UIImage imageNamed:@"HarpreetSingh.png"],
+                   [UIImage imageNamed:@"HumayunKhan.png"],
+                   [UIImage imageNamed:@"AmandaCarpenter.png"],
+                   [UIImage imageNamed:@"CandiceBunkley.png"],
+                   [UIImage imageNamed:@"DariusGalloway.png"],
+                   [UIImage imageNamed:@"GregoryHester.png"],
+                   [UIImage imageNamed:@"JarrodStanford.png"],
+                   [UIImage imageNamed:@"PeterWeng.png"],
+                   [UIImage imageNamed:@"StephanieVelasquez.png"],
+                   [UIImage imageNamed:@"TobiasRay.png"],
+                   [UIImage imageNamed:@"VictoriaBrown.png"],
+                   [UIImage imageNamed:@"AlissaMurashev.png"],
+                   [UIImage imageNamed:@"AlaniKahale.png"],
+                   [UIImage imageNamed:@"LisaJennings.png"],
+                   nil];
 
     [self.tableView reloadData];
 }
@@ -65,7 +83,7 @@
         RibbitUser *user = [array objectAtIndex:indexPath.row];
         NSLog(@"User Name: %@", user.name);
         cell.textLabel.text = user.name;
-        
+        cell.imageView.image = [self.images objectAtIndex:indexPath.row];
         if ( [self isFriend:user]) {
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
             

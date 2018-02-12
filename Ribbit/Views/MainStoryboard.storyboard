@@ -170,7 +170,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dlS-Pw-07G">
-                                            <rect key="frame" x="16" y="11" width="343" height="33"/>
+                                            <rect key="frame" x="91" y="11" width="268" height="33"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -180,7 +180,7 @@
                                     <constraints>
                                         <constraint firstItem="dlS-Pw-07G" firstAttribute="bottom" secondItem="Wns-ts-KsR" secondAttribute="bottomMargin" id="aBQ-IS-60F"/>
                                         <constraint firstItem="dlS-Pw-07G" firstAttribute="top" secondItem="Wns-ts-KsR" secondAttribute="topMargin" id="lVO-At-7Oa"/>
-                                        <constraint firstItem="dlS-Pw-07G" firstAttribute="leading" secondItem="Wns-ts-KsR" secondAttribute="leadingMargin" id="ouj-8r-euI"/>
+                                        <constraint firstItem="dlS-Pw-07G" firstAttribute="leading" secondItem="Wns-ts-KsR" secondAttribute="leadingMargin" constant="75" id="ouj-8r-euI"/>
                                         <constraint firstItem="dlS-Pw-07G" firstAttribute="trailing" secondItem="Wns-ts-KsR" secondAttribute="trailingMargin" id="xgP-Vc-8Yh"/>
                                     </constraints>
                                 </tableViewCellContentView>

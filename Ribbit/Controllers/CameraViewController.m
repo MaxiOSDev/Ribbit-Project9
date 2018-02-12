@@ -11,6 +11,7 @@
 #import "RibbitUser.h"
 #import "File.h"
 #import "Message.h"
+#import <Photos/Photos.h>
 
 @interface CameraViewController ()
 @property (strong, nonatomic) RibbitUser *user;
@@ -24,6 +25,23 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+        switch (status) {
+            case PHAuthorizationStatusAuthorized:
+                NSLog(@"PHAuthorizationStatusAuthorized");
+                break;
+            case PHAuthorizationStatusDenied:
+                NSLog(@"PHAuthorizationStatusDenied");
+                break;
+            case PHAuthorizationStatusNotDetermined:
+                NSLog(@"PHAuthorizationStatusNotDetermined");
+                break;
+            case PHAuthorizationStatusRestricted:
+                NSLog(@"PHAuthorizationStatusRestricted");
+                break;
+        }
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -32,7 +50,6 @@
     self.friends = [[RibbitUser currentRibitUser] friends];
     [self observeUserFriends];
     [self.tableView reloadData];
-  
     if (self.image == nil && [self.videoFilePath length] == 0) {
         self.imagePicker = [[UIImagePickerController alloc] init];
         self.imagePicker.delegate = self;
@@ -44,12 +61,14 @@
         }
         else {
             self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            
         }
         
         self.imagePicker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:self.imagePicker.sourceType];
         
         [self presentViewController:self.imagePicker animated:NO completion:nil];
-    }    
+    }
+
 }
 
 #pragma mark - Table view data source
@@ -117,22 +136,30 @@
     [self.tabBarController setSelectedIndex:0];
 }
 
+
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
-    
-//    UIImage *tempImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-//
-//    [self imageWithImage:tempImage convertToSize:CGSizeMake(200, 200)];
     
     if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
         // A photo was taken/selected!
         self.image = [info objectForKey:UIImagePickerControllerOriginalImage];
-        [self resizeImage:self.image toWidth:200.00 andHeight:200.00];
+        NSLog(@"Image before reize: %f width and %f, height", self.image.size.width, self.image.size.height);
+ 
+        
+       UIImage *newImage = [self resizeImage:self.image toWidth:200 andHeight:200];
+        
+        self.image = newImage;
+            NSLog(@"Image : %f width and %f, height", newImage.size.width, newImage.size.height);
+
+
         if (self.imagePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
             // Save the image!
             
             UIImageWriteToSavedPhotosAlbum(self.image, nil, nil, nil);
         }
+        
+
+        NSLog(@"ImageHERR : %f width and %f, height", self.image.size.width, self.image.size.height);
     }
     
     else if ([mediaType isEqualToString:(NSString *)kUTTypeMovie]) { // just inserted else if statment to include kUTTypeMovie, instead of leaving just the else clause.
@@ -154,7 +181,9 @@
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
+
 }
+
 
 #pragma mark - IBActions
 
@@ -173,7 +202,6 @@
     }
     else {
         [self uploadMessage];
-
         [self reset];
     }
 }
@@ -305,24 +333,24 @@
     self.sendButton.enabled = NO;
 }
 
-
-- (UIImage *)imageWithImage:(UIImage *)image convertToSize:(CGSize)size {
-    
-    UIGraphicsBeginImageContext(size);
-    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
-    UIImage *destImage = UIGraphicsGetImageFromCurrentImageContext();
+-(UIImage*) scaleImage: (UIImage*)image toSize:(CGSize)newSize {
+    UIGraphicsBeginImageContext(newSize);
+    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    return destImage;
+    NSLog(@"Resized Image: %f, %f", newImage.size.width, newImage.size.height);
+    return newImage;
 }
 
 - (UIImage *)resizeImage:(UIImage *)image toWidth:(float)width andHeight:(float)height {
     CGSize newSize = CGSizeMake(width, height);
+    NSLog(@"New Size Width: %f, NewSize Height: %f", newSize.height, newSize.width);
     CGRect newRectangle = CGRectMake(0, 0, width, height);
     UIGraphicsBeginImageContext(newSize);
     [self.image drawInRect:newRectangle];
     UIImage *resizedImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    
+    NSLog(@"Resized Image: %f, %f", resizedImage.size.width, resizedImage.size.height);
     return resizedImage;
 }
 
