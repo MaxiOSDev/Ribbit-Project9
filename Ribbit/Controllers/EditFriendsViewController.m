@@ -77,19 +77,25 @@
     
 
     NSLog(@"%@", self.users);
-    
+    NSString *currentUser = [[FIRAuth.auth currentUser] uid];
+    RibbitUser *userID = [[RibbitUser alloc] init];
     for (NSMutableArray *array in self.users) {
-        NSLog(@"Array: %@", array);
-        RibbitUser *user = [array objectAtIndex:indexPath.row];
-        NSLog(@"User Name: %@", user.name);
-        cell.textLabel.text = user.name;
-        cell.imageView.image = [self.images objectAtIndex:indexPath.row];
-        if ( [self isFriend:user]) {
-            cell.accessoryType = UITableViewCellAccessoryCheckmark;
-            
+        
+        if ([userID.id isEqualToString:currentUser]) {
+            NSLog(@"Got you: %@", currentUser);
         } else {
-            cell.accessoryType = UITableViewCellAccessoryNone;
+            RibbitUser *user = [array objectAtIndex:indexPath.row];
+            NSLog(@"User Name: %@, User Id: %@", user.name, user.id);
+            NSLog(@"%@ Current User Id", currentUser);
+            cell.textLabel.text = user.name;
+            cell.imageView.image = [self.images objectAtIndex:indexPath.row];
+            if ( [self isFriend:user]) {
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            } else {
+                cell.accessoryType = UITableViewCellAccessoryNone;
+            }
         }
+
     }
 
     cell.textLabel.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:241.0/255.0 blue:251.0/255.0 alpha:1.0];

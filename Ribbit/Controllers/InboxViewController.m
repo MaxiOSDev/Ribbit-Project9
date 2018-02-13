@@ -262,9 +262,7 @@ static NSString * const resuseIdentifier = @"UserCell";
 }
 
 - (IBAction)logout:(id)sender {
-    
     [self handleLogout];
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)checkIfUserIsLoggedIn {
@@ -287,17 +285,25 @@ static NSString * const resuseIdentifier = @"UserCell";
 }
 
 - (void)handleLogout {
-
+    /*
     NSError *error;
     if ([FIRAuth.auth currentUser] != nil) {
         [FIRAuth.auth signOut:&error];
     } else {
         [self.messages removeAllObjects];
         NSLog(@"MutableMEssages after Log Out: %lu", (unsigned long)self.mutableMessages.count);
-
-        [[[FIRDatabase.database reference] child:@"users"] removeAllObservers];
-        [[[FIRDatabase.database reference] child:@"messages"] removeAllObservers];
-        [[[FIRDatabase.database reference] child:@"user-messages"] removeAllObservers];
+        
+        [self performSegueWithIdentifier:@"showLogin" sender:self];
+    }
+     */
+    
+    NSError *signOutError;
+    BOOL status = [[FIRAuth auth] signOut:&signOutError];
+    if (!status) {
+        NSLog(@"Error signing out: %@", signOutError);
+        return;
+    } else {
+        NSLog(@"SUCCESSFUL LOG OUT");
         [self performSegueWithIdentifier:@"showLogin" sender:self];
     }
 }
@@ -311,7 +317,7 @@ static NSString * const resuseIdentifier = @"UserCell";
         RibbitUser *user = [[RibbitUser alloc] initWithDictionary:dict];
         user.id = snapshot.key;
         
-        if (user.id != [FIRAuth.auth currentUser].uid) {
+        if (![user.id isEqualToString:[[FIRAuth.auth currentUser] uid]]) {
             [self.inboxUsers addObject:user];
             NSLog(@"Inbox users: %@", self.inboxUsers);
         } else {

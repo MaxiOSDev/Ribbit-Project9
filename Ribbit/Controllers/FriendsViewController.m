@@ -105,8 +105,6 @@ static NSString * const resuseIdentifier = @"FriendCell";
     } withCancelBlock:nil];
 }
 
-
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"showEditFriends"]) {
         EditFriendsViewController *editFriendsVC = [segue destinationViewController];
