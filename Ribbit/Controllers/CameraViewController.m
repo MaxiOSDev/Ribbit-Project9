@@ -59,6 +59,7 @@
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
             self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
         }
+        
         else {
             self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
             
@@ -66,7 +67,9 @@
         
         self.imagePicker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:self.imagePicker.sourceType];
         
-        [self presentViewController:self.imagePicker animated:NO completion:nil];
+        [self presentViewController:self.imagePicker animated:YES completion:nil];
+    } else {
+        NSLog(@"Image Data: %@", self.image);
     }
 
 }
@@ -150,15 +153,13 @@
         
         self.image = newImage;
             NSLog(@"Image : %f width and %f, height", newImage.size.width, newImage.size.height);
-
-
+        
         if (self.imagePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
             // Save the image!
             
             UIImageWriteToSavedPhotosAlbum(self.image, nil, nil, nil);
         }
         
-
         NSLog(@"ImageHERR : %f width and %f, height", self.image.size.width, self.image.size.height);
     }
     
@@ -333,14 +334,6 @@
     self.sendButton.enabled = NO;
 }
 
--(UIImage*) scaleImage: (UIImage*)image toSize:(CGSize)newSize {
-    UIGraphicsBeginImageContext(newSize);
-    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    NSLog(@"Resized Image: %f, %f", newImage.size.width, newImage.size.height);
-    return newImage;
-}
 
 - (UIImage *)resizeImage:(UIImage *)image toWidth:(float)width andHeight:(float)height {
     CGSize newSize = CGSizeMake(width, height);

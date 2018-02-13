@@ -327,7 +327,6 @@ static NSString * const resuseIdentifier = @"UserCell";
     } withCancelBlock:nil];
 }
 
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"showLogin"]) {
 
