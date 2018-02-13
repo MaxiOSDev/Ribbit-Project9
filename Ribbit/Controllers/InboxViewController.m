@@ -11,7 +11,7 @@
 #import "EditFriendsViewController.h"
 #import "Message.h"
 #import "App.h"
-#import "File.h"
+
 #import "RibbitUser.h"
 #import "UserCell.h"
 

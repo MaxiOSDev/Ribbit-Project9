@@ -9,7 +9,7 @@
 #import <MobileCoreServices/UTCoreTypes.h>
 #import <AVFoundation/AVFoundation.h>
 #import "RibbitUser.h"
-#import "File.h"
+
 #import "Message.h"
 #import <Photos/Photos.h>
 
@@ -51,21 +51,23 @@
     self.friends = [[RibbitUser currentRibitUser] friends];
     [self observeUserFriends];
     [self.tableView reloadData];
+    
+    
     if (self.image == nil && [self.videoFilePath length] == 0) {
-        self.imagePicker = [[UIImagePickerController alloc] init];
-        self.imagePicker.delegate = self;
-        self.imagePicker.allowsEditing = NO;
-        self.imagePicker.videoMaximumDuration = 10;
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+        imagePicker.delegate = self;
+        imagePicker.allowsEditing = NO;
+        imagePicker.videoMaximumDuration = 10;
 
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-            self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+            imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
         }
         else {
-            self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         }
-        self.imagePicker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:self.imagePicker.sourceType];
+        imagePicker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:imagePicker.sourceType];
 
-        [self presentViewController:self.imagePicker animated:YES completion:nil];
+        [self presentViewController:imagePicker animated:YES completion:nil];
     }
 
 }
@@ -135,6 +137,7 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     
     if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
         self.image = [info objectForKey:UIImagePickerControllerOriginalImage];
@@ -143,7 +146,7 @@
         
         self.image = newImage;
         
-        if (self.imagePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+        if (imagePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
             
             UIImageWriteToSavedPhotosAlbum(self.image, nil, nil, nil);
         }
@@ -156,7 +159,7 @@
         
         self.videoFilePath = videoUrl.absoluteString;
         
-        if (self.imagePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+        if (imagePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
             // Save the video!
             
             if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(self.videoFilePath)) {
@@ -178,11 +181,11 @@
 
 - (IBAction)send:(id)sender {
     if (self.image == nil && [self.videoFilePath length] == 0) {
-
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Try again!" message:@"Please capture or select a photo or video to share!" preferredStyle:UIAlertControllerStyleAlert];
         [self presentViewController:alert animated:YES completion:nil];
         
-        [self presentViewController:self.imagePicker animated:NO completion:nil];
+        [self presentViewController:imagePicker animated:NO completion:nil];
     }
     else {
         [self uploadMessage];
