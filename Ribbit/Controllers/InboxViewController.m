@@ -29,15 +29,13 @@
 
 static NSString * const resuseIdentifier = @"UserCell";
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self fetchUser];
-    [self checkIfUserIsLoggedIn]; // So it doubles the users if this method is moved to viewWillAppear.. That's not good at all. So until then leave this for last.
-   // self.moviePlayer = [[MPMoviePlayerController alloc] init];
-    self.moviePlayer = [[AVPlayerViewController alloc] init];
+    [self checkIfUserIsLoggedIn];
 
+    self.moviePlayer = [[AVPlayerViewController alloc] init];
     self.tabBarController.delegate = self;
     self.users = [[NSMutableArray alloc] initWithObjects:self.inboxUsers, nil];
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
@@ -61,13 +59,12 @@ static NSString * const resuseIdentifier = @"UserCell";
 - (void)observeUserMessages {
 
     NSString *uid = [[FIRAuth.auth currentUser] uid];
-    NSLog(@"CurrentUser: %@", uid);
+    
     FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"user-messages"] child:uid];
     [ref observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
 
         NSString *userId = snapshot.key;
-        
-        NSLog(@"User ID: %@", userId);
+
         [[[[[FIRDatabase.database reference] child:@"user-messages"] child:uid] child:userId] observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
             NSString *messageId = snapshot.key;
             [self fetchMessageWithMessageId:messageId];
@@ -81,19 +78,16 @@ static NSString * const resuseIdentifier = @"UserCell";
     
     FIRDatabaseReference *messagesReference = [[[FIRDatabase.database reference] child:@"messages"] child:messageId];
     [messagesReference  observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
-       
         NSDictionary *dict = snapshot.value;
-        NSLog(@"%@", dict);
-        
+
         if ([dict[@"toId"] isEqualToString:FIRAuth.auth.currentUser.uid]) {
             
             Message *message = [[[Message alloc] initWithDictionary:dict] initWithVideoMessageDictionary:dict];
-            
             [[Message currentApp] addMessage:message];
         } else {
             NSLog(@"Not a message to me: %@", dict[@"fromId"]);
         }
-
+        
         NSLog(@"MutableArray amount3: %lu", (unsigned long)self.messages.count);
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
@@ -131,7 +125,6 @@ static NSString * const resuseIdentifier = @"UserCell";
     cell.layer.borderColor = [UIColor whiteColor].CGColor;
 
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-     NSLog(@"MutableArray amount4: %lu", (unsigned long)self.messages.count);
     
         NSString *fileType = message.contentType;
         if ([fileType isEqualToString:@"application/octet-stream"]) {
@@ -156,8 +149,6 @@ static NSString * const resuseIdentifier = @"UserCell";
     NSString *chatPartnerId = message.chatPartnerId;
     FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"users"] child:chatPartnerId];
     
-    NSLog(@"File Type: %@", fileType);
-    
     if ([fileType isEqualToString:@"application/octet-stream"]) {
 
         [ref observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
@@ -165,9 +156,6 @@ static NSString * const resuseIdentifier = @"UserCell";
             RibbitUser *user = [[RibbitUser alloc] initWithDictionary:dict];
             user.id = chatPartnerId;
             self.friendName = user.name;
-            
-            NSLog(@"%@", message.imageUrl);
-            NSLog(@"%@%@%@", user.id, user.name, user.email);
         } withCancelBlock:nil];
         [self performSegueWithIdentifier:@"showImage" sender:self];
     }
@@ -178,8 +166,6 @@ static NSString * const resuseIdentifier = @"UserCell";
             RibbitUser *user = [[RibbitUser alloc] initWithDictionary:dict];
             user.id = chatPartnerId;
             self.friendName = user.name;
-            NSLog(@"%@", message.imageUrl);
-            NSLog(@"%@%@%@", user.id, user.name, user.email);
         } withCancelBlock:nil];
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -243,24 +229,6 @@ static NSString * const resuseIdentifier = @"UserCell";
     }];
 }
 
-- (void)goFullScreen {
-    NSString *selectorForFullscreen = @"_transitionToFullScreenViewControllerAnimated:completionHandler:";
-    if (@available(iOS 11.0, *)) {
-        selectorForFullscreen = @"_transitionToFullScreenAnimated:completionHandler:";
-    }
-    SEL fsSelector = NSSelectorFromString(selectorForFullscreen);
-    if ([self respondsToSelector:fsSelector]) {
-        NSInvocation *inv = [NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:fsSelector]];
-        [inv setSelector:fsSelector];
-        [inv setTarget:self];
-        BOOL animated = YES;
-        id completionBlock = nil;
-        [inv setArgument:&(animated) atIndex:2]; //arguments 0 and 1 are self and _cmd respectively, automatically set by NSInvocation
-        [inv setArgument:&(completionBlock) atIndex:3];
-        [inv invoke];
-    }
-}
-
 - (IBAction)logout:(id)sender {
     [self handleLogout];
 }
@@ -285,18 +253,6 @@ static NSString * const resuseIdentifier = @"UserCell";
 }
 
 - (void)handleLogout {
-    /*
-    NSError *error;
-    if ([FIRAuth.auth currentUser] != nil) {
-        [FIRAuth.auth signOut:&error];
-    } else {
-        [self.messages removeAllObjects];
-        NSLog(@"MutableMEssages after Log Out: %lu", (unsigned long)self.mutableMessages.count);
-        
-        [self performSegueWithIdentifier:@"showLogin" sender:self];
-    }
-     */
-    
     NSError *signOutError;
     BOOL status = [[FIRAuth auth] signOut:&signOutError];
     if (!status) {
@@ -340,7 +296,5 @@ static NSString * const resuseIdentifier = @"UserCell";
         imageViewController.imageUrlString = self.selectedMessage.imageUrl;
     }
 }
-
-
 
 @end

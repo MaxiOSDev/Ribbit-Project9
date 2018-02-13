@@ -23,9 +23,6 @@ static NSString * const resuseIdentifier = @"FriendCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    NSLog(@"Amount in friendsMutable: %lu", (unsigned long)self.friendsMutable.count);
-    NSLog(@"Here: ....%@", self.users);
     self.images = [NSArray arrayWithObjects:
                     [UIImage imageNamed:@"HarpreetSingh.png"],
                     [UIImage imageNamed:@"HumayunKhan.png"],
@@ -50,7 +47,6 @@ static NSString * const resuseIdentifier = @"FriendCell";
     [super viewWillAppear:animated];
     [self observeUserFriends];
     self.friends = [[RibbitUser currentRibitUser] friends];
-
     [self.tableView reloadData];
 }
 

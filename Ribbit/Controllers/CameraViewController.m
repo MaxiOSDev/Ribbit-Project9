@@ -42,11 +42,12 @@
                 break;
         }
     }];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+
     self.friends = [[RibbitUser currentRibitUser] friends];
     [self observeUserFriends];
     [self.tableView reloadData];
@@ -55,21 +56,16 @@
         self.imagePicker.delegate = self;
         self.imagePicker.allowsEditing = NO;
         self.imagePicker.videoMaximumDuration = 10;
-        
+
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
             self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
         }
-        
         else {
             self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-            
         }
-        
         self.imagePicker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:self.imagePicker.sourceType];
-        
+
         [self presentViewController:self.imagePicker animated:YES completion:nil];
-    } else {
-        NSLog(@"Image Data: %@", self.image);
     }
 
 }
@@ -125,11 +121,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-  //  UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     RibbitUser *friendUser = [self.friendsMutable objectAtIndex:indexPath.row];
     self.uid = friendUser.id;
     self.sendButton.enabled = YES;
-    NSLog(@"friend ID: %@", friendUser.id);
 }
 
 #pragma mark - Image Picker Controller delegate
@@ -139,42 +133,32 @@
     [self.tabBarController setSelectedIndex:0];
 }
 
-
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
     
     if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
-        // A photo was taken/selected!
         self.image = [info objectForKey:UIImagePickerControllerOriginalImage];
-        NSLog(@"Image before reize: %f width and %f, height", self.image.size.width, self.image.size.height);
- 
         
        UIImage *newImage = [self resizeImage:self.image toWidth:200 andHeight:200];
         
         self.image = newImage;
-            NSLog(@"Image : %f width and %f, height", newImage.size.width, newImage.size.height);
         
         if (self.imagePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
-            // Save the image!
             
             UIImageWriteToSavedPhotosAlbum(self.image, nil, nil, nil);
         }
-        
-        NSLog(@"ImageHERR : %f width and %f, height", self.image.size.width, self.image.size.height);
     }
-    
-    else if ([mediaType isEqualToString:(NSString *)kUTTypeMovie]) { // just inserted else if statment to include kUTTypeMovie, instead of leaving just the else clause.
+    else if ([mediaType isEqualToString:(NSString *)kUTTypeMovie]) {
         // A video was taken/selected!
         
         NSURL *videoUrl = info[UIImagePickerControllerMediaURL];
         self.movieUrl = videoUrl;
         
-       // self.videoFilePath = [[info objectForKey:UIImagePickerControllerMediaURL] path];
         self.videoFilePath = videoUrl.absoluteString;
         
         if (self.imagePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
             // Save the video!
-            NSLog(@"Video URL: %@", self.videoFilePath);
+            
             if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(self.videoFilePath)) {
                 UISaveVideoAtPathToSavedPhotosAlbum(self.videoFilePath, nil, nil, nil);
             }
@@ -182,7 +166,6 @@
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
-
 }
 
 
@@ -211,8 +194,8 @@
 
 - (void)uploadMessage {
     
-    NSData *fileData; //= [[NSData alloc] init];
-    NSString *fileName; //= [[NSString alloc] init];
+    NSData *fileData;
+    NSString *fileName;
     Message *message = [[Message alloc] init];
     if (self.image != nil) {
         UIImage *newImage = [[UIImage alloc] init];
@@ -307,11 +290,9 @@
         if (error != nil) {
             NSLog(@"Failed upload of video: %@", error);
         }
-      
-      NSLog(@"Metadata type: %@", metadata.contentType); // video/quicktime
 
         NSString *storageUrl = metadata.downloadURL.absoluteString;
-        NSLog(@"Storage Url: %@", storageUrl);
+
       
         [self sendMessageWithVideoUrl:storageUrl];
     }];

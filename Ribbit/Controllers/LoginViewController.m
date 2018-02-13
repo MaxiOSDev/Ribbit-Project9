@@ -20,7 +20,6 @@
 #import "LoginViewController.h"
 @import Firebase;
 
-
 @interface LoginViewController ()
 @property (strong, nonatomic) NSString *email;
 @end
@@ -76,6 +75,7 @@
                 NSLog(@"Password Reset Email Sent");
             }
         }];
+        
     }];
     [alert addAction:done];
     

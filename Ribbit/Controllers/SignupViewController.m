@@ -97,11 +97,7 @@
         if (error != nil) {
             NSLog(@"%@", error);
         }
-        
-    //    RibbitUser *user = [RibbitUser initWithDict:dict];
-        
-        
-        
+
     }];
 }
 

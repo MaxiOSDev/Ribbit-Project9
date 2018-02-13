@@ -16,7 +16,7 @@
 @property (weak, nonatomic) File *file;
 @property (strong, nonatomic) NSArray *recipients;
 
-@property (weak, nonatomic) NSString *fileType; // Solved Bug Issue #5
+@property (weak, nonatomic) NSString *fileType; // Solved Bug Issue #5 // before Firebase. Came back still after Firebase
 @property (nonatomic, copy) NSString *contentType;
 
 @property (copy, nonatomic) NSString *senderName;
@@ -27,9 +27,8 @@
 @property (strong, nonatomic) NSString *toId;
 @property (strong, nonatomic) NSString *imageUrl;
 @property (strong, nonatomic) NSString *videoUrl;
-
-// New way...
 @property (strong, nonatomic) NSMutableArray *messages;
+
 - (void) deleteMessage:(Message*)message;
 - (void) addMessage:(Message*)message;
 

@@ -46,6 +46,7 @@
 		FB5F4A782024FD8D00AB5B79 /* UserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5F4A772024FD8D00AB5B79 /* UserCell.m */; };
 		FB5F4A7F20254B5B00AB5B79 /* UIImageView+CacheExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5F4A7E20254B5B00AB5B79 /* UIImageView+CacheExtension.m */; };
 		FB79C49C2028C55C00AAFEE9 /* FriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FB79C49B2028C55C00AAFEE9 /* FriendCell.m */; };
+		FB84E44A20333360007C7C8F /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB84E44920333360007C7C8F /* Photos.framework */; };
 		FBC7D96C201FD1EE0016C61B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC7D96B201FD1EE0016C61B /* AVFoundation.framework */; };
 		FBC7D96E201FD1F70016C61B /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC7D96D201FD1F70016C61B /* AVKit.framework */; };
 		FBC7D970201FD2320016C61B /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBC7D96F201FD2320016C61B /* CoreMedia.framework */; };
@@ -115,6 +116,7 @@
 		FB5F4A7E20254B5B00AB5B79 /* UIImageView+CacheExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+CacheExtension.m"; sourceTree = "<group>"; };
 		FB79C49A2028C55C00AAFEE9 /* FriendCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FriendCell.h; sourceTree = "<group>"; };
 		FB79C49B2028C55C00AAFEE9 /* FriendCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FriendCell.m; sourceTree = "<group>"; };
+		FB84E44920333360007C7C8F /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		FBC7D969201F69FF0016C61B /* FriendDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FriendDelegate.h; sourceTree = "<group>"; };
 		FBC7D96B201FD1EE0016C61B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		FBC7D96D201FD1F70016C61B /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
@@ -128,6 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB84E44A20333360007C7C8F /* Photos.framework in Frameworks */,
 				FBC7D970201FD2320016C61B /* CoreMedia.framework in Frameworks */,
 				FBC7D96E201FD1F70016C61B /* AVKit.framework in Frameworks */,
 				FBC7D96C201FD1EE0016C61B /* AVFoundation.framework in Frameworks */,
@@ -181,6 +184,7 @@
 		8DCDADAA17A6B3CC008AAA28 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FB84E44920333360007C7C8F /* Photos.framework */,
 				FBC7D96F201FD2320016C61B /* CoreMedia.framework */,
 				FBC7D96D201FD1F70016C61B /* AVKit.framework */,
 				FBC7D96B201FD1EE0016C61B /* AVFoundation.framework */,

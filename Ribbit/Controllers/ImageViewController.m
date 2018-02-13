@@ -22,11 +22,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
-//    File *imageFile = self.message.file;
-//    NSData *imageData = [NSData dataWithContentsOfURL:imageFile.fileURL];
-//    self.imageView.image = [UIImage imageWithData:imageData];
-//
+
     if (self.imageUrlString != nil) {
         [self.imageView loadImageUsingCacheWithUrlString:self.message.imageUrl];
     } else {

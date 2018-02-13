@@ -17,14 +17,11 @@
 
 @property (nonatomic, strong) Message *selectedMessage;
 @property (nonatomic, strong) Message *inboxMessage;
-//@property (nonatomic, strong) MPMoviePlayerController *moviePlayer;
 @property (nonatomic, strong) UIImage *thumbnail;
 @property (nonatomic, strong) AVPlayerViewController *moviePlayer;
+@property (strong, nonatomic) NSMutableArray *users;
+
 - (IBAction)logout:(id)sender;
 
-- (void)goFullScreen;
-//- (void)observeUserMessages;
-
-@property (strong, nonatomic) NSMutableArray *users;
 
 @end

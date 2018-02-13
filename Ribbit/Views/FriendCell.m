@@ -12,6 +12,4 @@
 
 @implementation FriendCell
 
-
-
 @end
