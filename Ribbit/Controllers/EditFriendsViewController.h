@@ -6,13 +6,27 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import <QuartzCore/QuartzCore.h>
+#import "FriendDelegate.h"
+#import "RibbitUser.h"
 @class User;
 
 @interface EditFriendsViewController : UITableViewController
+{
+    id<FriendDelegate> delegate;
+}
 
-@property (nonatomic, strong) User *currentUser;
-
-- (BOOL)isFriend:(User *)user;
+@property (nonatomic, retain) id<FriendDelegate> delegate;
+@property (strong,nonatomic) NSArray *friends;
+@property (strong, nonatomic) NSMutableArray *mutableFriendsArray;
+@property (nonatomic,strong) RibbitUser *currentRibbitUser;
+@property (strong, nonatomic) NSMutableArray *users;
+- (BOOL)isFriend:(RibbitUser *)user;
 
 @end
+
+
+
+
+
+

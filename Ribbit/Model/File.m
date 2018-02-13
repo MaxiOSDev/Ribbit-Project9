@@ -17,7 +17,7 @@ NSString * const CacheDirectoryName = @"ribbit-cache";
   File *file = [[File alloc] init];
   file.filename = filename;
   file.data = fileData;
-  
+    
   return file;
 }
 

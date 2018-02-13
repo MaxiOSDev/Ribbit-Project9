@@ -24,6 +24,20 @@
 	<string>1.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>let us use your libraby mate</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Used to send pictures</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Access Microphone</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Add picture mate</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Use your photo mate</string>
+	<key>UILaunchStoryboardName</key>
+	<string>Launch Screen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>MainStoryboard</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

@@ -13,13 +13,29 @@
 
 @interface Message : NSObject
 
-@property (strong, nonatomic) File *file;
+@property (weak, nonatomic) File *file;
 @property (strong, nonatomic) NSArray *recipients;
 
-@property (copy, nonatomic) NSString *fileType;
-@property (copy, nonatomic) NSString *senderId;
+@property (weak, nonatomic) NSString *fileType; // Solved Bug Issue #5 // before Firebase. Came back still after Firebase
+@property (nonatomic, copy) NSString *contentType;
+
 @property (copy, nonatomic) NSString *senderName;
 
-- (void)saveInBackgroundWithBlock:(BooleanResultBlock)block;
+// New Messages Properties
+@property (strong, nonatomic) NSString *fromId;
+@property (strong, nonatomic) NSNumber *timeStamp;
+@property (strong, nonatomic) NSString *toId;
+@property (strong, nonatomic) NSString *imageUrl;
+@property (strong, nonatomic) NSString *videoUrl;
+@property (strong, nonatomic) NSMutableArray *messages;
 
+- (void) deleteMessage:(Message*)message;
+- (void) addMessage:(Message*)message;
+
++ (instancetype) currentApp;
+- (NSMutableArray*)messages;
+
+- (NSString *)chatPartnerId;
+- (id)initWithDictionary:(NSDictionary *)dict;
+- (id)initWithVideoMessageDictionary:(NSDictionary *)dict;
 @end

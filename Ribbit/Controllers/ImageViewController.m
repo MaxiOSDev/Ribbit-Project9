@@ -8,6 +8,10 @@
 #import "ImageViewController.h"
 #import "Message.h"
 #import "File.h"
+#import "UIImageView+CacheExtension.h"
+#import <AVFoundation/AVFoundation.h>
+#import <AVKit/AVKit.h>
+
 
 @interface ImageViewController ()
 
@@ -18,13 +22,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
-  File *imageFile = self.message.file;
-    NSData *imageData = [NSData dataWithContentsOfURL:imageFile.fileURL];
-    self.imageView.image = [UIImage imageWithData:imageData];
-    
-    NSString *senderName = self.message.senderName;
-    NSString *title = [NSString stringWithFormat:@"Sent from %@", senderName];
+
+    if (self.imageUrlString != nil) {
+        [self.imageView loadImageUsingCacheWithUrlString:self.message.imageUrl];
+    } else {
+        NSLog(@"Image is nil");
+    }
+
+    NSString *title = [NSString stringWithFormat:@"Sent from %@", self.senderName];
     self.navigationItem.title = title;
 }
 
@@ -46,3 +51,26 @@
 }
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

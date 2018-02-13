@@ -16,6 +16,4 @@
 - (void) addMessage:(Message*)message;
 - (void) deleteMessage:(Message*)message;
 - (NSArray *) messages;
-- (NSArray *) allUsers;
-
 @end

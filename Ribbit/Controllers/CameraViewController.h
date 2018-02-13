@@ -6,6 +6,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
+
 
 @interface CameraViewController : UITableViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
@@ -13,12 +15,13 @@
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) NSString *videoFilePath;
 @property (nonatomic, strong) NSArray *friends;
-@property (nonatomic, strong) NSMutableArray *recipients;
+
+@property (nonatomic, strong) NSURL *movieUrl;
 
 - (IBAction)cancel:(id)sender;
 - (IBAction)send:(id)sender;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *sendButton;
 
 - (void)uploadMessage;
 - (UIImage *)resizeImage:(UIImage *)image toWidth:(float)width andHeight:(float)height;
-
 @end
