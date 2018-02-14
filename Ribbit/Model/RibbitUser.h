@@ -31,4 +31,5 @@
 - (id)initWithDictionary:(NSDictionary *)dict;
 - (id)initWithFriendDictionary:(NSDictionary *)dict;
 - (NSArray*) friends;
+
 @end

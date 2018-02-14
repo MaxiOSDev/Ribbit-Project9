@@ -9,9 +9,8 @@
 #import <MobileCoreServices/UTCoreTypes.h>
 #import <AVFoundation/AVFoundation.h>
 #import "RibbitUser.h"
-
 #import "Message.h"
-#import <Photos/Photos.h>
+
 
 @interface CameraViewController ()
 @property (strong, nonatomic) RibbitUser *user;
@@ -25,24 +24,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
-        switch (status) {
-            case PHAuthorizationStatusAuthorized:
-                NSLog(@"PHAuthorizationStatusAuthorized");
-                break;
-            case PHAuthorizationStatusDenied:
-                NSLog(@"PHAuthorizationStatusDenied");
-                break;
-            case PHAuthorizationStatusNotDetermined:
-                NSLog(@"PHAuthorizationStatusNotDetermined");
-                break;
-            case PHAuthorizationStatusRestricted:
-                NSLog(@"PHAuthorizationStatusRestricted");
-                break;
-        }
-    }];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -142,9 +123,8 @@
     if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
         self.image = [info objectForKey:UIImagePickerControllerOriginalImage];
         
-       UIImage *newImage = [self resizeImage:self.image toWidth:200 andHeight:200];
-        
-        self.image = newImage;
+   //    UIImage *newImage = [self resizeImage:self.image toWidth:200 andHeight:200];
+    //    self.image = newImage;
         
         if (imagePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
             
@@ -189,6 +169,7 @@
     }
     else {
         [self uploadMessage];
+        [self.tabBarController setSelectedIndex:0];
         [self reset];
     }
 }
@@ -225,7 +206,7 @@
             
             message.contentType = metadata.contentType;
             NSLog(@"Message Content Type: %@", message.contentType);
-            NSLog(@"Metadata Here: %@", metadata);
+          
             [self sendMessagwWithImageUrl:imageUrl];
         }];
     }
@@ -317,7 +298,6 @@
     self.videoFilePath = nil;
     self.sendButton.enabled = NO;
 }
-
 
 - (UIImage *)resizeImage:(UIImage *)image toWidth:(float)width andHeight:(float)height {
     CGSize newSize = CGSizeMake(width, height);

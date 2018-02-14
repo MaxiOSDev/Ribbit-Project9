@@ -7,20 +7,21 @@
 //
 
 #import "Message.h"
-#import "App.h"
+
 @import Firebase;
 
 @interface Message()
 @property (strong, nonatomic) NSMutableArray *messagesMutable;
 
 @end
+
 @implementation Message
 
 - (NSString *)chatPartnerId {
     NSString *chatPartner;
     
     if (self.fromId == [FIRAuth auth].currentUser.uid) {
-        NSLog(@"INSIDE CHAT PARTNER: %@", self.fromId);
+        
         chatPartner = self.toId;
     } else {
         chatPartner = self.fromId;
@@ -75,6 +76,5 @@
 - (NSMutableArray*)messages {
     return self.messagesMutable;
 }
-
 
 @end
