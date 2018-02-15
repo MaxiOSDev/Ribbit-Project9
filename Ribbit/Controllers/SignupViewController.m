@@ -84,6 +84,13 @@
             }
             
             [self registerUserIntoDatabaseWithUID:uid :dict];
+            
+            [[FIRAuth.auth currentUser] sendEmailVerificationWithCompletion:^(NSError * _Nullable error) {
+                if (error != nil) {
+                    NSLog(@"%@", error);
+                }
+            }];
+            
             NSLog(@"Saved user successfully into Firebase Database");
         }];
     }];

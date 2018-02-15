@@ -88,14 +88,35 @@
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Oops!" message:@"Make sure you enter a valid username and password" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *okayButton = [UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleDefault handler:nil];
     [alert addAction:okayButton];
+
     
     [FIRAuth.auth signInWithEmail:username password:password completion:^(FIRUser * _Nullable user, NSError * _Nullable error) {
+        
+        user = [FIRAuth.auth currentUser];
+        
+        if (user.isEmailVerified) {
+            NSLog(@"user verified");
+            [self performSegueWithIdentifier:@"showInbox" sender:self];
+        } else {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Login Denied" message:@"Email not verified, please veify email" preferredStyle:UIAlertControllerStyleAlert];
+            [alertController addAction:okayButton];
+            [self presentViewController:alertController animated:YES completion:nil];
+            NSLog(@"user Not verified");
+            
+            [user sendEmailVerificationWithCompletion:^(NSError * _Nullable error) {
+                if (error != nil) {
+                    NSLog(@"%@", error);
+                } else {
+                    NSLog(@"Verification email sent.");
+                }
+            }];
+        
+        }
+        
         if (error != nil) {
             [self presentViewController:alert animated:YES completion:nil];
             NSLog(@"Error here after attempting to sign in: %@", error);
         }
-        
-        [self performSegueWithIdentifier:@"showInbox" sender:self];
         
     }];
 }
