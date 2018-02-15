@@ -26,12 +26,14 @@
     [super viewDidLoad];
     self.friends = [[RibbitUser currentRibitUser] friends];
     [self observeUserFriends];
+    self.sendButton.enabled = NO;
+
     [self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
+        self.uid = nil;
     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
         switch (status) {
             case PHAuthorizationStatusAuthorized:
@@ -49,8 +51,11 @@
                         imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
                     }
                     imagePicker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:imagePicker.sourceType];
-                        [self presentViewController:imagePicker animated:NO completion:nil];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                          [self presentViewController:imagePicker animated:NO completion:nil];
+                    });
                 }
+                
                 break;
             case PHAuthorizationStatusRestricted:
                 NSLog(@"Restricted");
@@ -92,6 +97,10 @@
     cell.layer.borderWidth = 4.0f;
     cell.layer.borderColor = [UIColor whiteColor].CGColor;
     
+    if (self.image == nil) {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    
     return cell;
 }
 
@@ -118,9 +127,22 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     RibbitUser *friendUser = [self.friendsMutable objectAtIndex:indexPath.row];
-    self.uid = friendUser.id;
-    self.sendButton.enabled = YES;
+
+    if (self.uid == nil) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        self.sendButton.enabled = YES;
+        self.uid = friendUser.id;
+    }
+    else if (cell.accessoryType == UITableViewCellAccessoryCheckmark) {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        self.sendButton.enabled = NO;
+        self.uid = nil;
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    
 }
 
 #pragma mark - Image Picker Controller delegate
@@ -162,7 +184,6 @@
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
 
 #pragma mark - IBActions
 
@@ -234,6 +255,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.progressView setProgress:0 animated:NO];
             });
+
         }];
         
     }

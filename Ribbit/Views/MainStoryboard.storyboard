@@ -250,6 +250,7 @@
                         <progressView key="tableHeaderView" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" id="mHn-Uj-zdw">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="2"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" red="0.92468649150000004" green="0.92538815740000002" blue="0.92479509120000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <color key="progressTintColor" red="0.61784464120000004" green="0.54156786199999996" blue="0.78161966800000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </progressView>
                         <prototypes>
@@ -261,6 +262,8 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <color key="backgroundColor" red="0.95897561310000001" green="0.94589847329999999" blue="0.98624581099999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.95897561310000001" green="0.94589847329999999" blue="0.98624581099999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" red="0.61784464120000004" green="0.54156786199999996" blue="0.78161966800000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -356,6 +359,8 @@
                                         <constraint firstItem="dyv-R5-HG8" firstAttribute="leading" secondItem="y8I-JB-yhJ" secondAttribute="leadingMargin" constant="30" id="rrq-kq-pIY"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.95897561310000001" green="0.94589847329999999" blue="0.98624581099999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" red="0.61784464120000004" green="0.54156786199999996" blue="0.78161966800000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <outlet property="nameLabel" destination="dyv-R5-HG8" id="Sid-3H-0bq"/>
                                 </connections>
