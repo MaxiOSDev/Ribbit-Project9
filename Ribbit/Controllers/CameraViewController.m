@@ -10,7 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "RibbitUser.h"
 #import "Message.h"
-
+#import <Photos/Photos.h>
 
 @interface CameraViewController ()
 @property (strong, nonatomic) RibbitUser *user;
@@ -24,34 +24,48 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.friends = [[RibbitUser currentRibitUser] friends];
+    [self observeUserFriends];
+    [self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
-    self.friends = [[RibbitUser currentRibitUser] friends];
-    [self observeUserFriends];
-    [self.tableView reloadData];
-    
-    
-    if (self.image == nil && [self.videoFilePath length] == 0) {
-        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-        imagePicker.delegate = self;
-        imagePicker.allowsEditing = NO;
-        imagePicker.videoMaximumDuration = 10;
+    [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+        switch (status) {
+            case PHAuthorizationStatusAuthorized:
+                NSLog(@"Authorized");
+                if (self.image == nil && [self.videoFilePath length] == 0) {
+                    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+                    imagePicker.delegate = self;
+                    imagePicker.allowsEditing = NO;
+                    imagePicker.videoMaximumDuration = 10;
 
-        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-            imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+                    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+                        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+                    }
+                    else {
+                        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+                    }
+                    imagePicker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:imagePicker.sourceType];
+                        [self presentViewController:imagePicker animated:NO completion:nil];
+                }
+                break;
+            case PHAuthorizationStatusRestricted:
+                NSLog(@"Restricted");
+                break;
+            case PHAuthorizationStatusDenied:
+                NSLog(@"Denied");
+                break;
+            default:
+                break;
         }
-        else {
-            imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        }
-        imagePicker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:imagePicker.sourceType];
-
-        [self presentViewController:imagePicker animated:YES completion:nil];
-    }
-
+    }];
+        [self.tableView reloadData];
 }
+
+
 
 #pragma mark - Table view data source
 
@@ -121,16 +135,14 @@
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     
     if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
+        
         self.image = [info objectForKey:UIImagePickerControllerOriginalImage];
-        
-   //    UIImage *newImage = [self resizeImage:self.image toWidth:200 andHeight:200];
-    //    self.image = newImage;
-        
         if (imagePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
             
             UIImageWriteToSavedPhotosAlbum(self.image, nil, nil, nil);
         }
     }
+    
     else if ([mediaType isEqualToString:(NSString *)kUTTypeMovie]) {
         // A video was taken/selected!
         
@@ -169,7 +181,6 @@
     }
     else {
         [self uploadMessage];
-        [self.tabBarController setSelectedIndex:0];
         [self reset];
     }
 }
@@ -178,8 +189,8 @@
 
 - (void)uploadMessage {
     
-    NSData *fileData;
-    NSString *fileName;
+    NSData *fileData = [[NSData alloc] init];
+    NSString *fileName = [[NSString alloc] init];
     Message *message = [[Message alloc] init];
     if (self.image != nil) {
         UIImage *newImage = [[UIImage alloc] init];
@@ -194,7 +205,7 @@
         NSString *childImageString = [NSString stringWithFormat:@"%@.jpg", imageName];
         FIRStorageReference *storageRef = [[[FIRStorage.storage reference] child:@"message_images"] child:childImageString];
         
-        [storageRef putData:fileData metadata:nil completion:^(FIRStorageMetadata * _Nullable metadata, NSError * _Nullable error) {
+     FIRStorageUploadTask *uploadTask = [storageRef putData:fileData metadata:nil completion:^(FIRStorageMetadata * _Nullable metadata, NSError * _Nullable error) {
             if (error != nil) {
                 NSLog(@"Storage Error: %@", error);
             }
@@ -209,6 +220,22 @@
           
             [self sendMessagwWithImageUrl:imageUrl];
         }];
+        
+        [uploadTask observeStatus:FIRStorageTaskStatusProgress handler:^(FIRStorageTaskSnapshot * _Nonnull snapshot) {
+            NSLog(@"Upload Progress: %lld", snapshot.progress.completedUnitCount);
+            
+            double percentComplete = 100.0 * (snapshot.progress.completedUnitCount) / (snapshot.progress.totalUnitCount);
+            self.progressView.progress = percentComplete;
+        }];
+        
+        [uploadTask observeStatus:FIRStorageTaskStatusSuccess handler:^(FIRStorageTaskSnapshot * _Nonnull snapshot) {
+            NSLog(@"Succesful Image Upload");
+            [self.tabBarController setSelectedIndex:0];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.progressView setProgress:0 animated:NO];
+            });
+        }];
+        
     }
     else {
         fileData = [NSData dataWithContentsOfFile:self.videoFilePath];
@@ -276,21 +303,24 @@
         }
 
         NSString *storageUrl = metadata.downloadURL.absoluteString;
-
       
         [self sendMessageWithVideoUrl:storageUrl];
     }];
     
     [uploadTask observeStatus:FIRStorageTaskStatusProgress handler:^(FIRStorageTaskSnapshot * _Nonnull snapshot) {
         NSLog(@"Upload Progress: %lld", snapshot.progress.completedUnitCount);
-        // Activity indicator is loading unil message sent. Once completed then it will allow me to log out? I feel like that is highly effective.
+
+        double percentComplete = 100.0 * (snapshot.progress.completedUnitCount) / (snapshot.progress.totalUnitCount);
+        self.progressView.progress = percentComplete;
     }];
     
     [uploadTask observeStatus:FIRStorageTaskStatusSuccess handler:^(FIRStorageTaskSnapshot * _Nonnull snapshot) {
         NSLog(@"Succesful Video Upload");
         [self.tabBarController setSelectedIndex:0];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.progressView setProgress:0 animated:NO];
+        });
     }];
-    
 }
 
 - (void)reset {

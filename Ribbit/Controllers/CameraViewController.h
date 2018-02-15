@@ -24,4 +24,5 @@
 
 - (void)uploadMessage;
 - (UIImage *)resizeImage:(UIImage *)image toWidth:(float)width andHeight:(float)height;
+@property (weak, nonatomic) IBOutlet UIProgressView *progressView;
 @end

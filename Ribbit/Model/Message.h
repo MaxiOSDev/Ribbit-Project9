@@ -12,7 +12,7 @@
 @interface Message : NSObject
 
 @property (strong, nonatomic) NSArray *recipients;
-@property (strong, nonatomic) NSString *fileType; // Solved Bug Issue #5 // before Firebase. Came back still after Firebase
+//@property (strong, nonatomic) NSString *fileType; // Solved Bug Issue #5 // before Firebase. Came back still after Firebase
 @property (nonatomic, copy) NSString *contentType;
 @property (copy, nonatomic) NSString *senderName;
 
