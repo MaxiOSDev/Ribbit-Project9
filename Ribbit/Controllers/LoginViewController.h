@@ -22,7 +22,7 @@
 #import "UserDelegate.h"
 
 @interface LoginViewController : UIViewController <UserDelegate, UITextFieldDelegate>
-
+// Outlets and IB Actions
 @property (strong, nonatomic) IBOutlet UITextField *usernameField;
 @property (strong, nonatomic) IBOutlet UITextField *passwordField;
 

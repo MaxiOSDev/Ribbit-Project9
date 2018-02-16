@@ -13,12 +13,12 @@
 @import Firebase;
 
 @implementation UserCell
-
+// Sets messages in each cell
 - (void)setMessage:(Message*)message {
     _message = message;
     NSString *fromId = [FIRAuth.auth currentUser].uid;
     NSString *messageFromId = message.fromId;
-    
+    // Logic that took me quite a while to think of in my head
     if ([fromId isEqualToString:messageFromId]) {
         FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"users"] child:message.toId];
         [ref observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {

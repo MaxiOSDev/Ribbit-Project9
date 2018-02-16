@@ -12,9 +12,8 @@
 
 @class Message;
 
-
 @interface InboxViewController : UITableViewController <UITabBarControllerDelegate>
-
+// Stored properties and 1 IBAction
 @property (nonatomic, strong) Message *selectedMessage;
 @property (nonatomic, strong) Message *inboxMessage;
 @property (nonatomic, strong) UIImage *thumbnail;

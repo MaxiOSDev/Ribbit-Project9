@@ -15,7 +15,7 @@
 {
     id<FriendDelegate> delegate;
 }
-
+// Stored properties
 @property (nonatomic, retain) id<FriendDelegate> delegate;
 @property (strong,nonatomic) NSArray *friends;
 @property (strong, nonatomic) NSMutableArray *mutableFriendsArray;

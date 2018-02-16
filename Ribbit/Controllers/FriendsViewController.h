@@ -12,7 +12,7 @@
 @class RibbitUser;
 
 @interface FriendsViewController : UITableViewController <FriendDelegate>
-
+// Stored Properties
 @property (nonatomic, strong) NSArray *friends;
 @property (strong, nonatomic) NSMutableArray *users;
 @property (nonatomic, strong) RibbitUser *currentUser;
