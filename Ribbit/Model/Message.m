@@ -16,12 +16,11 @@
 @end
 
 @implementation Message
-
+// Logic for partner Id. So Only messages that were sent to current user show up in inbox, no duplicates no sent messages either
 - (NSString *)chatPartnerId {
     NSString *chatPartner;
     
     if (self.fromId == [FIRAuth auth].currentUser.uid) {
-        
         chatPartner = self.toId;
     } else {
         chatPartner = self.fromId;
@@ -29,7 +28,7 @@
     
     return chatPartner;
 }
-
+// Init methods
 - (id)initWithDictionary:(NSDictionary *)dict {
     
     if ((self = [super init])) {
@@ -52,12 +51,12 @@
     
     return self;
 }
-
+// Thanks Treehouse for this starter code that I tweaked
 + (instancetype) currentApp {
     static Message *sharedApp = nil;
     
     static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    dispatch_once(&onceToken, ^{ // I learnt this was a singleton...
         sharedApp = [[self alloc] init];
         sharedApp.messagesMutable = [NSMutableArray array];
     });
