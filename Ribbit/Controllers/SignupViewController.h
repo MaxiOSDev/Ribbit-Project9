@@ -20,7 +20,7 @@
 #import <UIKit/UIKit.h>
 
 @interface SignupViewController : UIViewController <UITextFieldDelegate>
-
+// IB Out lets and Actions
 @property (strong, nonatomic) IBOutlet UITextField *usernameField;
 @property (strong, nonatomic) IBOutlet UITextField *passwordField;
 @property (strong, nonatomic) IBOutlet UITextField *emailField;

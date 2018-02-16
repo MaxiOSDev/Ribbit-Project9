@@ -18,7 +18,7 @@
 @import Firebase;
 
 @interface InboxViewController ()
-
+// Some stored properties
 @property (strong, nonatomic) NSMutableArray *mutableMessages;
 @property (strong, nonatomic) NSMutableDictionary *messagesDictionary;
 @property (strong, nonatomic) NSString *friendName;
@@ -32,8 +32,8 @@ static NSString * const resuseIdentifier = @"UserCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self fetchUser];
-    [self checkIfUserIsLoggedIn];
+    [self fetchUser]; //fetches user
+    [self checkIfUserIsLoggedIn]; // proceeds to check if any user is logged in
 
     self.moviePlayer = [[AVPlayerViewController alloc] init];
     self.tabBarController.delegate = self;
@@ -41,7 +41,7 @@ static NSString * const resuseIdentifier = @"UserCell";
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
     
 }
-
+// Needed to pass data from one tab to another. Got it from Treehouse's community, something new learnt
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
     UIViewController *destView = [[self.tabBarController.viewControllers objectAtIndex:1] topViewController];
     if ([destView isKindOfClass:[FriendsViewController class]]){
@@ -51,31 +51,32 @@ static NSString * const resuseIdentifier = @"UserCell";
     return TRUE;
 }
 
+// The messages
 - (NSMutableArray *)messages {
     self.mutableMessages = [[Message currentApp] messages];
     return self.mutableMessages;
 }
-
+// Method observes if there are any messages in the database for this user. ONLY messages sent to current user are displayed. NOT messages user sent. think of it as Gmail's email inbox
 - (void)observeUserMessages {
 
     NSString *uid = [[FIRAuth.auth currentUser] uid];
-    
+    // Another Tree Made here
     FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"user-messages"] child:uid];
     [ref observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
 
         NSString *userId = snapshot.key;
 
         [[[[[FIRDatabase.database reference] child:@"user-messages"] child:uid] child:userId] observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
-            NSString *messageId = snapshot.key;
+            NSString *messageId = snapshot.key; // Now the message Id is how I retreive each specific message, each message id is different
             [self fetchMessageWithMessageId:messageId];
             
         } withCancelBlock:nil];
 
     } withCancelBlock:nil];
 }
-
+// Fetching the message with message id
 - (void)fetchMessageWithMessageId:(NSString *)messageId {
-    
+    // The messages JSON Tree has the actual message using the message id
     FIRDatabaseReference *messagesReference = [[[FIRDatabase.database reference] child:@"messages"] child:messageId];
     [messagesReference  observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
         NSDictionary *dict = snapshot.value;
@@ -118,15 +119,16 @@ static NSString * const resuseIdentifier = @"UserCell";
     
         Message *message = [self.messages objectAtIndex:indexPath.row];
         cell.message = message;
-        [cell setMessage:message];
-    
+        [cell setMessage:message]; // Setting each cell with proper message
+    // Some UI improvements for each cell
     cell.layer.borderWidth = 4.0f;
     cell.layer.borderColor = [UIColor whiteColor].CGColor;
 
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
-        NSString *fileType = message.contentType;
-        if ([fileType isEqualToString:@"application/octet-stream"]) {
+        NSString *fileType = message.contentType; // The content type of the message
+    // Now I know there could have been a better way, but for now I stored each message type this if statment checks if one is a video or an image message
+    if ([fileType isEqualToString:@"application/octet-stream"]) {
             cell.imageView.image = [UIImage imageNamed:@"icon_image"];
         }
 
@@ -145,21 +147,21 @@ static NSString * const resuseIdentifier = @"UserCell";
 
     Message *message = [self.messages objectAtIndex:indexPath.row];
     NSString *fileType = message.contentType;
-    NSString *chatPartnerId = message.chatPartnerId;
-    FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"users"] child:chatPartnerId];
-    
+    NSString *chatPartnerId = message.chatPartnerId; // The chat partner id is who the user is chatting with. Had to include chatPartnerId as a node within the Tree.
+    FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"users"] child:chatPartnerId]; // Here
+    // Checking content type again
     if ([fileType isEqualToString:@"application/octet-stream"]) {
-
+        // Actually observing that single message from database
         [ref observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
             NSDictionary *dict = snapshot.value;
             RibbitUser *user = [[RibbitUser alloc] initWithDictionary:dict];
             user.id = chatPartnerId;
             self.friendName = user.name;
         } withCancelBlock:nil];
-        [self performSegueWithIdentifier:@"showImage" sender:self];
+        [self performSegueWithIdentifier:@"showImage" sender:self]; // Seguing to vc that will show Image
     }
     else {
-        
+        // Same for video except the video doesn't segue to another screen
         [ref observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
             NSDictionary *dict = snapshot.value;
             RibbitUser *user = [[RibbitUser alloc] initWithDictionary:dict];
@@ -174,6 +176,7 @@ static NSString * const resuseIdentifier = @"UserCell";
 
 }
 
+// So I can delete messages within app and database
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     return YES;
 }
@@ -194,7 +197,7 @@ static NSString * const resuseIdentifier = @"UserCell";
           [recipientRef observeSingleEventOfType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
             NSString *messageId = snapshot.key;
 
-              [self deleteMessageWithMessageId:messageId];
+              [self deleteMessageWithMessageId:messageId]; // Deleting message with message id
               [self deleteUserMessageWithCurrentId:uid withRecipientId:userId withMessageId:messageId];
             } withCancelBlock:nil];
             
@@ -202,7 +205,7 @@ static NSString * const resuseIdentifier = @"UserCell";
         
     }
 }
-
+// Helper methods to delete message with each JSON Tree node, other wise all messages would have been deleted, as tested.
 - (void)deleteUserMessageWithCurrentId:(NSString *)uid withRecipientId:(NSString *)recipientId withMessageId:(NSString *)messageId {
     
     FIRDatabaseReference *ref = [[[[[FIRDatabase.database reference] child:@"user-messages"] child:uid] child:recipientId] child:messageId];
@@ -216,7 +219,7 @@ static NSString * const resuseIdentifier = @"UserCell";
     [userMessageRef removeValue];
 }
 
-
+// Playing the video Method, takes up whole screen, using AVFoundaton
 -(void)playVideo:(NSString *)videoUrl {
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
     NSURL *videoURL = [NSURL URLWithString:videoUrl];
@@ -231,7 +234,7 @@ static NSString * const resuseIdentifier = @"UserCell";
 - (IBAction)logout:(id)sender {
     [self handleLogout];
 }
-
+// Helper method to check if user is loggined in, if not takes back to login vc.
 - (void)checkIfUserIsLoggedIn {
     if ([[FIRAuth.auth currentUser] uid] != nil) {
         NSString *uid = [[FIRAuth.auth currentUser] uid];
@@ -250,7 +253,7 @@ static NSString * const resuseIdentifier = @"UserCell";
         [self performSelector:@selector(handleLogout) withObject:nil afterDelay:0];
     }
 }
-
+// Handles logout/signout, got it straight from Firebase iOS Docs.
 - (void)handleLogout {
     NSError *signOutError;
     BOOL status = [[FIRAuth auth] signOut:&signOutError];
@@ -259,10 +262,10 @@ static NSString * const resuseIdentifier = @"UserCell";
         return;
     } else {
         NSLog(@"SUCCESSFUL LOG OUT");
-        [self performSegueWithIdentifier:@"showLogin" sender:self];
+        [self performSegueWithIdentifier:@"showLogin" sender:self]; // Used to give me issues, but I got it to log out successfully and segue after a successful log out.
     }
 }
-
+// Method that fetches user
 - (void)fetchUser {
     
     self.inboxUsers = [NSMutableArray array];
@@ -282,6 +285,7 @@ static NSString * const resuseIdentifier = @"UserCell";
     } withCancelBlock:nil];
 }
 
+// Passing data.
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"showLogin"]) {
 

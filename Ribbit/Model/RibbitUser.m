@@ -17,7 +17,7 @@ static NSInteger identifier = 1;
 
 @implementation RibbitUser
 @synthesize delegate;
-
+// Starter code
 + (instancetype)currentRibitUser {
     static RibbitUser *sharedUser = nil;
     
@@ -44,7 +44,7 @@ static NSInteger identifier = 1;
 - (NSArray*) friends {
     return self.friendsMutable;
 }
-
+// Init methods
 - (id)initWithDictionary:(NSDictionary *)dict {
     
     if ((self = [super init])) {

@@ -7,11 +7,11 @@
 
 #import "FriendsViewController.h"
 #import "EditFriendsViewController.h"
-
 #import "RibbitUser.h"
 #import "FriendCell.h"
 
 @interface FriendsViewController ()
+// Stored properties
 @property (strong, nonatomic) NSMutableArray *friendsMutable;
 @property (strong, nonatomic) NSArray *images;
 @end
@@ -23,6 +23,7 @@ static NSString * const resuseIdentifier = @"FriendCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    // Demo images so the app could resemble mockups. In an actual app I would have handled this with a way a user could place a their own profile picture.
     self.images = [NSArray arrayWithObjects:
                     [UIImage imageNamed:@"HarpreetSingh.png"],
                     [UIImage imageNamed:@"HumayunKhan.png"],
@@ -42,7 +43,7 @@ static NSString * const resuseIdentifier = @"FriendCell";
     
     [self.tableView reloadData];
 }
-
+// Observes User friends each time in view will Appear
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self observeUserFriends];
@@ -79,11 +80,11 @@ static NSString * const resuseIdentifier = @"FriendCell";
 
 
 - (void)observeUserFriends {
-    
+    // Retrieve user friends from database
     self.friendsMutable = [NSMutableArray array];
     NSString *currentUser = [FIRAuth.auth currentUser].uid;
     FIRDatabaseReference *usersRef = [[[[FIRDatabase.database reference] child:@"users"] child:currentUser] child:@"friends"];
-
+    
     
     [usersRef observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
         NSDictionary *dict = snapshot.value;
@@ -99,7 +100,7 @@ static NSString * const resuseIdentifier = @"FriendCell";
         });
     } withCancelBlock:nil];
 }
-
+// Sends data of who is a friend already so user knows which users are already their friends
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([[segue identifier] isEqualToString:@"showEditFriends"]) {
         EditFriendsViewController *editFriendsVC = [segue destinationViewController];

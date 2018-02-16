@@ -20,6 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    // Custom UI for tab bar controller
     UITabBar *tabBar = self.tabBar;
     CGSize imgSize = CGSizeMake(tabBar.frame.size.width/tabBar.items.count,tabBar.frame.size.height);
     UIGraphicsBeginImageContextWithOptions(imgSize, NO, 0);

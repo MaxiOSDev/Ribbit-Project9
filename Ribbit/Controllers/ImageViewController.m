@@ -22,14 +22,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    // Checks if imageURLString is nil
     if (self.imageUrlString != nil) {
         [self.imageView loadImageUsingCacheWithUrlString:self.message.imageUrl];
     } else {
         NSLog(@"Image is nil");
     }
 
-    NSString *title = [NSString stringWithFormat:@"Sent from %@", self.senderName];
+    NSString *title = [NSString stringWithFormat:@"Sent from %@", self.senderName]; // Supposed to make title the fromId's username.
     self.navigationItem.title = title;
 }
 
@@ -37,7 +37,7 @@
     [super viewDidAppear:animated];
     
     if ([self respondsToSelector:@selector(timeout)]) {
-        [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(timeout) userInfo:nil repeats:NO];
+        [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector(timeout) userInfo:nil repeats:NO]; // Starter code, after 10 seconds takes me back to inboxVC
     }
     else {
         NSLog(@"Error: selector missing!");

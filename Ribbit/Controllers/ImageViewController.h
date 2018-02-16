@@ -10,10 +10,9 @@
 @class Message;
 
 @interface ImageViewController : UIViewController
-
+// Stored Properties and IBOutlet
 @property (nonatomic, strong) Message *message;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
-
 @property (nonatomic, strong) NSString *senderName;
 @property (nonatomic, strong) NSString *imageUrlString;
 

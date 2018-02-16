@@ -15,7 +15,7 @@
 {
     id<UserDelegate> delegate;
 }
-
+// Stored properties and methods
 @property (nonatomic, retain) id<UserDelegate> delegate;
 @property (copy, nonatomic) NSString *name;
 @property (copy, nonatomic) NSString *email;

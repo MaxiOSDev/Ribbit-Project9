@@ -9,7 +9,7 @@
 #import "UIImageView+CacheExtension.h"
 
 @implementation UIImageView (CacheExtension)
-
+// Cache extension method
 - (UIImageView *)loadImageUsingCacheWithUrlString:(NSString *)urlString {
     
     NSCache *imageCache = [[NSCache alloc] init];

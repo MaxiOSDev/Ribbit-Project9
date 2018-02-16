@@ -12,7 +12,7 @@
 @import Firebase;
 
 @interface EditFriendsViewController ()
-
+// Stored Properties
 @property (strong, nonatomic) NSString *uid;
 @property (strong, nonatomic) NSMutableArray *usersArray;
 @property (strong, nonatomic) NSArray *images;
@@ -34,7 +34,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    // setting user images. Not going to be the same becasue of the demo app
     self.images = [NSArray arrayWithObjects:
                    [UIImage imageNamed:@"HarpreetSingh.png"],
                    [UIImage imageNamed:@"HumayunKhan.png"],
@@ -75,7 +75,7 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-
+    // Populating cells with each user from database. Now, each user here has been verified.
    
     NSString *currentUser = [[FIRAuth.auth currentUser] uid];
     RibbitUser *userID = [[RibbitUser alloc] init];
@@ -88,7 +88,7 @@
 
             cell.textLabel.text = user.name;
             cell.imageView.image = [self.images objectAtIndex:indexPath.row];
-            if ( [self isFriend:user]) {
+            if ( [self isFriend:user]) { // Places checkmark next to users who are already friends
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
             } else {
                 cell.accessoryType = UITableViewCellAccessoryNone;
@@ -114,8 +114,9 @@
     NSString *currentUser = [[FIRAuth.auth currentUser] uid];
     
     if ([self isFriend:user]) {
-        NSLog(@"User is friend");
+        NSLog(@"User is friend"); // If user is friend, do nothing
     } else {
+        // If user is not a friend, then a new friend is added to database, and also a check mark
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
         
         NSString *friendId = user.id;
@@ -127,7 +128,7 @@
 }
 
 #pragma mark - Helper methods
-
+// Helper that checks if user is friend via the id of the user, and friend id
 - (BOOL)isFriend:(RibbitUser *)user {
     Boolean isAdded = false;
     for (RibbitUser *tempUser in self.friends) {
