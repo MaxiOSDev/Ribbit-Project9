@@ -6,7 +6,7 @@
 //
 
 #import "EditFriendsViewController.h"
-#import "App.h"
+
 
 
 @import Firebase;
@@ -27,7 +27,7 @@
     
     for (NSMutableArray *array in self.users) {
         self.usersArray = array;
-        NSLog(@"Users inside numberOfRows: %@", self.usersArray);
+       
     }
 }
 
@@ -76,7 +76,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
 
-    NSLog(@"%@", self.users);
+   
     NSString *currentUser = [[FIRAuth.auth currentUser] uid];
     RibbitUser *userID = [[RibbitUser alloc] init];
     for (NSMutableArray *array in self.users) {
@@ -85,8 +85,7 @@
             NSLog(@"Got you: %@", currentUser);
         } else {
             RibbitUser *user = [array objectAtIndex:indexPath.row];
-            NSLog(@"User Name: %@, User Id: %@", user.name, user.id);
-            NSLog(@"%@ Current User Id", currentUser);
+
             cell.textLabel.text = user.name;
             cell.imageView.image = [self.images objectAtIndex:indexPath.row];
             if ( [self isFriend:user]) {

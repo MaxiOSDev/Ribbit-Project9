@@ -7,7 +7,7 @@
 
 #import "ImageViewController.h"
 #import "Message.h"
-#import "File.h"
+
 #import "UIImageView+CacheExtension.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AVKit/AVKit.h>

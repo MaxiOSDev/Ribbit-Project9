@@ -9,16 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "Constants.h"
 
-@class File;
-
 @interface Message : NSObject
 
-@property (weak, nonatomic) File *file;
 @property (strong, nonatomic) NSArray *recipients;
-
-@property (weak, nonatomic) NSString *fileType; // Solved Bug Issue #5 // before Firebase. Came back still after Firebase
+//@property (strong, nonatomic) NSString *fileType; // Solved Bug Issue #5 // before Firebase. Came back still after Firebase
 @property (nonatomic, copy) NSString *contentType;
-
 @property (copy, nonatomic) NSString *senderName;
 
 // New Messages Properties

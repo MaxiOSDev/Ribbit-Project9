@@ -22,7 +22,6 @@
 
 @import Firebase;
 
-
 @interface SignupViewController ()
 @property (strong, nonatomic) FIRDatabaseReference *ref;
 @end
@@ -33,6 +32,9 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.usernameField.delegate = self;
+    self.emailField.delegate = self;
+    self.passwordField.delegate = self;
     self.navigationItem.hidesBackButton = YES;
     [self setupNavBar];
 }
@@ -84,6 +86,13 @@
             }
             
             [self registerUserIntoDatabaseWithUID:uid :dict];
+            
+            [[FIRAuth.auth currentUser] sendEmailVerificationWithCompletion:^(NSError * _Nullable error) {
+                if (error != nil) {
+                    NSLog(@"%@", error);
+                }
+            }];
+            
             NSLog(@"Saved user successfully into Firebase Database");
         }];
     }];
@@ -105,6 +114,12 @@
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
     [self.navigationController.navigationBar setTranslucent:YES];
+}
+
+-(BOOL) textFieldShouldReturn:(UITextField *)textField{
+    
+    [textField resignFirstResponder];
+    return YES;
 }
 
 @end

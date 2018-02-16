@@ -10,8 +10,8 @@
 #import "FriendsViewController.h"
 #import "EditFriendsViewController.h"
 #import "Message.h"
-#import "App.h"
-#import "File.h"
+
+
 #import "RibbitUser.h"
 #import "UserCell.h"
 
@@ -88,7 +88,7 @@ static NSString * const resuseIdentifier = @"UserCell";
             NSLog(@"Not a message to me: %@", dict[@"fromId"]);
         }
         
-        NSLog(@"MutableArray amount3: %lu", (unsigned long)self.messages.count);
+
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
@@ -107,7 +107,6 @@ static NSString * const resuseIdentifier = @"UserCell";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
- //   return [self.messages count];
 
     return [self.messages count];
 }
@@ -185,7 +184,7 @@ static NSString * const resuseIdentifier = @"UserCell";
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         
         NSString *uid = [[FIRAuth.auth currentUser] uid];
-        NSLog(@"CurrentUser: %@", uid);
+       
         FIRDatabaseReference *ref = [[[FIRDatabase.database reference] child:@"user-messages"] child:uid];
         [ref observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
             
@@ -239,15 +238,15 @@ static NSString * const resuseIdentifier = @"UserCell";
         [[[[FIRDatabase.database reference] child:@"users"] child:uid] observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
             
             NSDictionary *postDict = snapshot.value;
-            NSLog(@"postDict: %@", postDict);
+            
             self.navigationItem.title = [postDict objectForKey:@"name"];
-            NSLog(@"logged in");
+            
             [self.messages removeAllObjects];
             [self observeUserMessages];
             
         } withCancelBlock:nil];
     } else {
-        NSLog(@"Not Logged In");
+        
         [self performSelector:@selector(handleLogout) withObject:nil afterDelay:0];
     }
 }
@@ -275,7 +274,7 @@ static NSString * const resuseIdentifier = @"UserCell";
         
         if (![user.id isEqualToString:[[FIRAuth.auth currentUser] uid]]) {
             [self.inboxUsers addObject:user];
-            NSLog(@"Inbox users: %@", self.inboxUsers);
+            
         } else {
             NSLog(@"Got you: %@", user.id);
         }

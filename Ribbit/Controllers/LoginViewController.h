@@ -21,7 +21,7 @@
 #import <UIKit/UIKit.h>
 #import "UserDelegate.h"
 
-@interface LoginViewController : UIViewController <UserDelegate>
+@interface LoginViewController : UIViewController <UserDelegate, UITextFieldDelegate>
 
 @property (strong, nonatomic) IBOutlet UITextField *usernameField;
 @property (strong, nonatomic) IBOutlet UITextField *passwordField;

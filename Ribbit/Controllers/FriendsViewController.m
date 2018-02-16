@@ -7,7 +7,7 @@
 
 #import "FriendsViewController.h"
 #import "EditFriendsViewController.h"
-#import "App.h"
+
 #import "RibbitUser.h"
 #import "FriendCell.h"
 
@@ -87,14 +87,13 @@ static NSString * const resuseIdentifier = @"FriendCell";
     
     [usersRef observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * _Nonnull snapshot) {
         NSDictionary *dict = snapshot.value;
-        NSLog(@"%@", dict);
+       
         RibbitUser *friendUser = [[RibbitUser alloc] initWithFriendDictionary:dict];
         friendUser.id = snapshot.key;
         friendUser.friendName = dict[@"friendName"];
         friendUser.friendId = dict[@"friendId"];
         [self.friendsMutable addObject:friendUser];
-        NSLog(@"%@", friendUser.id);
-        NSLog(@"%@", friendUser.friendName);
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
