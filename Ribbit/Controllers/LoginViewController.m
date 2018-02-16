@@ -29,7 +29,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    self.usernameField.delegate = self;
+    self.passwordField.delegate = self;
     self.navigationItem.hidesBackButton = YES;
     [self setupNavBar];
 }
@@ -127,7 +128,11 @@
     [self.navigationController.navigationBar setTranslucent:YES];
 }
 
-
+-(BOOL) textFieldShouldReturn:(UITextField *)textField{
+    
+    [textField resignFirstResponder];
+    return YES;
+}
 
 
 @end
